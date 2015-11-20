@@ -7,14 +7,19 @@
 //
 
 #import "UserRemindersListController.h"
+#import "CreateUserReminderController.h"
+
 #import "Reminder.h"
 #import "AppService.h"
+
+static NSDateFormatter *dateFormatter;
 
 @interface UserRemindersListController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *userReminders;
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIButton *addButton;
 
 @end
 
@@ -22,6 +27,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm"];
+    });
     
     _userReminders = @[[[Reminder alloc] init],
                        [[Reminder alloc] init],
@@ -36,16 +47,48 @@
     [_tableView setDelegate:self];
     [self.view addSubview:_tableView];
     
-    [[AppService sharedService] createUserWithPhoneNumber:@"712312313"
-                                               completion:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
+    UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.addButton];
+    [self.navigationItem setRightBarButtonItem:addButtonItem];
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    
     [_tableView setFrame:self.view.bounds];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
+    [[AppService sharedService] userRemindersWithCompletion:^(BOOL success, NSArray *userReminders, NSString *responseString, NSError *error) {
+        self.userReminders = userReminders;
+        [self.tableView reloadData];
+    }];
+    
+}
+
+#pragma mark - Accessors
+
+- (UIButton *)addButton {
+    if (!_addButton) {
+        _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
+        [_addButton setImage:[UIImage imageNamed:@"AddButton"] forState:UIControlStateNormal];
+        [_addButton addTarget:self
+                       action:@selector(onAddButtonClick:)
+             forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _addButton;
+}
+
+#pragma mark - Private Methods
+
+- (void)onAddButtonClick:(UIButton *)sender {
+    CreateUserReminderController *createUserReminderController = [[CreateUserReminderController alloc] init];
+    [self.navigationController pushViewController:createUserReminderController animated:YES];
 }
 
 #pragma mark - UITableViewDataSource Methods
@@ -61,8 +104,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:userReminderTableCellId];
     }
-    cell.textLabel.text = @"Name";
-    cell.detailTextLabel.text = @"Fire Date";
+    Reminder *reminder = [self.userReminders objectAtIndex:indexPath.row];
+    cell.textLabel.text = reminder.title;
+    cell.detailTextLabel.text = [dateFormatter stringFromDate:reminder.fireDate];
     return cell;
 }
 

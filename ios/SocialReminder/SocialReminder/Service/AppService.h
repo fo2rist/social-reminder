@@ -21,4 +21,9 @@ typedef void(^ServiceCompletionHandler)(BOOL success, id parsedData, NSString *r
 
 - (void)createUserWithPhoneNumber:(NSString *)phoneNumber completion:(ServiceCompletionHandler)completion;
 
+- (void)saveReminderWithTitle:(NSString *)title
+                       fireDate:(NSDate *)fireDate
+                     completion:(ServiceCompletionHandler)completion;
+- (void)userRemindersWithCompletion:(ServiceCompletionHandler)completion;
+
 @end

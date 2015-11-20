@@ -13,8 +13,8 @@
 + (RKObjectMapping *)objectMapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
     [mapping addAttributeMappingsFromDictionary:@{@"id" : @"reminderId",
-                                                  @"title" : @"title",
-                                                  @"fireDate" : @"fireDate"}];
+                                                  @"name" : @"title",
+                                                  @"datetime" : @"fireDate"}];
     return mapping;
 }
 

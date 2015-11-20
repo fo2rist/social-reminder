@@ -12,14 +12,17 @@
 
 #import <RestKit/RestKit.h>
 
+static NSDateFormatter *dateFormatter;
+
 #define NullCheck(obj) obj == nil ? [NSNull null] : obj
 
 typedef void(^SuccessResponseHandler)(RKObjectRequestOperation *operation, RKMappingResult *mappingResult);
 typedef void(^FailureResponseHandler)(RKObjectRequestOperation *operation, NSError *error);
 
-static NSString *const HostName = @"https://10.10.40.12:5000";
+static NSString *const HostName = @"http://10.10.40.12:5000";
 
-static NSString *const CreateUserPath = @"/user";
+static NSString *const UserEndpoint = @"/user";
+static NSString *const CountdownsEndpoint = @"/countdowns";
 
 @interface AppService ()
 
@@ -42,6 +45,8 @@ static NSString *const CreateUserPath = @"/user";
     self = [super init];
     
     if (self) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"dd-MM-yy hh.mm.ss a";
         [self setupRestKit];
     }
     
@@ -54,16 +59,24 @@ static NSString *const CreateUserPath = @"/user";
     
     _objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:HostName]];
     _objectManager.operationQueue.maxConcurrentOperationCount = 2;
-//    [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:@""];
+    [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:@""];
     [_objectManager setRequestSerializationMIMEType:RKMIMETypeJSON];
     
-//    NSIndexSet *successfulCodesIndexSet = RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful);
-//    RKResponseDescriptor *createUserDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Reminder objectMapping]
-//                                                                                              method:RKRequestMethodGET
-//                                                                                         pathPattern:CreateUserPath
-//                                                                                             keyPath:nil
-//                                                                                         statusCodes:successfulCodesIndexSet];
-//    [_objectManager addResponseDescriptor:createUserDescriptor];
+    NSIndexSet *successfulCodesIndexSet = RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful);
+    
+    RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Reminder objectMapping]
+                                                                                    method:RKRequestMethodGET
+                                                                               pathPattern:CountdownsEndpoint
+                                                                                   keyPath:nil
+                                                                               statusCodes:successfulCodesIndexSet];
+    [_objectManager addResponseDescriptor:descriptor];
+    
+    descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Reminder objectMapping]
+                                                              method:RKRequestMethodPOST
+                                                         pathPattern:CountdownsEndpoint
+                                                             keyPath:nil
+                                                         statusCodes:successfulCodesIndexSet];
+    [_objectManager addResponseDescriptor:descriptor];
     
 }
 
@@ -79,9 +92,25 @@ static NSString *const CreateUserPath = @"/user";
 
 - (void)createUserWithPhoneNumber:(NSString *)phoneNumber completion:(ServiceCompletionHandler)completion {
     NSDictionary *parameters = @{@"phone" : NullCheck(phoneNumber)};
-    [self postObjectsAtPath:CreateUserPath
+    [self postObjectsAtPath:UserEndpoint
                  parameters:parameters
                  completion:completion];
+}
+
+- (void)saveReminderWithTitle:(NSString *)title
+                     fireDate:(NSDate *)fireDate
+                   completion:(ServiceCompletionHandler)completion {
+    NSDictionary *parameters = @{@"name" : NullCheck(title),
+                                 @"datetime" : NullCheck([dateFormatter stringFromDate:fireDate])};
+    [self postObjectsAtPath:CountdownsEndpoint
+                 parameters:parameters
+                 completion:completion];
+}
+
+- (void)userRemindersWithCompletion:(ServiceCompletionHandler)completion {
+    [self getObjectsAtPath:CountdownsEndpoint
+                parameters:nil
+                completion:completion];
 }
 
 #pragma mark - Private Methods
@@ -90,10 +119,7 @@ static NSString *const CreateUserPath = @"/user";
            parameters:(NSDictionary *)parameters
                method:(RKRequestMethod)method
            completion:(ServiceCompletionHandler)completion {
-    NSMutableURLRequest *request = [_objectManager requestWithObject:nil
-                                                              method:method
-                                                                path:path
-                                                          parameters:parameters];
+    
     SuccessResponseHandler success = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         if (completion) {
             completion(YES, mappingResult.array, operation.HTTPRequestOperation.responseString, nil);
@@ -104,9 +130,12 @@ static NSString *const CreateUserPath = @"/user";
             completion(NO, nil, operation.HTTPRequestOperation.responseString, error);
         }
     };
-    RKObjectRequestOperation *requestOperation = [_objectManager objectRequestOperationWithRequest:request
-                                                                                           success:success
-                                                                                           failure:failure];
+    
+    RKObjectRequestOperation *requestOperation = [_objectManager appropriateObjectRequestOperationWithObject:nil
+                                                                                                      method:method
+                                                                                                        path:path
+                                                                                                  parameters:parameters];
+    [requestOperation setCompletionBlockWithSuccess:success failure:failure];
     [_objectManager enqueueObjectRequestOperation:requestOperation];
 }
 

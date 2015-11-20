@@ -20,6 +20,7 @@
     UserRemindersListController *rootController = [[UserRemindersListController alloc] init];
     self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:rootController];
     [self.rootNavigationController.view setBackgroundColor:[UIColor whiteColor]];
+    [self.rootNavigationController.navigationBar setTranslucent:NO];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:self.rootNavigationController];
