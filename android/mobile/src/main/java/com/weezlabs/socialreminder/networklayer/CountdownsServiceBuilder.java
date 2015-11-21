@@ -69,6 +69,7 @@ public class CountdownsServiceBuilder {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(client)
                 .build();
         return retrofit.create(CountdownsService.class);
