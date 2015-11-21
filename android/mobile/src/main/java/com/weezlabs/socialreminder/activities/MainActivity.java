@@ -26,9 +26,12 @@ import android.widget.TextView;
 
 import com.weezlabs.socialreminder.R;
 import com.weezlabs.socialreminder.datalayer.CountdownsManager;
+import com.weezlabs.socialreminder.models.Countdown;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -76,7 +79,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateMyCountdowns() {
-        CountdownsManager.getInstance().updateMyCountdowns();
+        showProgress(true);
+        CountdownsManager.getInstance().updateMyCountdowns()
+                .subscribe(
+                        new Action1<List<Countdown>>() {
+                            @Override
+                            public void call(List<Countdown> countdowns) {
+                                showProgress(false);
+                            }
+                        },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                showProgress(false);
+                                Snackbar.make(countdownsList, "Unable to load countdowns", Snackbar.LENGTH_LONG).show();
+                            }
+                        }
+                );
     }
 
     @Override

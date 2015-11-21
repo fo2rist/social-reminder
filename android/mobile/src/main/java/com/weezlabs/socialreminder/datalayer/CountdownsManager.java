@@ -73,22 +73,32 @@ public class CountdownsManager {
                 });
     }
 
-    public void updateMyCountdowns() {
-        getMyCountdowns().subscribe(
-                new Action1<List<Countdown>>() {
+    public Observable<List<Countdown>> updateMyCountdowns() {
+        return getMyCountdowns().map(
+                new Func1<List<Countdown>, List<Countdown>>() {
                     @Override
-                    public void call(List<Countdown> countdowns) {
+                    public List<Countdown> call(List<Countdown> countdowns) {
                         countdowns_.clear();
                         countdowns_.addAll(countdowns);
                         countdownsAdapter_.notifyDataSetChanged();
+                        return countdowns;
                     }
-                },
-                new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Log.d("On3", "Shit happened");
-                    }
-                });
+                }
+        );
+//        new Action1<List<Countdown>>() {
+//            @Override
+//            public void call(List<Countdown> countdowns) {
+//                countdowns_.clear();
+//                countdowns_.addAll(countdowns);
+//                countdownsAdapter_.notifyDataSetChanged();
+//            }
+//        },
+//                new Action1<Throwable>() {
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                        Log.d("On3", "Shit happened");
+//                    }
+//                }
     }
 
     public Observable<List<Countdown>> getMyCountdowns() {
