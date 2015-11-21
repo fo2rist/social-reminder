@@ -1,5 +1,5 @@
 //
-//  UserReminderCell.h
+//  AllRemindersListController.h
 //  SocialReminder
 //
 //  Created by Evgeny Kubrakov on 21/11/15.
@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Reminder.h"
-
-@interface UserReminderCell : UITableViewCell
-
-- (void)setupWithReminder:(id <Reminder>)reminder;
+@interface AllRemindersListController : UIViewController
 
 @end

@@ -11,6 +11,7 @@
 #import "User.h"
 #import "Reminder.h"
 
+#import <CoreData/CoreData.h>
 #import <RestKit/RestKit.h>
 
 #define NullCheck(obj) obj == nil ? [NSNull null] : obj
@@ -21,7 +22,7 @@ typedef void(^FailureResponseHandler)(RKObjectRequestOperation *operation, NSErr
 static NSString *const HostName = @"http://10.10.40.12:5000";
 
 static NSString *const UserEndpoint = @"/users";
-static NSString *const UserCountdownsEndpoint = @"/usercountdowns";
+static NSString *const UserCountdownsEndpoint = @"/user/countdowns";
 static NSString *const CountdownsEndpoint = @"/countdowns";
 
 @interface AppService ()
@@ -64,6 +65,26 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     [_objectManager.HTTPClient setDefaultHeader:@"UID" value:[self.defaults objectForKey:UIDDefaultsKey]];
     [_objectManager setRequestSerializationMIMEType:RKMIMETypeJSON];
     
+    // Model
+    NSManagedObjectModel *managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+    
+    // Manually create a NSPersistentStoreCoordinator
+    NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
+    
+    // Add your persistent store to the coordinator
+    NSString *storePath = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"SocialReminder.sqlite"];
+    NSURL *storeUrl = [NSURL fileURLWithPath:storePath];
+    NSError *error;
+    [persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                             configuration:nil
+                                                       URL:storeUrl
+                                                   options:nil
+                                                     error:&error];
+    RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithPersistentStoreCoordinator:persistentStoreCoordinator];
+    [managedObjectStore createManagedObjectContexts];
+    
+    _objectManager.managedObjectStore = managedObjectStore;
+    
     NSIndexSet *successfulCodesIndexSet = RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful);
     
     RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[User objectMapping]
@@ -73,16 +94,16 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
                                                                                statusCodes:successfulCodesIndexSet];
     [_objectManager addResponseDescriptor:descriptor];
     
-    descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Reminder objectMapping]
+    descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[RuntimeReminder objectMapping]
                                                               method:RKRequestMethodGET
                                                          pathPattern:CountdownsEndpoint
                                                              keyPath:nil
                                                          statusCodes:successfulCodesIndexSet];
     [_objectManager addResponseDescriptor:descriptor];
     
-    descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Reminder objectMapping]
-                                                              method:RKRequestMethodPOST
-                                                         pathPattern:CountdownsEndpoint
+    descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[DBReminder entityMappingWithManagedObjectStore:_objectManager.managedObjectStore]
+                                                              method:RKRequestMethodGET
+                                                         pathPattern:UserCountdownsEndpoint
                                                              keyPath:nil
                                                          statusCodes:successfulCodesIndexSet];
     [_objectManager addResponseDescriptor:descriptor];

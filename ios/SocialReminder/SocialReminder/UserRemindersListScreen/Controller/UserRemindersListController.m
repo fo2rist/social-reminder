@@ -8,6 +8,7 @@
 
 #import "UserRemindersListController.h"
 #import "CreateUserReminderController.h"
+#import "AllRemindersListController.h"
 #import "UserReminderCell.h"
 
 #import "User.h"
@@ -22,6 +23,7 @@ static NSDateFormatter *dateFormatter;
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIButton *addButton;
+@property (nonatomic, strong) UIButton *searchButton;
 
 @end
 
@@ -33,27 +35,20 @@ static NSDateFormatter *dateFormatter;
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm"];
     
-    _userReminders = @[[[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init],
-                       [[Reminder alloc] init]];
+    _userReminders = @[[[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init],
+                       [[RuntimeReminder alloc] init]];
     
     _tableView = [[UITableView alloc] init];
     [_tableView setDataSource:self];
@@ -66,7 +61,8 @@ static NSDateFormatter *dateFormatter;
     [super viewWillAppear:animated];
     
     UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.addButton];
-    [self.navigationItem setRightBarButtonItem:addButtonItem];
+    UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchButton];
+    [self.navigationItem setRightBarButtonItems:@[addButtonItem, searchButtonItem]];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -77,12 +73,12 @@ static NSDateFormatter *dateFormatter;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    [[AppService sharedService] userRemindersWithCompletion:^(BOOL success, NSArray *userReminders, NSString *responseString, NSError *error) {
-//        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-//        self.userReminders = userReminders;
-//        [self.tableView reloadData];
-//    }];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [[AppService sharedService] userRemindersWithCompletion:^(BOOL success, NSArray *userReminders, NSString *responseString, NSError *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        self.userReminders = userReminders;
+        [self.tableView reloadData];
+    }];
     
 }
 
@@ -91,7 +87,8 @@ static NSDateFormatter *dateFormatter;
 - (UIButton *)addButton {
     if (!_addButton) {
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
-        [_addButton setImage:[UIImage imageNamed:@"AddButton"] forState:UIControlStateNormal];
+        [_addButton setTitle:@"A" forState:UIControlStateNormal];
+        [_addButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_addButton addTarget:self
                        action:@selector(onAddButtonClick:)
              forControlEvents:UIControlEventTouchUpInside];
@@ -99,11 +96,28 @@ static NSDateFormatter *dateFormatter;
     return _addButton;
 }
 
+- (UIButton *)searchButton {
+    if (!_searchButton) {
+        _searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
+        [_searchButton setTitle:@"S" forState:UIControlStateNormal];
+        [_searchButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_searchButton addTarget:self
+                       action:@selector(onSearchButtonClick:)
+             forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _searchButton;
+}
+
 #pragma mark - Private Methods
 
 - (void)onAddButtonClick:(UIButton *)sender {
     CreateUserReminderController *createUserReminderController = [[CreateUserReminderController alloc] init];
     [self.navigationController pushViewController:createUserReminderController animated:YES];
+}
+
+- (void)onSearchButtonClick:(UIButton *)sender {
+    AllRemindersListController *allRemindersController = [[AllRemindersListController alloc] init];
+    [self.navigationController pushViewController:allRemindersController animated:YES];
 }
 
 #pragma mark - UITableViewDataSource Methods
@@ -119,7 +133,7 @@ static NSDateFormatter *dateFormatter;
         cell = [[UserReminderCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:userReminderTableCellId];
     }
-    Reminder *reminder = [self.userReminders objectAtIndex:indexPath.row];
+    id <Reminder> reminder = [self.userReminders objectAtIndex:indexPath.row];
     [cell setupWithReminder:reminder];
     return cell;
 }

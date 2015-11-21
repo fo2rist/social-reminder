@@ -8,6 +8,7 @@
 
 #import "UserReminderCell.h"
 
+
 @interface UserReminderCell ()
 
 @property (nonatomic, strong) UILabel *countdownLabel;
@@ -45,11 +46,11 @@
     [self.timer invalidate];
 }
 
-- (void)setupWithReminder:(UserReminder *)userReminder {
-    userReminder.fireDate = [NSDate dateWithTimeIntervalSinceNow:arc4random() % 500];
-    NSInteger timeInterval = [userReminder.fireDate timeIntervalSinceNow];
+- (void)setupWithReminder:(id <Reminder>)reminder {
+    reminder.fireDate = [NSDate dateWithTimeIntervalSinceNow:arc4random() % 500];
+    NSInteger timeInterval = [reminder.fireDate timeIntervalSinceNow];
     if (timeInterval > 0) {
-        self.countdown = [userReminder.fireDate timeIntervalSinceNow];
+        self.countdown = timeInterval;
         [self onTick];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                       target:self
