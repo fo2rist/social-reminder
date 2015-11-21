@@ -8,7 +8,9 @@
 
 #import "UserRemindersListController.h"
 #import "CreateUserReminderController.h"
+#import "UserReminderCell.h"
 
+#import "User.h"
 #import "Reminder.h"
 #import "AppService.h"
 
@@ -28,13 +30,24 @@ static NSDateFormatter *dateFormatter;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    static dispatch_once_t token;
-    dispatch_once(&token, ^{
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm"];
-    });
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm"];
     
     _userReminders = @[[[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
+                       [[Reminder alloc] init],
                        [[Reminder alloc] init],
                        [[Reminder alloc] init],
                        [[Reminder alloc] init],
@@ -64,10 +77,12 @@ static NSDateFormatter *dateFormatter;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [[AppService sharedService] userRemindersWithCompletion:^(BOOL success, NSArray *userReminders, NSString *responseString, NSError *error) {
-        self.userReminders = userReminders;
-        [self.tableView reloadData];
-    }];
+//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    [[AppService sharedService] userRemindersWithCompletion:^(BOOL success, NSArray *userReminders, NSString *responseString, NSError *error) {
+//        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+//        self.userReminders = userReminders;
+//        [self.tableView reloadData];
+//    }];
     
 }
 
@@ -99,14 +114,13 @@ static NSDateFormatter *dateFormatter;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *userReminderTableCellId = @"UserReminderTableCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:userReminderTableCellId];
+    UserReminderCell *cell = [tableView dequeueReusableCellWithIdentifier:userReminderTableCellId];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                      reuseIdentifier:userReminderTableCellId];
+        cell = [[UserReminderCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                       reuseIdentifier:userReminderTableCellId];
     }
     Reminder *reminder = [self.userReminders objectAtIndex:indexPath.row];
-    cell.textLabel.text = reminder.title;
-    cell.detailTextLabel.text = [dateFormatter stringFromDate:reminder.fireDate];
+    [cell setupWithReminder:reminder];
     return cell;
 }
 

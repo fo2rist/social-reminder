@@ -23,4 +23,6 @@
 - (NSDate *)beginningOfYear;
 - (NSDate *)endOfYear;
 
++ (NSDate *)dateWithDate:(NSDate *)date time:(NSDate *)time;
+
 @end

@@ -13,12 +13,16 @@
 		5C0DE2A01BFF78CC0003C5E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C0DE29F1BFF78CC0003C5E8 /* Assets.xcassets */; };
 		5C0DE2AE1BFF7B3D0003C5E8 /* UserRemindersListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2AD1BFF7B3D0003C5E8 /* UserRemindersListController.m */; };
 		5C0DE2B11BFF7C200003C5E8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C0DE2B01BFF7C200003C5E8 /* Default-568h@2x.png */; };
-		5C0DE2B51BFF7FC40003C5E8 /* Reminder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2B41BFF7FC40003C5E8 /* Reminder.m */; };
 		5C0DE2B91BFF81380003C5E8 /* AppService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2B81BFF81380003C5E8 /* AppService.m */; };
 		5C0DE2C01BFF96FA0003C5E8 /* CreateUserReminderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2BF1BFF96FA0003C5E8 /* CreateUserReminderController.m */; };
 		5C0DE2C41BFF97240003C5E8 /* CreateUserReminderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2C31BFF97240003C5E8 /* CreateUserReminderView.m */; };
 		5C0DE2C81BFFA4DB0003C5E8 /* NSDate+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2C71BFFA4DB0003C5E8 /* NSDate+Helpers.m */; };
-		5C0DE2CB1BFFADD00003C5E8 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2CA1BFFADD00003C5E8 /* User.m */; };
+		5C81A3D51C004BC400AD67F9 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3D41C004BC400AD67F9 /* LoginController.m */; };
+		5C81A3D91C004BF600AD67F9 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3D81C004BF600AD67F9 /* LoginView.m */; };
+		5C81A3E21C0051CC00AD67F9 /* Reminder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3DD1C0051CC00AD67F9 /* Reminder.m */; };
+		5C81A3E31C0051CC00AD67F9 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3DF1C0051CC00AD67F9 /* User.m */; };
+		5C81A3E41C0051CC00AD67F9 /* UserReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3E11C0051CC00AD67F9 /* UserReminder.m */; };
+		5C81A3E71C00520C00AD67F9 /* UserReminderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3E61C00520C00AD67F9 /* UserReminderCell.m */; };
 		A139C02D2B9E5993C465C363 /* libPods-SocialReminder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A481F2A58D2C3DDE9EC77FD /* libPods-SocialReminder.a */; };
 /* End PBXBuildFile section */
 
@@ -35,9 +39,7 @@
 		5C0DE2AC1BFF7B3D0003C5E8 /* UserRemindersListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRemindersListController.h; sourceTree = "<group>"; };
 		5C0DE2AD1BFF7B3D0003C5E8 /* UserRemindersListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRemindersListController.m; sourceTree = "<group>"; };
 		5C0DE2AF1BFF7BA30003C5E8 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		5C0DE2B01BFF7C200003C5E8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		5C0DE2B31BFF7FC40003C5E8 /* Reminder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reminder.h; sourceTree = "<group>"; };
-		5C0DE2B41BFF7FC40003C5E8 /* Reminder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reminder.m; sourceTree = "<group>"; };
+		5C0DE2B01BFF7C200003C5E8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		5C0DE2B71BFF81380003C5E8 /* AppService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppService.h; sourceTree = "<group>"; };
 		5C0DE2B81BFF81380003C5E8 /* AppService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppService.m; sourceTree = "<group>"; };
 		5C0DE2BE1BFF96FA0003C5E8 /* CreateUserReminderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateUserReminderController.h; sourceTree = "<group>"; };
@@ -46,8 +48,18 @@
 		5C0DE2C31BFF97240003C5E8 /* CreateUserReminderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateUserReminderView.m; sourceTree = "<group>"; };
 		5C0DE2C61BFFA4DB0003C5E8 /* NSDate+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Helpers.h"; sourceTree = "<group>"; };
 		5C0DE2C71BFFA4DB0003C5E8 /* NSDate+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Helpers.m"; sourceTree = "<group>"; };
-		5C0DE2C91BFFADD00003C5E8 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		5C0DE2CA1BFFADD00003C5E8 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		5C81A3D31C004BC400AD67F9 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
+		5C81A3D41C004BC400AD67F9 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
+		5C81A3D71C004BF600AD67F9 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
+		5C81A3D81C004BF600AD67F9 /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginView.m; sourceTree = "<group>"; };
+		5C81A3DC1C0051CC00AD67F9 /* Reminder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reminder.h; sourceTree = "<group>"; };
+		5C81A3DD1C0051CC00AD67F9 /* Reminder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reminder.m; sourceTree = "<group>"; };
+		5C81A3DE1C0051CC00AD67F9 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		5C81A3DF1C0051CC00AD67F9 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		5C81A3E01C0051CC00AD67F9 /* UserReminder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserReminder.h; sourceTree = "<group>"; };
+		5C81A3E11C0051CC00AD67F9 /* UserReminder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserReminder.m; sourceTree = "<group>"; };
+		5C81A3E51C00520C00AD67F9 /* UserReminderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserReminderCell.h; sourceTree = "<group>"; };
+		5C81A3E61C00520C00AD67F9 /* UserReminderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserReminderCell.m; sourceTree = "<group>"; };
 		CC7A9FB3EB27C88555EEDCB4 /* Pods-SocialReminder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialReminder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SocialReminder/Pods-SocialReminder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,7 +86,6 @@
 		5C0DE2841BFF78CC0003C5E8 = {
 			isa = PBXGroup;
 			children = (
-				5C0DE2B01BFF7C200003C5E8 /* Default-568h@2x.png */,
 				5C0DE28F1BFF78CC0003C5E8 /* SocialReminder */,
 				5C0DE28E1BFF78CC0003C5E8 /* Products */,
 				93160AA4FC469F2120BC5B46 /* Pods */,
@@ -93,16 +104,17 @@
 		5C0DE28F1BFF78CC0003C5E8 /* SocialReminder */ = {
 			isa = PBXGroup;
 			children = (
-				5C0DE2C51BFFA4B30003C5E8 /* Helpers */,
 				5C0DE2931BFF78CC0003C5E8 /* AppDelegate.h */,
 				5C0DE2941BFF78CC0003C5E8 /* AppDelegate.m */,
-				5C0DE2B61BFF80140003C5E8 /* Service */,
-				5C0DE2B21BFF7F9E0003C5E8 /* Entities */,
+				5C81A3D11C004B9A00AD67F9 /* LoginScreen */,
 				5C0DE2AA1BFF7B210003C5E8 /* UserRemindersListScreen */,
 				5C0DE2BC1BFF96D80003C5E8 /* CreateReminderScreen */,
+				5C81A3DB1C0051CC00AD67F9 /* Entities */,
+				5C0DE2B61BFF80140003C5E8 /* Service */,
+				5C0DE2C51BFFA4B30003C5E8 /* Helpers */,
+				5C0DE2901BFF78CC0003C5E8 /* Supporting Files */,
 				5C0DE29F1BFF78CC0003C5E8 /* Assets.xcassets */,
 				5C0DE29C1BFF78CC0003C5E8 /* SocialReminder.xcdatamodeld */,
-				5C0DE2901BFF78CC0003C5E8 /* Supporting Files */,
 			);
 			path = SocialReminder;
 			sourceTree = "<group>";
@@ -110,6 +122,7 @@
 		5C0DE2901BFF78CC0003C5E8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5C0DE2B01BFF7C200003C5E8 /* Default-568h@2x.png */,
 				5C0DE2A41BFF78CC0003C5E8 /* Info.plist */,
 				5C0DE2911BFF78CC0003C5E8 /* main.m */,
 				5C0DE2AF1BFF7BA30003C5E8 /* PrefixHeader.pch */,
@@ -121,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				5C0DE2AB1BFF7B210003C5E8 /* Controller */,
+				5C81A3DA1C0051B800AD67F9 /* View */,
 			);
 			path = UserRemindersListScreen;
 			sourceTree = "<group>";
@@ -132,18 +146,6 @@
 				5C0DE2AD1BFF7B3D0003C5E8 /* UserRemindersListController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		5C0DE2B21BFF7F9E0003C5E8 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				5C0DE2C91BFFADD00003C5E8 /* User.h */,
-				5C0DE2CA1BFFADD00003C5E8 /* User.m */,
-				5C0DE2B31BFF7FC40003C5E8 /* Reminder.h */,
-				5C0DE2B41BFF7FC40003C5E8 /* Reminder.m */,
-			);
-			name = Entities;
-			path = UserRemindersListScreen/Entities;
 			sourceTree = "<group>";
 		};
 		5C0DE2B61BFF80140003C5E8 /* Service */ = {
@@ -189,6 +191,55 @@
 				5C0DE2C71BFFA4DB0003C5E8 /* NSDate+Helpers.m */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		5C81A3D11C004B9A00AD67F9 /* LoginScreen */ = {
+			isa = PBXGroup;
+			children = (
+				5C81A3D61C004BEF00AD67F9 /* View */,
+				5C81A3D21C004BAF00AD67F9 /* Controller */,
+			);
+			path = LoginScreen;
+			sourceTree = "<group>";
+		};
+		5C81A3D21C004BAF00AD67F9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5C81A3D31C004BC400AD67F9 /* LoginController.h */,
+				5C81A3D41C004BC400AD67F9 /* LoginController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		5C81A3D61C004BEF00AD67F9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5C81A3D71C004BF600AD67F9 /* LoginView.h */,
+				5C81A3D81C004BF600AD67F9 /* LoginView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5C81A3DA1C0051B800AD67F9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5C81A3E51C00520C00AD67F9 /* UserReminderCell.h */,
+				5C81A3E61C00520C00AD67F9 /* UserReminderCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5C81A3DB1C0051CC00AD67F9 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				5C81A3DC1C0051CC00AD67F9 /* Reminder.h */,
+				5C81A3DD1C0051CC00AD67F9 /* Reminder.m */,
+				5C81A3DE1C0051CC00AD67F9 /* User.h */,
+				5C81A3DF1C0051CC00AD67F9 /* User.m */,
+				5C81A3E01C0051CC00AD67F9 /* UserReminder.h */,
+				5C81A3E11C0051CC00AD67F9 /* UserReminder.m */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		93160AA4FC469F2120BC5B46 /* Pods */ = {
@@ -320,15 +371,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C0DE2CB1BFFADD00003C5E8 /* User.m in Sources */,
+				5C81A3E21C0051CC00AD67F9 /* Reminder.m in Sources */,
+				5C81A3E41C0051CC00AD67F9 /* UserReminder.m in Sources */,
 				5C0DE2C01BFF96FA0003C5E8 /* CreateUserReminderController.m in Sources */,
 				5C0DE2AE1BFF7B3D0003C5E8 /* UserRemindersListController.m in Sources */,
 				5C0DE29E1BFF78CC0003C5E8 /* SocialReminder.xcdatamodeld in Sources */,
+				5C81A3D51C004BC400AD67F9 /* LoginController.m in Sources */,
 				5C0DE2951BFF78CC0003C5E8 /* AppDelegate.m in Sources */,
 				5C0DE2B91BFF81380003C5E8 /* AppService.m in Sources */,
-				5C0DE2B51BFF7FC40003C5E8 /* Reminder.m in Sources */,
+				5C81A3E71C00520C00AD67F9 /* UserReminderCell.m in Sources */,
 				5C0DE2921BFF78CC0003C5E8 /* main.m in Sources */,
+				5C81A3E31C0051CC00AD67F9 /* User.m in Sources */,
 				5C0DE2C81BFFA4DB0003C5E8 /* NSDate+Helpers.m in Sources */,
+				5C81A3D91C004BF600AD67F9 /* LoginView.m in Sources */,
 				5C0DE2C41BFF97240003C5E8 /* CreateUserReminderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

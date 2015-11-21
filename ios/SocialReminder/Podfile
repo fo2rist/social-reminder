@@ -2,6 +2,7 @@ inhibit_all_warnings!
 
 target 'SocialReminder' do
     platform :ios, '8.0'
-    pod 'RestKit', '0.23.0'
+    pod 'RestKit', '0.26.0'
+    pod 'MBProgressHUD', '~> 0.9.1'
 end
 

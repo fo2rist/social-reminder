@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "LoginController.h"
 #import "UserRemindersListController.h"
 
 @interface AppDelegate ()
@@ -17,7 +18,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    UserRemindersListController *rootController = [[UserRemindersListController alloc] init];
+    UIViewController *rootController = nil;
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:UIDDefaultsKey]) {
+        rootController = [[UserRemindersListController alloc] init];
+    }
+    else {
+        rootController = [[LoginController alloc] init];
+    }
+    
     self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:rootController];
     [self.rootNavigationController.view setBackgroundColor:[UIColor whiteColor]];
     [self.rootNavigationController.navigationBar setTranslucent:NO];

@@ -58,4 +58,25 @@
     return [[self.calendar dateByAddingComponents:components toDate:[self beginningOfYear] options:0] dateByAddingTimeInterval:-1];
 }
 
++ (NSDate *)dateWithDate:(NSDate *)date time:(NSDate *)time; {
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+    unsigned unitFlagsDate = NSCalendarUnitYear | NSCalendarUnitMonth
+    |  NSCalendarUnitDay;
+    NSDateComponents *dateComponents = [gregorian components:unitFlagsDate
+                                                    fromDate:date];
+    unsigned unitFlagsTime = NSCalendarUnitHour | NSCalendarUnitMinute;
+    NSDateComponents *timeComponents = [gregorian components:unitFlagsTime
+                                                    fromDate:time];
+    
+    [dateComponents setSecond:0];
+    [dateComponents setHour:[timeComponents hour]];
+    [dateComponents setMinute:[timeComponents minute]];
+    
+    NSDate *combDate = [gregorian dateFromComponents:dateComponents];
+    
+    return combDate;
+}
+
 @end

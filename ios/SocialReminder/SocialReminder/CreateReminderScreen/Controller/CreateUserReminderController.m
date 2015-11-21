@@ -6,8 +6,10 @@
 //  Copyright © 2015 Streetmage. All rights reserved.
 //
 
+
 #import "CreateUserReminderController.h"
 #import "CreateUserReminderView.h"
+#import "NSDate+Helpers.h"
 
 #import "AppService.h"
 
@@ -18,8 +20,7 @@ static NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) CreateUserReminderView *screenView;
 @property (nonatomic, strong) UIButton *saveButton;
 
-@property (nonatomic, strong) NSDate *currentDate;
-@property (nonatomic, strong) NSDate *currentTime;
+@property (nonatomic, strong) NSDate *selectedDate;
 
 @end
 
@@ -33,11 +34,8 @@ static NSDateFormatter *dateFormatter;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    static dispatch_once_t token;
-    dispatch_once(&token, ^{
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm"];
-    });
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm"];
     
     [_screenView.datePicker addTarget:self
                                action:@selector(onDatePickerValueChange:)
@@ -47,10 +45,10 @@ static NSDateFormatter *dateFormatter;
                                action:@selector(onTimePickerValueChange:)
                      forControlEvents:UIControlEventValueChanged];
     
-    self.currentDate = _screenView.datePicker.date;
-    self.currentTime = _screenView.timePicker.date;
+    NSDate *currentDate = [NSDate date];
+    self.selectedDate = [NSDate dateWithDate:currentDate time:currentDate];
     
-    _screenView.fireDateLabel.text = [dateFormatter stringFromDate:[self combineDate:self.currentDate withTime:self.currentTime]];
+    [self updateSelectedDateLabel];
     
 }
 
@@ -78,16 +76,18 @@ static NSDateFormatter *dateFormatter;
 
 #pragma mark - Private Methods
 
+- (void)updateSelectedDateLabel {
+    _screenView.fireDateLabel.text = [dateFormatter stringFromDate:self.selectedDate];
+}
+
 - (void)onDatePickerValueChange:(UIDatePicker *)sender {
-    self.currentDate = sender.date;
-    _screenView.fireDateLabel.text = [dateFormatter stringFromDate:[self combineDate:self.currentDate
-                                                                            withTime:self.currentTime]];
+    self.selectedDate = [NSDate dateWithDate:sender.date time:self.selectedDate];
+    [self updateSelectedDateLabel];
 }
 
 - (void)onTimePickerValueChange:(UIDatePicker *)sender {
-    self.currentTime = sender.date;
-    _screenView.fireDateLabel.text = [dateFormatter stringFromDate:[self combineDate:self.currentDate
-                                                                            withTime:self.currentTime]];
+    self.selectedDate = [NSDate dateWithDate:self.selectedDate time:sender.date];
+    [self updateSelectedDateLabel];
 }
 
 - (NSDate *)combineDate:(NSDate *)date withTime:(NSDate *)time {
@@ -113,8 +113,7 @@ static NSDateFormatter *dateFormatter;
 
 - (void)onSaveButtonClick:(UIButton *)sender {
     [[AppService sharedService] saveReminderWithTitle:_screenView.reminderTitleField.text
-                                             fireDate:[self combineDate:self.currentDate
-                                                               withTime:self.currentTime]
+                                             fireDate:self.selectedDate
                                            completion:^(BOOL success, id parsedData, NSString *responseString, NSError *error) {
                                                
                                            }];

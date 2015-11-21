@@ -8,11 +8,10 @@
 
 #import "AppService.h"
 
+#import "User.h"
 #import "Reminder.h"
 
 #import <RestKit/RestKit.h>
-
-static NSDateFormatter *dateFormatter;
 
 #define NullCheck(obj) obj == nil ? [NSNull null] : obj
 
@@ -21,10 +20,13 @@ typedef void(^FailureResponseHandler)(RKObjectRequestOperation *operation, NSErr
 
 static NSString *const HostName = @"http://10.10.40.12:5000";
 
-static NSString *const UserEndpoint = @"/user";
+static NSString *const UserEndpoint = @"/users";
+static NSString *const UserCountdownsEndpoint = @"/usercountdowns";
 static NSString *const CountdownsEndpoint = @"/countdowns";
 
 @interface AppService ()
+
+@property (nonatomic, weak) NSUserDefaults *defaults;
 
 @end
 
@@ -45,8 +47,6 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     self = [super init];
     
     if (self) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"dd-MM-yy hh.mm.ss a";
         [self setupRestKit];
     }
     
@@ -57,18 +57,27 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
 
 - (void)setupRestKit {
     
+    self.defaults = [NSUserDefaults standardUserDefaults];
+    
     _objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:HostName]];
     _objectManager.operationQueue.maxConcurrentOperationCount = 2;
-    [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:@""];
+    [_objectManager.HTTPClient setDefaultHeader:@"UID" value:[self.defaults objectForKey:UIDDefaultsKey]];
     [_objectManager setRequestSerializationMIMEType:RKMIMETypeJSON];
     
     NSIndexSet *successfulCodesIndexSet = RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful);
     
-    RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Reminder objectMapping]
-                                                                                    method:RKRequestMethodGET
-                                                                               pathPattern:CountdownsEndpoint
+    RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[User objectMapping]
+                                                                                    method:RKRequestMethodPOST
+                                                                               pathPattern:UserEndpoint
                                                                                    keyPath:nil
                                                                                statusCodes:successfulCodesIndexSet];
+    [_objectManager addResponseDescriptor:descriptor];
+    
+    descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Reminder objectMapping]
+                                                              method:RKRequestMethodGET
+                                                         pathPattern:CountdownsEndpoint
+                                                             keyPath:nil
+                                                         statusCodes:successfulCodesIndexSet];
     [_objectManager addResponseDescriptor:descriptor];
     
     descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Reminder objectMapping]
@@ -101,15 +110,22 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
                      fireDate:(NSDate *)fireDate
                    completion:(ServiceCompletionHandler)completion {
     NSDictionary *parameters = @{@"name" : NullCheck(title),
-                                 @"datetime" : NullCheck([dateFormatter stringFromDate:fireDate])};
+                                 @"datetime" : NullCheck(@([fireDate timeIntervalSince1970]))};
     [self postObjectsAtPath:CountdownsEndpoint
                  parameters:parameters
                  completion:completion];
 }
 
 - (void)userRemindersWithCompletion:(ServiceCompletionHandler)completion {
-    [self getObjectsAtPath:CountdownsEndpoint
+    [self getObjectsAtPath:UserCountdownsEndpoint
                 parameters:nil
+                completion:completion];
+}
+
+- (void)allRemindersWithFilter:(ReminderFilter)filter completion:(ServiceCompletionHandler)completion {
+    NSDictionary *parameters = @{@"filter" : @(filter)};
+    [self getObjectsAtPath:CountdownsEndpoint
+                parameters:parameters
                 completion:completion];
 }
 
