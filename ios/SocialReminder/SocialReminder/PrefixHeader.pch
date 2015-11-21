@@ -1,0 +1,27 @@
+//
+//  PrefixHeader.pch
+//  SocialReminder
+//
+//  Created by Evgeny Kubrakov on 20/11/15.
+//  Copyright © 2015 Streetmage. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#define RKCoreDataIncluded
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <RestKit/RestKit.h>
+#import <RestKit/CoreData.h>
+#import <MBProgressHUD/MBProgressHUD.h>
+
+#import "UIColor+Extension.h"
+#import "NSDate+Helpers.h"
+
+static NSString *const UIDDefaultsKey = @"uid";
+
+#endif /* PrefixHeader_pch */
