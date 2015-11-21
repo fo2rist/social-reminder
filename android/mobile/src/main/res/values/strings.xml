@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">On3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_lookup">Explore</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_phone">Phone</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_phone">This phone number is invalid</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_countdown">Countdown</string>
+    <string name="title_activity_lookup">Countdowns</string>
+    <!-- Actions related to single countdown-->
+    <string name="action_save">Save</string>
+    <string name="action_remove">Remove</string>
+    <string name="title_activity_explore">ExploreActivity</string>
+</resources>

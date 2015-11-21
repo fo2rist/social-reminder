@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    card_view:cardCornerRadius="@dimen/cardview_default_radius"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_marginLeft="@dimen/card_spacing"
+    android:layout_marginRight="@dimen/card_spacing"
+    android:layout_marginBottom="@dimen/card_spacing"
+    android:layout_marginTop="@dimen/card_spacing">
+    <!-- A CardView that contains a TextView -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:id="@+id/card_header"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@color/colorPrimaryDark"
+            android:paddingLeft="@dimen/card_padding"
+            android:paddingRight="@dimen/card_padding"
+            android:paddingBottom="@dimen/card_padding">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Countdown Name"
+                android:textColor="@android:color/primary_text_dark"
+                android:textSize="44dp"
+                android:gravity="bottom"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/card_padding"
+            android:paddingRight="@dimen/card_padding" >
+
+            <TextView
+                android:id="@+id/countdown_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="3d 12h 22min"
+                android:textSize="32dp"
+                android:lines="1"/>
+
+            <TextView
+                android:id="@+id/details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="12:00 22/12/2015 at Moscone Center SF CA"
+                android:layout_alignParentBottom="true"
+                android:textAlignment="viewEnd"/>
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
