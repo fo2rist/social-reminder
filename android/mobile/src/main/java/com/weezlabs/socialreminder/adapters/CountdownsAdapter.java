@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.weezlabs.socialreminder.R;
+import com.weezlabs.socialreminder.activities.CountdownActivity;
 import com.weezlabs.socialreminder.models.Countdown;
 import com.weezlabs.socialreminder.utils.TimeUtils;
 
@@ -20,7 +21,10 @@ import java.util.List;
  */
 public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.CountdownViewHolder> {
 
-    public static class CountdownViewHolder extends RecyclerView.ViewHolder {
+
+    public static class CountdownViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        protected Countdown countdown;
+
         protected View cardHeader;
         protected TextView countdownTimer;
         protected TextView name;
@@ -34,6 +38,8 @@ public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.Co
             countdownTimer = (TextView) itemView.findViewById(R.id.countdown_timer);
             name = (TextView) itemView.findViewById(R.id.name);
             details = (TextView) itemView.findViewById(R.id.details);
+
+            itemView.setOnClickListener(this);
         }
 
         public void startTimer(Countdown countdownData) {
@@ -50,6 +56,11 @@ public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.Co
                 public void onFinish() {
                 }
             }.start();
+        }
+
+        @Override
+        public void onClick(View v) {
+            CountdownActivity.launchForEvent(v.getContext(), CountdownActivity.Mode.View, countdown.key);
         }
     }
 
@@ -83,6 +94,7 @@ public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.Co
     @Override
     public void onBindViewHolder(CountdownViewHolder holder, int position) {
         Countdown countdownData = countdowns_.get(position);
+        holder.countdown = countdownData;
 
         holder.name.setText(countdownData.name);
         holder.countdownTimer.setText(

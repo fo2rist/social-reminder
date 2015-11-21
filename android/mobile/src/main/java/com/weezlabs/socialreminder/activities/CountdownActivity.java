@@ -135,6 +135,15 @@ public class CountdownActivity extends AppCompatActivity {
 
     private void updateDateView(Calendar dateTime) {
         date.setText(TimeUtils.convertToDateTimeString(this, dateTime, "\n"));
+        switch (mode_) {
+            case Edit:
+                break;
+            case View:
+                date.setEnabled(false);
+                name.setEnabled(false);
+                location.setEnabled(false);
+                break;
+        }
     }
 
     private void showDatePicker() {
