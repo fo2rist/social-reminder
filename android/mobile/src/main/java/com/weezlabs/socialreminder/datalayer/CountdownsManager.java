@@ -4,10 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.weezlabs.socialreminder.adapters.CountdownsAdapter;
+import com.weezlabs.socialreminder.models.Contact;
 import com.weezlabs.socialreminder.models.Countdown;
 import com.weezlabs.socialreminder.models.User;
 import com.weezlabs.socialreminder.networklayer.CountdownsServiceBuilder;
 import com.weezlabs.socialreminder.networklayer.CountdownsService;
+import com.weezlabs.socialreminder.utils.ContactUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,8 @@ public class CountdownsManager {
     private List<Countdown> countdowns_ = null;
     CountdownsAdapter countdownsAdapter_ = null;
 
-    private String userId_;
+    private static final String NULL_GUID = "00000000-0000-0000-0000-000000000000";
+    private String uid_ = "";
 
     public static CountdownsManager getInstance() {
         return ourInstance;
@@ -43,7 +46,6 @@ public class CountdownsManager {
     private CountdownsManager() {
         countdownsService_ = CountdownsServiceBuilder.build("http://10.10.40.12:5000/");
         countdowns_ = new ArrayList<>();
-        userId_ = "00000000-0000-0000-0000-000000000000"; //Default null ID
     }
 
     public CountdownsAdapter getMyCountdownsAdapter(Context context) {
@@ -53,15 +55,22 @@ public class CountdownsManager {
         return countdownsAdapter_;
     }
 
-    /** @return null if not registered */
+    /** @return empty string if not registered */
     public String getUserId() {
-        return userId_;
+        return uid_;
     }
 
     public Observable<User> register(User user) {
         return countdownsService_.register(user)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread());
+                .subscribeOn(Schedulers.newThread())
+                .map(new Func1<User, User>() {
+                    @Override
+                    public User call(User user) {
+                        uid_ = user.uid;
+                        return user;
+                    }
+                });
     }
 
     public void updateMyCountdowns() {
@@ -96,7 +105,7 @@ public class CountdownsManager {
     }
 
     public Observable<Countdown> postCountdown(Countdown countdown) {
-        Observable<Countdown> countdownObservable = countdownsService_.postConuntdown(userId_, countdown);
+        Observable<Countdown> countdownObservable = countdownsService_.postConuntdown(uid_, countdown);
         return countdownObservable
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
@@ -115,8 +124,8 @@ public class CountdownsManager {
                 .subscribeOn(Schedulers.newThread());
     }
 
-    public Observable<Boolean> follow() {
-        return countdownsService_.follow(getUserId())
+    public Observable<Boolean> follow(ArrayList<Contact> contacts) {
+        return countdownsService_.follow(getUserId(), contacts)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread());
     }

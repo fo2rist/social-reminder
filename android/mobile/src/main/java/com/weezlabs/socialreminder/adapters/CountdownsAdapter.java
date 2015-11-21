@@ -41,7 +41,7 @@ public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.Co
                 timer.cancel();
             }
 
-            timer = new CountDownTimer(countdownData.datetime.longValue() - System.currentTimeMillis(), 1000) {
+            timer = new CountDownTimer(countdownData.getDatetime() - System.currentTimeMillis(), 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     countdownTimer.setText(TimeUtils.convertToInterval(millisUntilFinished));
@@ -86,10 +86,10 @@ public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.Co
 
         holder.name.setText(countdownData.name);
         holder.countdownTimer.setText(
-                TimeUtils.convertToInterval(countdownData.datetime.longValue() - System.currentTimeMillis())
+                TimeUtils.convertToInterval(countdownData.getDatetime() - System.currentTimeMillis())
         );
         String detailsText = "On " +
-                TimeUtils.convertToDateTimeString(context_, countdownData.datetime.longValue());
+                TimeUtils.convertToDateTimeString(context_, countdownData.getDatetime(), " ");
         if (countdownData.locationName != null && !countdownData.locationName.isEmpty()) {
             detailsText += " at " + countdownData.locationName;
         }
