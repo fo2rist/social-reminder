@@ -2,6 +2,7 @@ import flask
 import json
 import geopy
 import geopy.distance
+import datetime
 from flask import Flask
 from flask import request
 from DB import Database
@@ -102,7 +103,8 @@ def add_user():
     exist = DB.get_user_by_phone(user.phone)
 
     if len(exist) == 0:
-        DB.create_user(user)
+        iid = DB.create_user(user)
+        user.id == iid
     else:
         user = User.from_row(exist)
     resp = flask.Response(json.dumps(user.__dict__))
@@ -121,6 +123,12 @@ def add_countdown():
         cdid = request.json.get('id')
     else:
         js = request.json
+
+        dt = int(js.get('datetime'))
+        now = int(datetime.datetime.utcnow().timestamp())
+        if dt < now:
+            return flask.Response(status=400)
+
         cd = Countdown(js.get('name'), js.get('datetime'), author)
         cdid = DB.create_countdown(cd)
         if 'lat' in js and 'long' in js:
@@ -157,11 +165,12 @@ def delete_countdown(countdownid):
 
 @app.route('/user/countdowns', methods=['GET'])
 def get_users_countdowns():
+
     author = Auth()
     if author is None:
         return flask.Response(status=401)
 
-    result = DB.get_users_countdowns(author.id)
+    result = [x for x in DB.get_users_countdowns(author.id) if int(x[1]) > int(datetime.datetime.utcnow().timestamp())]
     page = int(request.args.get('page', 0))
 
     array = []
@@ -192,9 +201,14 @@ def get_all_countdowns():
         result = DB.get_all_countdowns()
     else:
         if filter == 'friends':
-            result = DB.get_all_friends_filtered_countdowns(author.id)
+            result = DB.get_all_friends_countdowns(author.id)
         else:
-            result = DB.get_all_filtered_coundowns(author.id)
+            result = DB.get_all_countdowns()
+
+        xcpt = DB.get_users_countdowns(author.id)
+        result = [x for x in result if x[0] not in [y[0] for y in xcpt]]
+
+    result = [x for x in result if int(x[1]) > int(datetime.datetime.utcnow().timestamp())]
 
     if filter == 'popular':
         result = sorted(result, key=lambda tup: tup[8], reverse=True)
@@ -238,7 +252,7 @@ def post_all_user_contacts():
         return flask.Response(status=401)
 
     result = []
-    arr = request.json.get('contacts')
+    arr = request.json.get('contacts')[0]
     for con_js in arr:
 
         usr_r = DB.get_user_by_phone(con_js.get('phone'))
@@ -275,8 +289,34 @@ def delete_contact(phone):
     response.headers["content-type"] = "application/json"
     return response
 
-@app.route(/)
-def text_alike
+
+@app.route('/related', methods=['GET'])
+def get_related_countdowns():
+    if 'name' not in request.args:
+        return flask.Response(status=400)
+
+    name = request.args.get('name')
+    if 'datetime' not in request.args:
+        result = DB.get_only_name_related(name)
+    else:
+        result = DB.get_name_and_datetime_related(name, int(request.args.get('datetime')))
+    array = []
+    for cntdn in result[0:2]:
+        add = dict()
+        add['id'] = cntdn[0]
+        add['datetime'] = cntdn[1]
+        add['name'] = cntdn[2]
+        add['key'] = cntdn[3]
+        add['authorid'] = cntdn[4]
+        add['lat'] = cntdn[6]
+        add['long'] = cntdn[7]
+        add['subscribed'] = cntdn[8]
+        array.append(add)
+
+    response = flask.Response(json.dumps(array))
+    response.headers["content-type"] = "application/json"
+    return response
+
 
 @app.route('/')
 def hi():

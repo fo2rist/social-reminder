@@ -59,31 +59,25 @@ class Database:
         self.exec(request)
 
     def get_all_countdowns(self):
-        request = "select c.*, count(s.userid) from [Countdown] as c left join [Subscription] as s on c.id = s.countdownid where datetime(c.datetime, \'unixepoch\') > date(\'now\')  group by c.id, c.name, c.datetime, c.key, c.authorid"
+        request = "select c.*, count(s.userid) from [Countdown] as c left join [Subscription] as s on c.id = s.countdownid group by c.id, c.name, c.datetime, c.key, c.authorid"
         cursor = self.connection.cursor()
         cursor.execute(request)
         return cursor.fetchall()
 
-    def get_all_filtered_coundowns(self, userid):
-        request = "select c.*, count(s.userid) from [Countdown] as c left join [Subscription] as s on c.id = s.countdownid where s.userid is null and datetime(c.datetime, \'unixepoch\') > date(\'now\') group by c.id, c.name, c.datetime, c.key, c.authorid"
-        cursor = self.connection.cursor()
-        cursor.execute(request)
-        return cursor.fetchall()
-
-    def get_all_friends_filtered_countdowns(self, userid):
-        request = "select c.*, count(s.userid) from [Friend] as f inner join [Countdown] as c on f.friendid = c.authorid left join [Subscription] as s on c.id = s.countdownid where f.userid = {0} and s.userid is null and datetime(c.datetime, \'unixepoch\') > date(\'now\') group by c.id, c.name, c.datetime, c.key, c.authorid".format(userid)
+    def get_all_friends_countdowns(self, userid):
+        request = "select c.*, count(sp.userid) from [Friend] as f left join [Countdown] as c on c.authorid = f.friendid left join Subscription as sp on sp.countdownid = c.id where f.userid = {0} group by c.id, c.name, c.datetime, c.key, c.authorid".format(userid)
         cursor = self.connection.cursor()
         cursor.execute(request)
         return cursor.fetchall()
 
     def get_countdown_by_id(self, id):
-        request = 'select c.*, count(s.userid) from [Countdown]  as c left join [Subscription] as s on c.id = s.countdownid where datetime(c.datetime, \'unixepoch\') > date(\'now\') and id=' + str(id) + ' group by c.id, c.name, c.datetime, c.key, c.authorid'
+        request = 'select c.*, count(s.userid) from [Countdown] as c left join [Subscription] as s on c.id = s.countdownid where id=' + str(id) + ' group by c.id, c.name, c.datetime, c.key, c.authorid'
         cursor = self.connection.cursor()
         cursor.execute(request)
         return cursor.fetchall()
 
     def get_users_countdowns(self, userid):
-        request = 'select c.*, count(s.userid) from [Subscription] as s inner join [Countdown] as c on s.countdownid = c.id where s.userid={0}  group by c.id, c.name, c.datetime, c.key, c.authorid'.format(
+        request = 'select c.*, count(sp.userid) from [Subscription] as s inner join [Countdown] as c on s.countdownid = c.id left join [Subscription] as sp on sp.countdownid = c.id where s.userid={0} group by c.id, c.name, c.datetime, c.key, c.authorid'.format(
             str(userid))
         cursor = self.connection.cursor()
         cursor.execute(request)
@@ -114,3 +108,15 @@ class Database:
         request = 'delete from [Subscription] where userid=\'{0}\' and countdownid =  \'{1}\''
         request = request.format(userid, countdownid)
         self.exec(request)
+
+    def get_only_name_related(self, name):
+        request = 'select c.*, count(sp.userid) from [Countdown] as c left join [Subscription] as sp on sp.countdownid = c.id where editdist3(c.name. \'{0}\') < 3 group by c.id, c.name, c.datetime, c.key, c.authorid'
+        request = request.format(name)
+        cursor = self.connection.cursor()
+        cursor.execute(request)
+
+    def get_name_and_datetime_related(self, name, datetime):
+        request = 'select c.*, count(sp.userid) from [Countdown] as c left join [Subscription] as sp on sp.countdownid = c.id where editdist3(c.name. \'{0}\') < length(c.name) and abs(c.datetime - {1}) <= 300 group by c.id, c.name, c.datetime, c.key, c.authorid'
+        request = request.format(name)
+        cursor = self.connection.cursor()
+        cursor.execute(request)
