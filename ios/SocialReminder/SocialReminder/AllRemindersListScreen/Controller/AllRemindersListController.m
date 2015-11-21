@@ -14,6 +14,7 @@
 @interface AllRemindersListController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *reminders;
+@property (nonatomic, assign) NSUInteger selectedFilter;
 
 @property (nonatomic, strong) AllRemindersListView *screenView;
 
@@ -38,25 +39,31 @@
     [_screenView.tableView setDataSource:self];
     [_screenView.tableView setDelegate:self];
     
+    self.selectedFilter = 0;
+    [_screenView.segmentedControl setSelectedSegmentIndex:self.selectedFilter];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+    [self reloadData];
+}
+
+#pragma mark - Private Methods
+
+- (void)onSegmentedControlChange:(UISegmentedControl *)sender {
+    self.selectedFilter = sender.selectedSegmentIndex;
+    [self reloadData];
+}
+
+- (void)reloadData {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [[AppService sharedService] allRemindersWithFilter:ReminderFilterNone
+    [[AppService sharedService] allRemindersWithFilter:self.selectedFilter
                                             completion:^(BOOL success, NSArray *reminders, NSString *responseString, NSError *error) {
                                                 [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                                                 _reminders = reminders;
                                                 [_screenView.tableView reloadData];
                                             }];
-    
-}
-
-#pragma mark - PRivate Methods
-
-- (void)onSegmentedControlChange:(UISegmentedControl *)sender {
-    // TODO: change filter
 }
 
 #pragma mark - UITableViewDataSource Methods

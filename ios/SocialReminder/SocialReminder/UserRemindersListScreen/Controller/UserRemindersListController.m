@@ -35,21 +35,6 @@ static NSDateFormatter *dateFormatter;
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm"];
     
-    _userReminders = @[[[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init],
-                       [[RuntimeReminder alloc] init]];
-    
     _tableView = [[UITableView alloc] init];
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];

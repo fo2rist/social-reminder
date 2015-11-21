@@ -115,7 +115,7 @@ static NSDateFormatter *dateFormatter;
     [[AppService sharedService] saveReminderWithTitle:_screenView.reminderTitleField.text
                                              fireDate:self.selectedDate
                                            completion:^(BOOL success, id parsedData, NSString *responseString, NSError *error) {
-                                               
+                                               [self.navigationController popViewControllerAnimated:YES];
                                            }];
 }
 

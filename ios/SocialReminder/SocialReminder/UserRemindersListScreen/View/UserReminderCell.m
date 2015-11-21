@@ -47,8 +47,8 @@
 }
 
 - (void)setupWithReminder:(id <Reminder>)reminder {
-    reminder.fireDate = [NSDate dateWithTimeIntervalSinceNow:arc4random() % 500];
-    NSInteger timeInterval = [reminder.fireDate timeIntervalSinceNow];
+    NSDate *fireDate = [NSDate dateWithTimeIntervalSince1970:[reminder.fireDateSecondsSince1970 unsignedIntegerValue]];
+    NSInteger timeInterval = [fireDate timeIntervalSinceNow];
     if (timeInterval > 0) {
         self.countdown = timeInterval;
         [self onTick];
@@ -61,9 +61,9 @@
 }
 
 - (void)onTick {
-    self.countdown -- ;
+    self.countdown--;
     NSUInteger days = self.countdown / 86400;
-    NSUInteger hours = self.countdown / 3600;
+    NSUInteger hours = (self.countdown % 86400) / 3600;
     NSUInteger minutes = (self.countdown % 3600) / 60;
     NSUInteger seconds = (self.countdown % 3600) % 60;
     _countdownLabel.text = [NSString  stringWithFormat:@"%ld : %ld : %ld : %ld", days, hours, minutes, seconds];

@@ -14,13 +14,17 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
     [mapping addAttributeMappingsFromDictionary:@{@"id" : @"reminderId",
                                                   @"name" : @"title",
-                                                  @"datetime" : @"fireDate",
+                                                  @"datetime" : @"fireDateSecondsSince1970",
                                                   @"subscribed" : @"subscribed"}];
     return mapping;
 }
 
 - (BOOL)isSubscribed {
     return [self.subscribed boolValue];
+}
+
+- (NSDate *)fireDate {
+    return [NSDate dateWithTimeIntervalSince1970:[self.fireDateSecondsSince1970 unsignedIntegerValue]];
 }
 
 @end
@@ -30,7 +34,7 @@
 
 @dynamic reminderId;
 @dynamic title;
-@dynamic fireDate;
+@dynamic fireDateSecondsSince1970;
 @dynamic subscribed;
 
 + (RKEntityMapping *)entityMappingWithManagedObjectStore:(RKManagedObjectStore *)store {
@@ -39,7 +43,7 @@
     [mapping setIdentificationAttributes:@[@"reminderId"]];
     [mapping addAttributeMappingsFromDictionary:@{@"id" : @"reminderId",
                                                   @"name" : @"title",
-                                                  @"datetime" : @"fireDate",
+                                                  @"datetime" : @"fireDateSecondsSince1970",
                                                   @"subscribed" : @"subscribed"}];
     return mapping;
 }
@@ -47,5 +51,10 @@
 - (BOOL)isSubscribed {
     return [self.subscribed boolValue];
 }
+
+- (NSDate *)fireDate {
+    return [NSDate dateWithTimeIntervalSince1970:[self.fireDateSecondsSince1970 unsignedIntegerValue]];
+}
+
 
 @end

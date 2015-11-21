@@ -18,10 +18,9 @@ typedef NS_ENUM(NSUInteger, ReminderFilter) {
 
 typedef void(^ServiceCompletionHandler)(BOOL success, id parsedData, NSString *responseString, NSError *error);
 
-@interface AppService : NSObject {
-@private
-    RKObjectManager *_objectManager;
-}
+@interface AppService : NSObject
+
+@property (nonatomic, strong) RKObjectManager *objectManager;
 
 + (instancetype)sharedService;
 

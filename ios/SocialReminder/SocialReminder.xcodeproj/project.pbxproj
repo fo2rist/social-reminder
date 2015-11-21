@@ -28,6 +28,7 @@
 		5C81A3F91C0065C400AD67F9 /* StylizedSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3F81C0065C400AD67F9 /* StylizedSegmentedControl.m */; };
 		5C81A3FC1C0065F100AD67F9 /* UIColor+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3FB1C0065F100AD67F9 /* UIColor+Extension.m */; };
 		5C81A3FF1C006A0200AD67F9 /* ForeignReminderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3FE1C006A0200AD67F9 /* ForeignReminderCell.m */; };
+		5C81A4031C0081F600AD67F9 /* NotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A4021C0081F600AD67F9 /* NotificationsManager.m */; };
 		A139C02D2B9E5993C465C363 /* libPods-SocialReminder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A481F2A58D2C3DDE9EC77FD /* libPods-SocialReminder.a */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +75,8 @@
 		5C81A3FB1C0065F100AD67F9 /* UIColor+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Extension.m"; sourceTree = "<group>"; };
 		5C81A3FD1C006A0200AD67F9 /* ForeignReminderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForeignReminderCell.h; sourceTree = "<group>"; };
 		5C81A3FE1C006A0200AD67F9 /* ForeignReminderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForeignReminderCell.m; sourceTree = "<group>"; };
+		5C81A4011C0081F600AD67F9 /* NotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsManager.h; sourceTree = "<group>"; };
+		5C81A4021C0081F600AD67F9 /* NotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsManager.m; sourceTree = "<group>"; };
 		CC7A9FB3EB27C88555EEDCB4 /* Pods-SocialReminder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialReminder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SocialReminder/Pods-SocialReminder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,6 +125,7 @@
 			children = (
 				5C0DE2931BFF78CC0003C5E8 /* AppDelegate.h */,
 				5C0DE2941BFF78CC0003C5E8 /* AppDelegate.m */,
+				5C81A4001C0081EC00AD67F9 /* NotificationsManager */,
 				5C81A3D11C004B9A00AD67F9 /* LoginScreen */,
 				5C0DE2AA1BFF7B210003C5E8 /* UserRemindersListScreen */,
 				5C81A3ED1C0064F700AD67F9 /* AllRemindersListScreen */,
@@ -177,8 +181,8 @@
 		5C0DE2BC1BFF96D80003C5E8 /* CreateReminderScreen */ = {
 			isa = PBXGroup;
 			children = (
-				5C0DE2C11BFF97080003C5E8 /* View */,
 				5C0DE2BD1BFF96E60003C5E8 /* Controller */,
+				5C0DE2C11BFF97080003C5E8 /* View */,
 			);
 			path = CreateReminderScreen;
 			sourceTree = "<group>";
@@ -296,6 +300,15 @@
 				5C81A3F81C0065C400AD67F9 /* StylizedSegmentedControl.m */,
 			);
 			path = SegmentedControl;
+			sourceTree = "<group>";
+		};
+		5C81A4001C0081EC00AD67F9 /* NotificationsManager */ = {
+			isa = PBXGroup;
+			children = (
+				5C81A4011C0081F600AD67F9 /* NotificationsManager.h */,
+				5C81A4021C0081F600AD67F9 /* NotificationsManager.m */,
+			);
+			path = NotificationsManager;
 			sourceTree = "<group>";
 		};
 		93160AA4FC469F2120BC5B46 /* Pods */ = {
@@ -439,6 +452,7 @@
 				5C81A3E71C00520C00AD67F9 /* UserReminderCell.m in Sources */,
 				5C0DE2921BFF78CC0003C5E8 /* main.m in Sources */,
 				5C81A3F91C0065C400AD67F9 /* StylizedSegmentedControl.m in Sources */,
+				5C81A4031C0081F600AD67F9 /* NotificationsManager.m in Sources */,
 				5C81A3E31C0051CC00AD67F9 /* User.m in Sources */,
 				5C0DE2C81BFFA4DB0003C5E8 /* NSDate+Helpers.m in Sources */,
 				5C81A3D91C004BF600AD67F9 /* LoginView.m in Sources */,

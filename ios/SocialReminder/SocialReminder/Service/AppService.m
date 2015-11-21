@@ -62,7 +62,6 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     
     _objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:HostName]];
     _objectManager.operationQueue.maxConcurrentOperationCount = 2;
-    [_objectManager.HTTPClient setDefaultHeader:@"UID" value:[self.defaults objectForKey:UIDDefaultsKey]];
     [_objectManager setRequestSerializationMIMEType:RKMIMETypeJSON];
     
     // Model
@@ -96,6 +95,13 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     
     descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[RuntimeReminder objectMapping]
                                                               method:RKRequestMethodGET
+                                                         pathPattern:CountdownsEndpoint
+                                                             keyPath:nil
+                                                         statusCodes:successfulCodesIndexSet];
+    [_objectManager addResponseDescriptor:descriptor];
+    
+    descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[DBReminder entityMappingWithManagedObjectStore:_objectManager.managedObjectStore]
+                                                              method:RKRequestMethodPOST
                                                          pathPattern:CountdownsEndpoint
                                                              keyPath:nil
                                                          statusCodes:successfulCodesIndexSet];
@@ -156,6 +162,8 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
            parameters:(NSDictionary *)parameters
                method:(RKRequestMethod)method
            completion:(ServiceCompletionHandler)completion {
+    
+    [_objectManager.HTTPClient setDefaultHeader:@"UID" value:[self.defaults objectForKey:UIDDefaultsKey]];
     
     SuccessResponseHandler success = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         if (completion) {

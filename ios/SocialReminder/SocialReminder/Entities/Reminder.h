@@ -12,10 +12,11 @@
 
 @property (nonatomic, strong) NSString *reminderId;
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSDate *fireDate;
+@property (nonatomic, strong) NSNumber *fireDateSecondsSince1970;
 @property (nonatomic, strong) NSNumber *subscribed;
 
 - (BOOL)isSubscribed;
+- (NSDate *)fireDate;
 
 @end
 
@@ -23,7 +24,7 @@
 
 @property (nonatomic, strong) NSString *reminderId;
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSDate *fireDate;
+@property (nonatomic, strong) NSNumber *fireDateSecondsSince1970;
 @property (nonatomic, strong) NSNumber *subscribed;
 
 + (RKObjectMapping *)objectMapping;
@@ -34,7 +35,7 @@
 
 @property (nonatomic, strong) NSString *reminderId;
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSDate *fireDate;
+@property (nonatomic, strong) NSNumber *fireDateSecondsSince1970;
 @property (nonatomic, strong) NSNumber *subscribed;
 
 + (RKEntityMapping *)entityMappingWithManagedObjectStore:(RKManagedObjectStore *)store;
