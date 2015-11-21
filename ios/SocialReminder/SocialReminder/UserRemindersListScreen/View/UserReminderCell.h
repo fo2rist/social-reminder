@@ -12,6 +12,17 @@
 
 @interface UserReminderCell : UITableViewCell
 
+@property (nonatomic, strong) UIView *holderView;
+@property (nonatomic, strong) UIImageView *locationImageView;
+
+@property (nonatomic, strong) UIView *countdownHolder;
+@property (nonatomic, strong) UILabel *countdownLabel;
+@property (nonatomic, strong) UILabel *fireDateLabel;
+@property (nonatomic, strong) UILabel *titleLabel;
+
+@property (nonatomic, assign) NSUInteger countdown;
+@property (nonatomic, strong) NSTimer *timer;
+
 - (void)setupWithReminder:(id <Reminder>)reminder;
 
 + (CGFloat)cellHeight;

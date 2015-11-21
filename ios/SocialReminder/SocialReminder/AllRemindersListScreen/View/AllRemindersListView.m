@@ -16,9 +16,10 @@
     if (self) {
         
         _searchBar = [[UISearchBar alloc] init];
+        _searchBar.barTintColor = DEFAULT_COLOR_DARK;
         [self addSubview:_searchBar];
         
-        _segmentedControl = [[StylizedSegmentedControl alloc] initWithItems:@[@"Popular", @"Nearby", @"Freinds"]];
+        _segmentedControl = [[StylizedSegmentedControl alloc] initWithItems:@[@"Popular", @"Friends"]];
         [self addSubview:_segmentedControl];
         
         _tableView = [[UITableView alloc] init];

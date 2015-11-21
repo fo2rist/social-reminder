@@ -23,6 +23,7 @@ typedef void(^FailureResponseHandler)(RKObjectRequestOperation *operation, NSErr
 static NSString *const HostName = @"http://10.10.40.12:5000";
 
 static NSString *const UserEndpoint = @"/users";
+static NSString *const ContactsEndpoint = @"/contacts";
 static NSString *const UserCountdownsEndpoint = @"/user/countdowns";
 static NSString *const CountdownsEndpoint = @"/countdowns";
 
@@ -143,6 +144,13 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
                  completion:completion];
 }
 
+- (void)saveContacts:(NSArray *)contacts completion:(ServiceCompletionHandler)completion {
+    NSDictionary *parameters = @{@"contacts" : @[[contacts valueForKey:@"dictionary"]]};
+    [self postObjectsAtPath:ContactsEndpoint
+                 parameters:parameters
+                 completion:completion];
+}
+
 - (void)saveReminderWithTitle:(NSString *)title
                      fireDate:(NSDate *)fireDate
                    completion:(ServiceCompletionHandler)completion {
@@ -168,7 +176,20 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
 }
 
 - (void)allRemindersWithFilter:(ReminderFilter)filter completion:(ServiceCompletionHandler)completion {
-    NSDictionary *parameters = @{@"filter" : @(filter)};
+    NSString *filterName = @"";
+    switch (filter) {
+        case ReminderFilterPopular:
+            filterName = @"popular";
+            break;
+            
+        case ReminderFilterFriends:
+            filterName = @"friends";
+            break;
+    
+        default:
+            break;
+    }
+    NSDictionary *parameters = @{@"filter" :NullCheck(filterName)};
     [self getObjectsAtPath:CountdownsEndpoint
                 parameters:parameters
                 completion:completion];

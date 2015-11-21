@@ -20,46 +20,40 @@
         [shadow setShadowOffset:CGSizeZero];
         
         [self setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor],
-                                       NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:13],
+                                       NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:16],
                                        NSShadowAttributeName : shadow}
                             forState:UIControlStateSelected];
         
-        [self setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexInt:0x84b7b2],
-                                       NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:13],
+        [self setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor],
+                                       NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:16],
                                        NSShadowAttributeName : shadow}
                             forState:UIControlStateNormal];
         
         
-        [self setBackgroundImage:[UIImage imageNamed:@"segment_selected.png"]
+        [self setBackgroundImage:[UIImage imageNamed:@"SelectedSegment"]
                         forState:UIControlStateSelected
                       barMetrics:UIBarMetricsDefault];
         
-        [self setBackgroundImage:[UIImage imageNamed:@"segment_unselected.png"]
+        [self setBackgroundImage:[UIImage imageNamed:@"UnselectedSegment"]
                         forState:UIControlStateNormal
                       barMetrics:UIBarMetricsDefault];
         
-        [self setBackgroundImage:[UIImage imageNamed:@"segment_unselected.png"]
+        [self setBackgroundImage:[UIImage imageNamed:@"UnselectedSegment"]
                         forState:UIControlStateHighlighted
                       barMetrics:UIBarMetricsDefault];
         
         
-        self.layer.borderWidth = 1.0f;
-        self.layer.borderColor = [UIColor colorWithHexInt:0x355162].CGColor;
-        self.layer.cornerRadius = 0.0f;
-        self.layer.masksToBounds = YES;
-        
-        
-        [self setDividerImage:[UIImage imageNamed:@"segmented_divider.png"]
+        [self setDividerImage:[UIImage imageNamed:@"Divider"]
           forLeftSegmentState:UIControlStateNormal
             rightSegmentState:UIControlStateNormal
                    barMetrics:UIBarMetricsDefault];
         
-        [self setDividerImage:[UIImage imageNamed:@"segmented_divider.png"]
+        [self setDividerImage:[UIImage imageNamed:@"Divider"]
           forLeftSegmentState:UIControlStateSelected
             rightSegmentState:UIControlStateNormal
                    barMetrics:UIBarMetricsDefault];
         
-        [self setDividerImage:[UIImage imageNamed:@"segmented_divider.png"]
+        [self setDividerImage:[UIImage imageNamed:@"Divider"]
           forLeftSegmentState:UIControlStateNormal
             rightSegmentState:UIControlStateSelected
                    barMetrics:UIBarMetricsDefault];

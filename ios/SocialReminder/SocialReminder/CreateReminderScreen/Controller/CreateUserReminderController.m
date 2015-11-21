@@ -21,6 +21,7 @@ static NSDateFormatter *dateFormatter;
 
 @property (nonatomic, strong) CreateUserReminderView *screenView;
 @property (nonatomic, strong) UIButton *saveButton;
+@property (nonatomic, strong) UIButton *backButton;
 
 @property (nonatomic, strong) NSDate *selectedDate;
 
@@ -74,6 +75,7 @@ static NSDateFormatter *dateFormatter;
         _saveButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
         [_saveButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
         [_saveButton setImage:[UIImage imageNamed:@"SaveIcon"] forState:UIControlStateNormal];
+        [_saveButton setImageEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
         [_saveButton addTarget:self
                         action:@selector(onSaveButtonClick:)
               forControlEvents:UIControlEventTouchUpInside];

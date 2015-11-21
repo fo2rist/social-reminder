@@ -30,6 +30,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setTitle:@"Search"];
+    
     [_screenView.searchBar setDelegate:self];
     
     [_screenView.segmentedControl addTarget:self
@@ -94,6 +96,10 @@
     id <Reminder> reminder = [self.reminders objectAtIndex:indexPath.row];
     [cell setupWithReminder:reminder];
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [ForeignReminderCell cellHeight];
 }
 
 @end

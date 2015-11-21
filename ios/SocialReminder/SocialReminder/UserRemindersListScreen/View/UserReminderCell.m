@@ -12,16 +12,6 @@ static NSDateFormatter *dateFormatter;
 
 @interface UserReminderCell ()
 
-@property (nonatomic, strong) UIView *holderView;
-@property (nonatomic, strong) UIImageView *locationImageView;
-
-@property (nonatomic, strong) UIView *countdownHolder;
-@property (nonatomic, strong) UILabel *countdownLabel;
-@property (nonatomic, strong) UILabel *fireDateLabel;
-
-@property (nonatomic, assign) NSUInteger countdown;
-@property (nonatomic, strong) NSTimer *timer;
-
 @end
 
 @implementation UserReminderCell
@@ -42,8 +32,14 @@ static NSDateFormatter *dateFormatter;
         [self addSubview:_holderView];
         
         _locationImageView = [[UIImageView alloc] init];
-        [_locationImageView setBackgroundColor:[UIColor lightGrayColor]];
+        [_locationImageView setBackgroundColor:DEFAULT_COLOR];
         [_holderView addSubview:_locationImageView];
+        
+        _titleLabel = [[UILabel alloc] init];
+        [_titleLabel setNumberOfLines:3];
+        [_titleLabel setFont:[UIFont systemFontOfSize:30.0f]];
+        [_titleLabel setTextColor:[UIColor whiteColor]];
+        [_locationImageView addSubview:_titleLabel];
         
         _countdownHolder = [[UIView alloc] init];
         [_holderView addSubview:_countdownHolder];
@@ -68,19 +64,15 @@ static NSDateFormatter *dateFormatter;
     
     [_holderView setFrame:UIEdgeInsetsInsetRect(self.bounds, UIEdgeInsetsMake(5.0f, 15.0f, 5.0f, 5.0f))];
     
-    [_locationImageView setFrame:UIEdgeInsetsInsetRect(_holderView.bounds, UIEdgeInsetsMake(0.0f,
-                                                                                     0.0f,
-                                                                                     0.4 * _holderView.frame.size.height,
-                                                                                     5.0f))];
+    [_locationImageView setFrame:CGRectMake(0.0f, 5.0f, _holderView.frame.size.width - 5.0f, 120.0f)];
     
-    [_countdownHolder setFrame:UIEdgeInsetsInsetRect(_holderView.bounds, UIEdgeInsetsMake(0.6 * _holderView.frame.size.height,
-                                                                                   0.0f,
-                                                                                   0.0f,
-                                                                                   5.0f))];
+    [_titleLabel setFrame:UIEdgeInsetsInsetRect(_locationImageView.bounds, UIEdgeInsetsMake(90.0f, 0.0f, 0.0f, 0.0f))];
+    
+    [_countdownHolder setFrame:CGRectMake(0.0f, CGRectGetMaxY(_locationImageView.frame), _holderView.frame.size.width - 5.0f, 60.0f)];
     
     [_countdownLabel setFrame:UIEdgeInsetsInsetRect(_countdownHolder.bounds, UIEdgeInsetsMake(5.0f, 5.0f, 20.0f, 5.0f))];
     
-    [_fireDateLabel setFrame:CGRectMake(0.0f, _countdownHolder.frame.size.height - 20.0f, _countdownHolder.frame.size.width - 5.0f, 20.0f)];
+    [_fireDateLabel setFrame:CGRectMake(0.0f, CGRectGetMaxY(_countdownLabel.frame), _countdownHolder.frame.size.width - 5.0f, 20.0f)];
     
 }
 
@@ -100,6 +92,7 @@ static NSDateFormatter *dateFormatter;
                                                     userInfo:nil
                                                      repeats:YES];
     }
+    [_titleLabel setText:[reminder title]];
     [_fireDateLabel setText:[dateFormatter stringFromDate:fireDate]];
 }
 

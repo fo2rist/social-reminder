@@ -8,6 +8,12 @@
 
 #import "LoginView.h"
 
+@interface LoginView ()
+
+@property (nonatomic, strong) UIView *loginFieldHolder;
+
+@end
+
 @implementation LoginView
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -15,13 +21,19 @@
     
     if (self) {
         
+        _loginFieldHolder = [[UIView alloc] init];
+        [_loginFieldHolder setBackgroundColor:[UIColor colorWithHexInt:0xe5e5e5]];
+        [self addSubview:_loginFieldHolder];
+        
         _loginField = [[UITextField alloc] init];
-        [_loginField setBackgroundColor:[UIColor grayColor]];
-        [self addSubview:_loginField];
+        [_loginField setFont:[UIFont systemFontOfSize:20.0f]];
+        [_loginField setPlaceholder:@"Please, enter phone number"];
+        [_loginFieldHolder addSubview:_loginField];
         
         _loginButton = [[UIButton alloc] init];
         [_loginButton setTitle:@"Login" forState:UIControlStateNormal];
-        [_loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_loginButton setBackgroundColor:[UIColor colorWithHexInt:0xe5e5e5]];
+        [_loginButton setTitleColor:DEFAULT_TEXT_COLOR forState:UIControlStateNormal];
         [self addSubview:_loginButton];
         
     }
@@ -32,15 +44,13 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGFloat loginFieldSideMargin = 20.0f;
-    [_loginField setFrame:CGRectMake(loginFieldSideMargin,
-                                     self.frame.size.height / 2 - 60.0f,
-                                     self.frame.size.width - 2 * loginFieldSideMargin,
-                                     40.0)];
+    [_loginFieldHolder setFrame:CGRectMake(5.0f, self.frame.size.height / 2 - 100.0f, self.frame.size.width - 10.0f, 50.0f)];
+    
+    [_loginField setFrame:UIEdgeInsetsInsetRect(_loginFieldHolder.bounds, UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f))];
     
     CGFloat loginButtonSideMargin = 50.0f;
     [_loginButton setFrame:CGRectMake(loginButtonSideMargin,
-                                      CGRectGetMaxY(_loginField.frame),
+                                      CGRectGetMaxY(_loginFieldHolder.frame) + 10.0f,
                                       self.frame.size.width - 2 * loginButtonSideMargin,
                                       40.0f)];
     

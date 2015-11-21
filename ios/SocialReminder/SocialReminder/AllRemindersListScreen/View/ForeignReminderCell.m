@@ -22,7 +22,9 @@
     if (self) {
         
         _subscribeButton = [[UIButton alloc] init];
-        [_subscribeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_subscribeButton setTitle:@"Subscribe" forState:UIControlStateNormal];
+        [_subscribeButton setBackgroundColor:DEFAULT_COLOR];
+        [_subscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self addSubview:_subscribeButton];
         
         [_subscribeButton addTarget:self
@@ -34,17 +36,15 @@
     return self;
 }
 
-- (void)setupWithReminder:(id <Reminder>)reminder {
-    [super setupWithReminder:reminder];
-    [_subscribeButton setTitle:[reminder isSubscribed] ? @"Unsubscribe" : @"Subscribe" forState:UIControlStateNormal];
-    [_subscribeButton setTitleColor:[reminder isSubscribed] ? [UIColor redColor] : [UIColor blueColor] forState:UIControlStateNormal];
-}
-
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    [_subscribeButton  setFrame:CGRectMake(0.0f, 0.0f, 100.0f, 30.0f)];
+    [_subscribeButton  setFrame:CGRectMake(70.0f, CGRectGetMaxY(self.countdownHolder.frame) + 10.0f, self.frame.size.width - 140.0f, 40.0f)];
 
+}
+
++ (CGFloat)cellHeight {
+    return 250.0f;
 }
 
 #pragma mark - Private Methods
