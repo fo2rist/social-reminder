@@ -33,6 +33,7 @@
     [self setTitle:@"Search"];
     
     [_screenView.searchBar setDelegate:self];
+    [_screenView.searchBar setPlaceholder:@"Search"];
     
     [_screenView.segmentedControl addTarget:self
                                      action:@selector(onSegmentedControlChange:)
@@ -61,6 +62,7 @@
 - (void)reloadData {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[AppService sharedService] allRemindersWithFilter:self.selectedFilter
+                                                search:_screenView.searchBar.text
                                             completion:^(BOOL success, NSArray *reminders, NSString *responseString, NSError *error) {
                                                 [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                                                 _reminders = reminders;
@@ -100,6 +102,25 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [ForeignReminderCell cellHeight];
+}
+
+#pragma mark - UISearchBarDelegate Methods
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self reloadData];
+    [searchBar resignFirstResponder];
 }
 
 @end
