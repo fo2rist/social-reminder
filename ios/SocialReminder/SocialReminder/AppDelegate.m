@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "LoginController.h"
 #import "UserRemindersListController.h"
+#import "NotificationsManager.h"
 
 @interface AppDelegate ()
 
@@ -36,12 +37,23 @@
     self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:rootController];
     [self.rootNavigationController.view setBackgroundColor:[UIColor whiteColor]];
     [self.rootNavigationController.navigationBar setTranslucent:NO];
+     self.rootNavigationController.navigationBar.barTintColor = DEFAULT_COLOR;
+    [self.rootNavigationController.navigationBar
+     setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:self.rootNavigationController];
     [self.window makeKeyAndVisible];
     
+    [[NotificationsManager sharedManager] reloadLocalNotifications];
+    [self setupAppearence];
+    
     return YES;
+}
+
+- (void)setupAppearence {
+    [[UITextField appearance] setTintColor:DEFAULT_COLOR_DARK];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 }
 
 @end

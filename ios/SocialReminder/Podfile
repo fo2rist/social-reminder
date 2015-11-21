@@ -4,5 +4,6 @@ target 'SocialReminder' do
     platform :ios, '8.0'
     pod 'RestKit', '0.26.0'
     pod 'MBProgressHUD', '~> 0.9.1'
+    pod 'RMDateSelectionViewController', '~> 2.0.3'
 end
 

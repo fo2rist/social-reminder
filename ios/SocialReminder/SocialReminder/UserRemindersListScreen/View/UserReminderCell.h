@@ -14,4 +14,6 @@
 
 - (void)setupWithReminder:(id <Reminder>)reminder;
 
++ (CGFloat)cellHeight;
+
 @end

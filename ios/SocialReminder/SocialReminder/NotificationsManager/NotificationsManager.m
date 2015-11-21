@@ -39,7 +39,7 @@
                 alarm.timeZone = [NSTimeZone defaultTimeZone];
                 alarm.repeatInterval = 0;
                 alarm.soundName = @"alarmsound.caf";
-                alarm.alertBody = @"Time to wake up!";
+                alarm.alertBody = [reminder title];
                 
                 [[UIApplication sharedApplication] scheduleLocalNotification:alarm];
             }

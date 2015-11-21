@@ -32,6 +32,8 @@ static NSDateFormatter *dateFormatter;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setTitle:@"My Countdowns"];
+    
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm"];
     
@@ -72,8 +74,8 @@ static NSDateFormatter *dateFormatter;
 - (UIButton *)addButton {
     if (!_addButton) {
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
-        [_addButton setTitle:@"A" forState:UIControlStateNormal];
-        [_addButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_addButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [_addButton setImage:[UIImage imageNamed:@"AddIcon"] forState:UIControlStateNormal];
         [_addButton addTarget:self
                        action:@selector(onAddButtonClick:)
              forControlEvents:UIControlEventTouchUpInside];
@@ -84,8 +86,8 @@ static NSDateFormatter *dateFormatter;
 - (UIButton *)searchButton {
     if (!_searchButton) {
         _searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
-        [_searchButton setTitle:@"S" forState:UIControlStateNormal];
-        [_searchButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_searchButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [_searchButton setImage:[UIImage imageNamed:@"SearchIcon"] forState:UIControlStateNormal];
         [_searchButton addTarget:self
                           action:@selector(onSearchButtonClick:)
                 forControlEvents:UIControlEventTouchUpInside];
@@ -97,7 +99,13 @@ static NSDateFormatter *dateFormatter;
 
 - (void)onAddButtonClick:(UIButton *)sender {
     CreateUserReminderController *createUserReminderController = [[CreateUserReminderController alloc] init];
-    [self.navigationController pushViewController:createUserReminderController animated:YES];
+    [UIView transitionWithView:self.navigationController.view
+                      duration:0.75
+                       options:UIViewAnimationOptionTransitionFlipFromRight
+                    animations:^{
+                        [self.navigationController pushViewController:createUserReminderController animated:NO];
+                    }
+                    completion:nil];
 }
 
 - (void)onSearchButtonClick:(UIButton *)sender {
@@ -210,7 +218,11 @@ static NSDateFormatter *dateFormatter;
 #pragma mark - UITableViewDelegate Methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [UserReminderCell cellHeight];
 }
 
 @end
