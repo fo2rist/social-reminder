@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -71,6 +72,10 @@ public class MainActivity extends AppCompatActivity
         countdownsList.setAdapter(CountdownsManager.getInstance().getMyCountdownsAdapter(this));
 
         //initialize data loading
+        updateMyCountdowns();
+    }
+
+    private void updateMyCountdowns() {
         CountdownsManager.getInstance().updateMyCountdowns();
     }
 
@@ -122,9 +127,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_refresh) {
-
+            updateMyCountdowns();
         } else if (id == R.id.nav_tell_friends) {
-
+            Snackbar.make(countdownsList, "Hi friends! Here is the best countdown app.", Snackbar.LENGTH_LONG).show();
         } else if (id == R.id.nav_settings) {
 
         }
