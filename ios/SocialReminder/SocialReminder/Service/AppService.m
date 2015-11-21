@@ -7,6 +7,7 @@
 //
 
 #import "AppService.h"
+#import "NotificationsManager.h"
 
 #import "User.h"
 #import "Reminder.h"
@@ -22,6 +23,7 @@ typedef void(^FailureResponseHandler)(RKObjectRequestOperation *operation, NSErr
 static NSString *const HostName = @"http://10.10.40.12:5000";
 
 static NSString *const UserEndpoint = @"/users";
+static NSString *const ContactsEndpoint = @"/contacts";
 static NSString *const UserCountdownsEndpoint = @"/user/countdowns";
 static NSString *const CountdownsEndpoint = @"/countdowns";
 
@@ -84,6 +86,11 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     
     _objectManager.managedObjectStore = managedObjectStore;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onManagedContextSave)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:managedObjectStore.mainQueueManagedObjectContext];
+    
     NSIndexSet *successfulCodesIndexSet = RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful);
     
     RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[User objectMapping]
@@ -124,11 +131,22 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     [self requestAtPath:path parameters:parameters method:RKRequestMethodPOST completion:completion];
 }
 
+- (void)onManagedContextSave {
+    [[NotificationsManager sharedManager] reloadLocalNotifications];
+}
+
 #pragma mark - Public Methods
 
 - (void)createUserWithPhoneNumber:(NSString *)phoneNumber completion:(ServiceCompletionHandler)completion {
     NSDictionary *parameters = @{@"phone" : NullCheck(phoneNumber)};
     [self postObjectsAtPath:UserEndpoint
+                 parameters:parameters
+                 completion:completion];
+}
+
+- (void)saveContacts:(NSArray *)contacts completion:(ServiceCompletionHandler)completion {
+    NSDictionary *parameters = @{@"contacts" : @[[contacts valueForKey:@"dictionary"]]};
+    [self postObjectsAtPath:ContactsEndpoint
                  parameters:parameters
                  completion:completion];
 }
@@ -143,6 +161,14 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
                  completion:completion];
 }
 
+- (void)subscribeToReminderWithId:(NSString *)reminderId
+                       completion:(ServiceCompletionHandler)completion {
+    NSDictionary *parameters = @{@"id" : NullCheck(reminderId)};
+    [self postObjectsAtPath:CountdownsEndpoint
+                 parameters:parameters
+                 completion:completion];
+}
+
 - (void)userRemindersWithCompletion:(ServiceCompletionHandler)completion {
     [self getObjectsAtPath:UserCountdownsEndpoint
                 parameters:nil
@@ -150,7 +176,20 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
 }
 
 - (void)allRemindersWithFilter:(ReminderFilter)filter completion:(ServiceCompletionHandler)completion {
-    NSDictionary *parameters = @{@"filter" : @(filter)};
+    NSString *filterName = @"";
+    switch (filter) {
+        case ReminderFilterPopular:
+            filterName = @"popular";
+            break;
+            
+        case ReminderFilterFriends:
+            filterName = @"friends";
+            break;
+    
+        default:
+            break;
+    }
+    NSDictionary *parameters = @{@"filter" :NullCheck(filterName)};
     [self getObjectsAtPath:CountdownsEndpoint
                 parameters:parameters
                 completion:completion];

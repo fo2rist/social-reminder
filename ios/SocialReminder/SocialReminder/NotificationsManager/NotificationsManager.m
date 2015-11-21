@@ -8,12 +8,13 @@
 
 #import "NotificationsManager.h"
 #import "AppService.h"
+#import "Reminder.h"
 
 @implementation NotificationsManager
 
 #pragma mark - Singleton Methods
 
-+ (instancetype)sharedService {
++ (instancetype)sharedManager {
     static NotificationsManager *manager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -25,6 +26,26 @@
 - (void)reloadLocalNotifications {
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"DBReminder"];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"%@ < fireDateSecondsSince1970", @([[NSDate date] timeIntervalSince1970])]];
+    NSManagedObjectContext *managedObjectContext = [AppService sharedService].objectManager.managedObjectStore.mainQueueManagedObjectContext;
+    [managedObjectContext performBlockAndWait:^{
+        NSError *error = nil;
+        NSArray *reminders = [managedObjectContext executeFetchRequest:request error:&error];
+        for (id <Reminder> reminder in reminders) {
+            UILocalNotification* alarm = [[UILocalNotification alloc] init];
+            if (alarm)
+            {
+                alarm.fireDate = [reminder fireDate];
+                alarm.timeZone = [NSTimeZone defaultTimeZone];
+                alarm.repeatInterval = 0;
+                alarm.soundName = @"alarmsound.caf";
+                alarm.alertBody = [reminder title];
+                alarm.userInfo = @{@"title" : [reminder title]};
+                
+                [[UIApplication sharedApplication] scheduleLocalNotification:alarm];
+            }
+        }
+    }];
 }
 
 @end

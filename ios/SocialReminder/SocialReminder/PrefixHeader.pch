@@ -24,4 +24,10 @@
 
 static NSString *const UIDDefaultsKey = @"uid";
 
+#define DEFAULT_COLOR [UIColor colorWithHexInt:0x795548]
+#define DEFAULT_COLOR_DARK [UIColor colorWithHexInt:0x5D4037]
+#define ACCENT_COLOR [UIColor colorWithHexInt:0xFF3D00]
+#define DEFAULT_TEXT_COLOR [UIColor colorWithHexInt:0x2B2B2B]
+#define LIGHT_TEXT_COLOR [UIColor colorWithHexInt:0xa7a7a7]
+
 #endif /* PrefixHeader_pch */

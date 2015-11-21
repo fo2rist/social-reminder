@@ -12,8 +12,6 @@
 
 @property (nonatomic, strong) UITextField *reminderTitleField;
 @property (nonatomic, strong) UILabel *fireDateLabel;
-
-@property (nonatomic, strong) UIDatePicker *datePicker;
-@property (nonatomic, strong) UIDatePicker *timePicker;
+@property (nonatomic, strong) UIButton *pickDateButton;
 
 @end

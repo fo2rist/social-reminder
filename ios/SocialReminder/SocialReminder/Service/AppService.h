@@ -11,9 +11,9 @@
 @class RKObjectManager;
 
 typedef NS_ENUM(NSUInteger, ReminderFilter) {
-    ReminderFilterNone = 1 << 0,
-    ReminderFilterGeo = 1 << 1,
-    ReminderFilterFriends = 1 << 2
+    ReminderFilterPopular = 0,
+    ReminderFilterFriends = 1,
+    ReminderFilterGeo = 2,
 };
 
 typedef void(^ServiceCompletionHandler)(BOOL success, id parsedData, NSString *responseString, NSError *error);
@@ -26,9 +26,13 @@ typedef void(^ServiceCompletionHandler)(BOOL success, id parsedData, NSString *r
 
 - (void)createUserWithPhoneNumber:(NSString *)phoneNumber completion:(ServiceCompletionHandler)completion;
 
+- (void)saveContacts:(NSArray *)contacts completion:(ServiceCompletionHandler)completion;
+
 - (void)saveReminderWithTitle:(NSString *)title
                      fireDate:(NSDate *)fireDate
                    completion:(ServiceCompletionHandler)completion;
+
+- (void)subscribeToReminderWithId:(NSString *)reminderId completion:(ServiceCompletionHandler)completion;
 
 - (void)userRemindersWithCompletion:(ServiceCompletionHandler)completion;
 - (void)allRemindersWithFilter:(ReminderFilter)filter completion:(ServiceCompletionHandler)completion;

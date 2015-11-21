@@ -30,6 +30,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setTitle:@"Search"];
+    
     [_screenView.searchBar setDelegate:self];
     
     [_screenView.segmentedControl addTarget:self
@@ -66,6 +68,15 @@
                                             }];
 }
 
+- (void)subscribeForReminderOnIndexPath:(NSIndexPath *)indexPath {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    id <Reminder> reminder = [self.reminders objectAtIndex:indexPath.row];
+ [[AppService sharedService] subscribeToReminderWithId:[reminder reminderId]
+                                            completion:^(BOOL success, NSArray *reminderEnclosed, NSString *responseString, NSError *error) {
+                                                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                                            }];
+}
+
 #pragma mark - UITableViewDataSource Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -78,10 +89,17 @@
     if (!cell) {
         cell = [[ForeignReminderCell alloc] initWithStyle:UITableViewCellStyleDefault
                                           reuseIdentifier:userReminderTableCellId];
+        cell.subscribeButtonHandler = ^(ForeignReminderCell *cell) {
+            [self subscribeForReminderOnIndexPath:[tableView indexPathForCell:cell]];
+        };
     }
     id <Reminder> reminder = [self.reminders objectAtIndex:indexPath.row];
     [cell setupWithReminder:reminder];
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [ForeignReminderCell cellHeight];
 }
 
 @end
