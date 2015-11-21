@@ -46,6 +46,11 @@ static NSDateFormatter *dateFormatter;
     
     [self.navigationController setNavigationBarHidden:NO];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onApplicationDidBecomeActive)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -118,6 +123,11 @@ static NSDateFormatter *dateFormatter;
     [self.navigationController pushViewController:allRemindersController animated:YES];
 }
 
+- (void)onApplicationDidBecomeActive {
+    [self updatePredicate];
+    [self updateFetchedResults];
+}
+
 #pragma mark - NSFetchedResultsController Methods
 
 - (void)setupFetchedResultsController {
@@ -141,6 +151,7 @@ static NSDateFormatter *dateFormatter;
 #ifdef DEBUG
     NSAssert(!error, @"NSFetchedResultsController init failed %@", error.description);
 #endif
+    [self.tableView reloadData];
 }
 
 - (NSFetchRequest *)createFetchRequest {
@@ -214,6 +225,9 @@ static NSDateFormatter *dateFormatter;
     if (!cell) {
         cell = [[UserReminderCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:userReminderTableCellId];
+        [cell setFiredEventHandler:^{
+            [self onApplicationDidBecomeActive];
+        }];
     }
     id <Reminder> reminder = [_fetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
     [cell setupWithReminder:reminder];

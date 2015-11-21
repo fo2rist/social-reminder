@@ -363,6 +363,7 @@
 				TargetAttributes = {
 					5C0DE28C1BFF78CC0003C5E8 = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = CUX64C2278;
 					};
 				};
 			};
@@ -560,6 +561,7 @@
 			baseConfigurationReference = CC7A9FB3EB27C88555EEDCB4 /* Pods-SocialReminder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SocialReminder/PrefixHeader.pch;
 				INFOPLIST_FILE = SocialReminder/Info.plist;
@@ -575,6 +577,7 @@
 			baseConfigurationReference = 397D580515496C0455B846B1 /* Pods-SocialReminder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SocialReminder/PrefixHeader.pch;
 				INFOPLIST_FILE = SocialReminder/Info.plist;

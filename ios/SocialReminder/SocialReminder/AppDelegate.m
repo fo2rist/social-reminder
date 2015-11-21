@@ -56,4 +56,19 @@
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 }
 
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Notification"
+                                                                   message:userInfo[@"title"]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                               style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction *action) {
+                                                [alert dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [[self.rootNavigationController topViewController] presentViewController:alert
+                                                                    animated:YES
+                                                                  completion:nil];
+}
+
 @end

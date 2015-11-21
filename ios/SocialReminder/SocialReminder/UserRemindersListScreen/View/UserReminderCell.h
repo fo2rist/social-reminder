@@ -10,6 +10,8 @@
 
 #import "Reminder.h"
 
+typedef void(^FiredEventHandler)(void);
+
 @interface UserReminderCell : UITableViewCell
 
 @property (nonatomic, strong) UIView *holderView;
@@ -22,6 +24,8 @@
 
 @property (nonatomic, assign) NSUInteger countdown;
 @property (nonatomic, strong) NSTimer *timer;
+
+@property (nonatomic, strong) FiredEventHandler firedEventHandler;
 
 - (void)setupWithReminder:(id <Reminder>)reminder;
 

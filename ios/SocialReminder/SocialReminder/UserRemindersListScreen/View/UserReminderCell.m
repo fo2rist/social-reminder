@@ -66,7 +66,7 @@ static NSDateFormatter *dateFormatter;
     
     [_locationImageView setFrame:CGRectMake(0.0f, 5.0f, _holderView.frame.size.width - 5.0f, 120.0f)];
     
-    [_titleLabel setFrame:UIEdgeInsetsInsetRect(_locationImageView.bounds, UIEdgeInsetsMake(90.0f, 0.0f, 0.0f, 0.0f))];
+    [_titleLabel setFrame:UIEdgeInsetsInsetRect(_locationImageView.bounds, UIEdgeInsetsMake(80.0f, 5.0f, 5.0f, 5.0f))];
     
     [_countdownHolder setFrame:CGRectMake(0.0f, CGRectGetMaxY(_locationImageView.frame), _holderView.frame.size.width - 5.0f, 60.0f)];
     
@@ -98,15 +98,22 @@ static NSDateFormatter *dateFormatter;
 
 - (void)onTick {
     self.countdown--;
-    NSUInteger days = self.countdown / 86400;
-    NSUInteger hours = (self.countdown % 86400) / 3600;
-    NSUInteger minutes = (self.countdown % 3600) / 60;
-    NSUInteger seconds = (self.countdown % 3600) % 60;
-    NSString *daysString = @"";
-    if (days > 0) {
-        daysString = [NSString stringWithFormat:@"%ld day%@", days, days == 1 ? @"" : @"s"];
+    if (self.countdown != 0) {
+        NSUInteger days = self.countdown / 86400;
+        NSUInteger hours = (self.countdown % 86400) / 3600;
+        NSUInteger minutes = (self.countdown % 3600) / 60;
+        NSUInteger seconds = (self.countdown % 3600) % 60;
+        NSString *daysString = @"";
+        if (days > 0) {
+            daysString = [NSString stringWithFormat:@"%ld day%@", days, days == 1 ? @"" : @"s"];
+        }
+        _countdownLabel.text = [NSString  stringWithFormat:@"%@ %ld : %ld : %ld", daysString, hours, minutes, seconds];
     }
-    _countdownLabel.text = [NSString  stringWithFormat:@"%@ %ld : %ld : %ld", daysString, hours, minutes, seconds];
+    else {
+        if (self.firedEventHandler) {
+            self.firedEventHandler();
+        }
+    }
 }
 
 + (CGFloat)cellHeight {

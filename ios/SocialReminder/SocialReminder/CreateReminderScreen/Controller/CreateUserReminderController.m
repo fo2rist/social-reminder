@@ -105,17 +105,32 @@ static NSDateFormatter *dateFormatter;
 }
 
 - (void)onSaveButtonClick:(UIButton *)sender {
-    [[AppService sharedService] saveReminderWithTitle:_screenView.reminderTitleField.text
-                                             fireDate:self.selectedDate
-                                           completion:^(BOOL success, id parsedData, NSString *responseString, NSError *error) {
-                                               [UIView transitionWithView:self.navigationController.view
-                                                                 duration:0.75
-                                                                  options:UIViewAnimationOptionTransitionFlipFromLeft
-                                                               animations:^{
-                                                                   [self.navigationController popToRootViewControllerAnimated:NO];
-                                                               }
-                                                               completion:nil];
-                                           }];
+    if ([[NSDate date] compare:self.selectedDate] == NSOrderedAscending) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [[AppService sharedService] saveReminderWithTitle:_screenView.reminderTitleField.text
+                                                 fireDate:self.selectedDate
+                                               completion:^(BOOL success, id parsedData, NSString *responseString, NSError *error) {
+                                                   [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                                                   [UIView transitionWithView:self.navigationController.view
+                                                                     duration:0.75
+                                                                      options:UIViewAnimationOptionTransitionFlipFromLeft
+                                                                   animations:^{
+                                                                       [self.navigationController popToRootViewControllerAnimated:NO];
+                                                                   }
+                                                                   completion:nil];
+                                               }];
+    }
+    else {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Warning"
+                                                                       message:@"Date should be set in future"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+                                                    [alert dismissViewControllerAnimated:YES completion:nil];
+                                                }]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 @end

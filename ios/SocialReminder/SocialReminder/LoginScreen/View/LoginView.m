@@ -10,6 +10,7 @@
 
 @interface LoginView ()
 
+@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIView *loginFieldHolder;
 
 @end
@@ -20,6 +21,9 @@
     self = [super initWithFrame:frame];
     
     if (self) {
+        
+        _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoginBackground"]];
+        [self addSubview:_imageView];
         
         _loginFieldHolder = [[UIView alloc] init];
         [_loginFieldHolder setBackgroundColor:[UIColor colorWithHexInt:0xe5e5e5]];
@@ -44,7 +48,9 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    [_loginFieldHolder setFrame:CGRectMake(5.0f, self.frame.size.height / 2 - 100.0f, self.frame.size.width - 10.0f, 50.0f)];
+    [_imageView setFrame:self.bounds];
+    
+    [_loginFieldHolder setFrame:CGRectMake(5.0f, self.frame.size.height / 2 - 90, self.frame.size.width - 10.0f, 50.0f)];
     
     [_loginField setFrame:UIEdgeInsetsInsetRect(_loginFieldHolder.bounds, UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f))];
     

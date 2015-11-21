@@ -40,6 +40,7 @@
                 alarm.repeatInterval = 0;
                 alarm.soundName = @"alarmsound.caf";
                 alarm.alertBody = [reminder title];
+                alarm.userInfo = @{@"title" : [reminder title]};
                 
                 [[UIApplication sharedApplication] scheduleLocalNotification:alarm];
             }
