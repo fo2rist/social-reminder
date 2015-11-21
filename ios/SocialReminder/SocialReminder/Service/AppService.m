@@ -145,7 +145,7 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
 }
 
 - (void)saveContacts:(NSArray *)contacts completion:(ServiceCompletionHandler)completion {
-    NSDictionary *parameters = @{@"contacts" : @[[contacts valueForKey:@"dictionary"]]};
+    NSDictionary *parameters = @{@"contacts" : NullCheck(@[[contacts valueForKey:@"dictionary"]])};
     [self postObjectsAtPath:ContactsEndpoint
                  parameters:parameters
                  completion:completion];
@@ -175,7 +175,7 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
                 completion:completion];
 }
 
-- (void)allRemindersWithFilter:(ReminderFilter)filter completion:(ServiceCompletionHandler)completion {
+- (void)allRemindersWithFilter:(ReminderFilter)filter search:(NSString *)search completion:(ServiceCompletionHandler)completion {
     NSString *filterName = @"";
     switch (filter) {
         case ReminderFilterPopular:
@@ -189,7 +189,8 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
         default:
             break;
     }
-    NSDictionary *parameters = @{@"filter" :NullCheck(filterName)};
+    NSDictionary *parameters = @{@"filter" : NullCheck(filterName),
+                                 @"search" : NullCheck(search)};
     [self getObjectsAtPath:CountdownsEndpoint
                 parameters:parameters
                 completion:completion];

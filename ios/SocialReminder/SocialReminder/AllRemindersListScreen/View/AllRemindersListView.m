@@ -17,6 +17,7 @@
         
         _searchBar = [[UISearchBar alloc] init];
         _searchBar.barTintColor = DEFAULT_COLOR_DARK;
+        [_searchBar setTintColor:[UIColor whiteColor]];
         [self addSubview:_searchBar];
         
         _segmentedControl = [[StylizedSegmentedControl alloc] initWithItems:@[@"Popular", @"Friends"]];

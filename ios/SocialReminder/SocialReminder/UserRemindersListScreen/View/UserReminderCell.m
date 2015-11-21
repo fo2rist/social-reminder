@@ -35,6 +35,11 @@ static NSDateFormatter *dateFormatter;
         [_locationImageView setBackgroundColor:DEFAULT_COLOR];
         [_holderView addSubview:_locationImageView];
         
+        _locationImageView.layer.shadowColor = [UIColor blackColor].CGColor;
+        _locationImageView.layer.shadowOffset = CGSizeMake(2, 2);
+        _locationImageView.layer.shadowOpacity = 1;
+        _locationImageView.layer.shadowRadius = 1.0;
+        
         _titleLabel = [[UILabel alloc] init];
         [_titleLabel setNumberOfLines:3];
         [_titleLabel setFont:[UIFont systemFontOfSize:30.0f]];

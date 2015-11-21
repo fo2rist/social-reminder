@@ -35,6 +35,6 @@ typedef void(^ServiceCompletionHandler)(BOOL success, id parsedData, NSString *r
 - (void)subscribeToReminderWithId:(NSString *)reminderId completion:(ServiceCompletionHandler)completion;
 
 - (void)userRemindersWithCompletion:(ServiceCompletionHandler)completion;
-- (void)allRemindersWithFilter:(ReminderFilter)filter completion:(ServiceCompletionHandler)completion;
+- (void)allRemindersWithFilter:(ReminderFilter)filter search:(NSString *)search completion:(ServiceCompletionHandler)completion;
 
 @end
