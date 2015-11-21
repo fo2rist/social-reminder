@@ -7,8 +7,8 @@ public class Countdown {
     public String key;
     public String name;
     public Long datetime;
-//    String longlat;
-//    String locationName;
+//    public String longlat;
+    public String locationName;
 
     public Countdown() {
 

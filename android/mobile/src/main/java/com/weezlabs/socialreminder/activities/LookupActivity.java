@@ -1,4 +1,4 @@
-package com.weezlabs.socialreminder.com.weezlabs.socialreminder.activities;
+package com.weezlabs.socialreminder.activities;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -78,7 +78,7 @@ public class LookupActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_lookup) {
+        if (id == R.id.action_explore) {
             return true;
         }
 
