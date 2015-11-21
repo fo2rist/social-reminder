@@ -25,6 +25,10 @@
         [_subscribeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:_subscribeButton];
         
+        [_subscribeButton addTarget:self
+                             action:@selector(onSubscribeButtonClick:)
+                   forControlEvents:UIControlEventTouchUpInside];
+        
     }
     
     return self;
@@ -41,6 +45,14 @@
     
     [_subscribeButton  setFrame:CGRectMake(0.0f, 0.0f, 100.0f, 30.0f)];
 
+}
+
+#pragma mark - Private Methods
+
+- (void)onSubscribeButtonClick:(UIButton *)sender {
+    if (self.subscribeButtonHandler) {
+        self.subscribeButtonHandler(self);
+    }
 }
 
 @end

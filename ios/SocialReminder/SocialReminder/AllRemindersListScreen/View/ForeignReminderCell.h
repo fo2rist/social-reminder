@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "UserReminderCell.h"
 
+@class ForeignReminderCell;
+
+typedef void(^SubscribeButtonHandler)(ForeignReminderCell *cell);
+
 @interface ForeignReminderCell : UserReminderCell
+
+@property (nonatomic, strong) SubscribeButtonHandler subscribeButtonHandler;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "AppService.h"
+#import "NotificationsManager.h"
 
 #import "User.h"
 #import "Reminder.h"
@@ -84,6 +85,11 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     
     _objectManager.managedObjectStore = managedObjectStore;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onManagedContextSave)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:managedObjectStore.mainQueueManagedObjectContext];
+    
     NSIndexSet *successfulCodesIndexSet = RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful);
     
     RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[User objectMapping]
@@ -124,6 +130,10 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     [self requestAtPath:path parameters:parameters method:RKRequestMethodPOST completion:completion];
 }
 
+- (void)onManagedContextSave {
+    [[NotificationsManager sharedManager] reloadLocalNotifications];
+}
+
 #pragma mark - Public Methods
 
 - (void)createUserWithPhoneNumber:(NSString *)phoneNumber completion:(ServiceCompletionHandler)completion {
@@ -138,6 +148,14 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
                    completion:(ServiceCompletionHandler)completion {
     NSDictionary *parameters = @{@"name" : NullCheck(title),
                                  @"datetime" : NullCheck(@([fireDate timeIntervalSince1970]))};
+    [self postObjectsAtPath:CountdownsEndpoint
+                 parameters:parameters
+                 completion:completion];
+}
+
+- (void)subscribeToReminderWithId:(NSString *)reminderId
+                       completion:(ServiceCompletionHandler)completion {
+    NSDictionary *parameters = @{@"id" : NullCheck(reminderId)};
     [self postObjectsAtPath:CountdownsEndpoint
                  parameters:parameters
                  completion:completion];

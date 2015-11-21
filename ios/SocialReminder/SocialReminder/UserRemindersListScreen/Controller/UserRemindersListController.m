@@ -17,9 +17,9 @@
 
 static NSDateFormatter *dateFormatter;
 
-@interface UserRemindersListController () <UITableViewDataSource, UITableViewDelegate>
+@interface UserRemindersListController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, strong) NSArray *userReminders;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIButton *addButton;
@@ -39,6 +39,8 @@ static NSDateFormatter *dateFormatter;
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [self.view addSubview:_tableView];
+    
+    [self setupFetchedResultsController];
     
 }
 
@@ -61,8 +63,6 @@ static NSDateFormatter *dateFormatter;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [[AppService sharedService] userRemindersWithCompletion:^(BOOL success, NSArray *userReminders, NSString *responseString, NSError *error) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        self.userReminders = userReminders;
-        [self.tableView reloadData];
     }];
     
 }
@@ -87,8 +87,8 @@ static NSDateFormatter *dateFormatter;
         [_searchButton setTitle:@"S" forState:UIControlStateNormal];
         [_searchButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_searchButton addTarget:self
-                       action:@selector(onSearchButtonClick:)
-             forControlEvents:UIControlEventTouchUpInside];
+                          action:@selector(onSearchButtonClick:)
+                forControlEvents:UIControlEventTouchUpInside];
     }
     return _searchButton;
 }
@@ -105,10 +105,94 @@ static NSDateFormatter *dateFormatter;
     [self.navigationController pushViewController:allRemindersController animated:YES];
 }
 
+#pragma mark - NSFetchedResultsController Methods
+
+- (void)setupFetchedResultsController {
+    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self createFetchRequest]
+                                                                    managedObjectContext:[AppService sharedService].objectManager.managedObjectStore.mainQueueManagedObjectContext
+                                                                      sectionNameKeyPath:nil
+                                                                               cacheName:nil];
+    [self updatePredicate];
+    _fetchedResultsController.delegate = self;
+    [self updateFetchedResults];
+}
+
+- (void)updatePredicate {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ < fireDateSecondsSince1970", @([[NSDate date] timeIntervalSince1970])];
+    [_fetchedResultsController.fetchRequest setPredicate:predicate];
+}
+
+- (void)updateFetchedResults {
+    NSError *error = nil;
+    [_fetchedResultsController performFetch:&error];
+#ifdef DEBUG
+    NSAssert(!error, @"NSFetchedResultsController init failed %@", error.description);
+#endif
+}
+
+- (NSFetchRequest *)createFetchRequest {
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([DBReminder class])];
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"fireDateSecondsSince1970" ascending:YES];
+    [fetchRequest setSortDescriptors:@[descriptor]];
+    [fetchRequest setFetchBatchSize:10];
+    return fetchRequest;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            if (newIndexPath) {
+                [_tableView insertRowsAtIndexPaths:@[newIndexPath]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            if (indexPath) {
+                [_tableView deleteRowsAtIndexPaths:@[indexPath]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            if (indexPath) {
+                [_tableView reloadRowsAtIndexPaths:@[indexPath]
+                                  withRowAnimation:UITableViewRowAnimationFade];
+            }
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            if (indexPath && newIndexPath) {
+                [_tableView deleteRowsAtIndexPaths:@[indexPath]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+                [_tableView insertRowsAtIndexPaths:@[newIndexPath]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView endUpdates];
+}
+
 #pragma mark - UITableViewDataSource Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.userReminders.count;
+    return [_fetchedResultsController.fetchedObjects count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -118,7 +202,7 @@ static NSDateFormatter *dateFormatter;
         cell = [[UserReminderCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:userReminderTableCellId];
     }
-    id <Reminder> reminder = [self.userReminders objectAtIndex:indexPath.row];
+    id <Reminder> reminder = [_fetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
     [cell setupWithReminder:reminder];
     return cell;
 }
