@@ -187,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             new Action1<User>() {
                                 @Override
                                 public void call(User user) {
-                                    CountdownsManager.getInstance().save(LoginActivity.this);
+                                    CountdownsManager.getInstance().save();
                                     finish();
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }

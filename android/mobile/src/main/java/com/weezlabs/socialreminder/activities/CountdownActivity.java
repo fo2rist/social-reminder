@@ -256,7 +256,7 @@ public class CountdownActivity extends AppCompatActivity {
                 dateTime_.get(Calendar.YEAR),
                 dateTime_.get(Calendar.MONTH),
                 dateTime_.get(Calendar.DAY_OF_MONTH))
-                .show();
+        .show();
     }
 
     private void showTimePicker() {
@@ -266,7 +266,8 @@ public class CountdownActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         dateTime_.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         dateTime_.set(Calendar.MINUTE, minute);
-
+                        dateTime_.set(Calendar.SECOND, 0);
+                        dateTime_.set(Calendar.MILLISECOND, 0);
                         updateDateTimeView(dateTime_);
                     }
                 },

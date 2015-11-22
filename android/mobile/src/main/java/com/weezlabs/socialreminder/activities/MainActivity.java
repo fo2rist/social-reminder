@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CountdownsManager.getInstance().restore(this);
+        CountdownsManager.getInstance().restore();
         if (CountdownsManager.getInstance().getUserId().isEmpty()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         countdownsList.setLayoutManager(llm);
-        countdownsList.setAdapter(CountdownsManager.getInstance().getMyCountdownsAdapter(this));
+        countdownsList.setAdapter(CountdownsManager.getInstance().getMyCountdownsAdapter());
 
     }
 
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
-            CountdownsManager.getInstance().logout(this);
+            CountdownsManager.getInstance().logout();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }

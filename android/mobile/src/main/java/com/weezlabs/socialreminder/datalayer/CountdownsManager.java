@@ -1,9 +1,13 @@
 package com.weezlabs.socialreminder.datalayer;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
+import com.weezlabs.socialreminder.On3Application;
 import com.weezlabs.socialreminder.adapters.CountdownsAdapter;
 import com.weezlabs.socialreminder.models.Contact;
 import com.weezlabs.socialreminder.models.Countdown;
@@ -12,6 +16,7 @@ import com.weezlabs.socialreminder.networklayer.CountdownsServiceBuilder;
 import com.weezlabs.socialreminder.networklayer.CountdownsService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import rx.Observable;
@@ -23,19 +28,21 @@ import rx.schedulers.Schedulers;
  * Created by WeezLabs on 11/20/15.
  */
 public class CountdownsManager {
-    private static CountdownsManager ourInstance = new CountdownsManager();
-
-    private CountdownsService countdownsService_;
-
-    private List<Countdown> countdowns_ = null;
-    CountdownsAdapter countdownsAdapter_ = null;
-
+    private static final String NULL_GUID = "00000000-0000-0000-0000-000000000000";
     private static final String SHARED_PREFS_KEY = "On3";
     private static final String UID_PREFS_KEY = "uid";
 
+    private static CountdownsManager ourInstance = new CountdownsManager();
 
-    private static final String NULL_GUID = "00000000-0000-0000-0000-000000000000";
+    private Context context_;
+    private CountdownsService countdownsService_;
+    private AlarmManager alarmMgr;
+    private HashMap<String, PendingIntent> alarmIntentsMap = new HashMap<>();
+
     private String uid_ = "";
+    private List<Countdown> countdowns_ = null;
+    CountdownsAdapter countdownsAdapter_ = null;
+
 
     public static CountdownsManager getInstance() {
         return ourInstance;
@@ -46,20 +53,17 @@ public class CountdownsManager {
         countdowns_ = new ArrayList<>();
     }
 
-    public CountdownsAdapter getMyCountdownsAdapter(Context context) {
-        if (countdownsAdapter_ == null) {
-            countdownsAdapter_ = new CountdownsAdapter(context, countdowns_);
-        }
-        return countdownsAdapter_;
+    public void initialize(Context application) {
+        this.context_ = application;
     }
 
-    public void restore(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
+    public void restore() {
+        SharedPreferences preferences = context_.getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
         uid_ = preferences.getString(UID_PREFS_KEY, "");
     }
 
-    public void save(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
+    public void save() {
+        SharedPreferences preferences = context_.getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(UID_PREFS_KEY, uid_);
         editor.commit();
@@ -70,11 +74,18 @@ public class CountdownsManager {
         return uid_;
     }
 
-    public void logout(Context context) {
+    public void logout() {
         uid_ = "";
-        countdowns_.clear();
+        clearCountdowns();
         countdownsAdapter_ = null;
-        save(context);
+        save();
+    }
+
+    public CountdownsAdapter getMyCountdownsAdapter() {
+        if (countdownsAdapter_ == null) {
+            countdownsAdapter_ = new CountdownsAdapter(context_, countdowns_);
+        }
+        return countdownsAdapter_;
     }
 
     @Nullable
@@ -110,8 +121,8 @@ public class CountdownsManager {
                 new Func1<List<Countdown>, List<Countdown>>() {
                     @Override
                     public List<Countdown> call(List<Countdown> countdowns) {
-                        countdowns_.clear();
-                        countdowns_.addAll(countdowns);
+                        clearCountdowns();
+                        addCountdowns(countdowns);
                         countdownsAdapter_.notifyDataSetChanged();
                         return countdowns;
                     }
@@ -169,6 +180,29 @@ public class CountdownsManager {
         return countdownsService_.unfollow(getUserId(), phoneNumber)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread());
+    }
+
+
+    private void clearCountdowns() {
+        //Remove alarms
+        for (Countdown countdown: countdowns_) {
+//            countdown.key;
+        }
+        countdowns_.clear();
+    }
+
+    private void addCountdowns(List<Countdown> countdowns) {
+        if (alarmMgr == null) {
+            alarmMgr = (AlarmManager)context_.getSystemService(Context.ALARM_SERVICE);
+        }
+
+        countdowns_.addAll(countdowns);
+        //Set alarms
+        for (Countdown countdown: countdowns_) {
+
+//            Intent intent = new Intent(context_, AlarmReceiver.class);
+//            alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        }
     }
 
 }
