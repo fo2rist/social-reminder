@@ -147,10 +147,11 @@ static NSDateFormatter *dateFormatter;
 
 - (void)updateFetchedResults {
     NSError *error = nil;
+    NSUInteger currentSeconds = [[NSDate date] timeIntervalSince1970];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ < fireDateSecondsSince1970", @(currentSeconds + 10)];
+    [_fetchedResultsController.fetchRequest setPredicate:predicate];
     [_fetchedResultsController performFetch:&error];
-#ifdef DEBUG
-    NSAssert(!error, @"NSFetchedResultsController init failed %@", error.description);
-#endif
+    [self.tableView reloadData];
 }
 
 - (NSFetchRequest *)createFetchRequest {
@@ -158,9 +159,6 @@ static NSDateFormatter *dateFormatter;
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"fireDateSecondsSince1970" ascending:YES];
     [fetchRequest setSortDescriptors:@[descriptor]];
     [fetchRequest setFetchBatchSize:10];
-    NSUInteger currentSeconds = [[NSDate date] timeIntervalSince1970];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ < fireDateSecondsSince1970", @(currentSeconds)];
-    [fetchRequest setPredicate:predicate];
     return fetchRequest;
 }
 
@@ -229,7 +227,7 @@ static NSDateFormatter *dateFormatter;
                                        reuseIdentifier:userReminderTableCellId];
         __weak typeof(self) weakSelf = self;
         [cell setFiredEventHandler:^{
-            [weakSelf setupFetchedResultsController];
+            [weakSelf updateFetchedResults];
         }];
     }
     id <Reminder> reminder = [_fetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];

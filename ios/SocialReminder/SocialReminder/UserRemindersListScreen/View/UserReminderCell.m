@@ -9,6 +9,7 @@
 #import "UserReminderCell.h"
 
 static NSDateFormatter *dateFormatter;
+static NSArray *colors = nil;
 
 @interface UserReminderCell ()
 
@@ -24,6 +25,17 @@ static NSDateFormatter *dateFormatter;
         if (!dateFormatter) {
             dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy:MM:dd hh:mm"];
+        }
+        
+        if (!colors) {
+            colors = @[[UIColor colorWithHexInt:0x4caf50],
+                       [UIColor colorWithHexInt:0x9e9d24],
+                       [UIColor colorWithHexInt:0x607d8b],
+                       [UIColor colorWithHexInt:0xf44336],
+                       [UIColor colorWithHexInt:0xe91e63],
+                       [UIColor colorWithHexInt:0x0c27b0],
+                       [UIColor colorWithHexInt:0x3f51b5],
+                       [UIColor colorWithHexInt:0x00bcd4]];
         }
         
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -97,6 +109,10 @@ static NSDateFormatter *dateFormatter;
                                                     userInfo:nil
                                                      repeats:YES];
     }
+    NSUInteger itemColorIndex = [[reminder title] hash] % colors.count;
+    if (itemColorIndex < colors.count) {
+        [_locationImageView setBackgroundColor:[colors objectAtIndex:itemColorIndex]];
+    }
     [_titleLabel setText:[reminder title]];
     [_fireDateLabel setText:[dateFormatter stringFromDate:fireDate]];
 }
@@ -115,6 +131,7 @@ static NSDateFormatter *dateFormatter;
         _countdownLabel.text = [NSString  stringWithFormat:@"%@ %ld : %ld : %ld", daysString, hours, minutes, seconds];
     }
     else {
+        [self.timer invalidate];
         if (self.firedEventHandler) {
             self.firedEventHandler();
         }
