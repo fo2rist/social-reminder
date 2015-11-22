@@ -25,7 +25,7 @@ static NSArray *colors = nil;
         
         if (!dateFormatter) {
             dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy:MM:dd hh:mm"];
+            [dateFormatter setDateFormat:@"yyyy:MM:dd hh:mm a"];
         }
         
         if (!numberFormatter) {
@@ -116,18 +116,13 @@ static NSArray *colors = nil;
                                            userInfo:nil
                                             repeats:YES];
         [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-//        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-//                                                      target:self
-//                                                    selector:@selector(onTick)
-//                                                    userInfo:nil
-//                                                     repeats:YES];
+        [_fireDateLabel setText:[dateFormatter stringFromDate:fireDate]];
     }
     NSUInteger itemColorIndex = [[reminder title] hash] % colors.count;
     if (itemColorIndex < colors.count) {
         [_locationImageView setBackgroundColor:[colors objectAtIndex:itemColorIndex]];
     }
     [_titleLabel setText:[reminder title]];
-    [_fireDateLabel setText:[dateFormatter stringFromDate:fireDate]];
 }
 
 - (void)onTick {
