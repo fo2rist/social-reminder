@@ -170,7 +170,8 @@ def get_users_countdowns():
     if author is None:
         return flask.Response(status=401)
 
-    result = [x for x in DB.get_users_countdowns(author.id) if int(x[1]) > int(datetime.datetime.utcnow().timestamp())]
+    result = DB.get_users_countdowns(author.id)
+    result = [x for x in result if int(x[1]) > int(datetime.datetime.now().timestamp())]
     page = int(request.args.get('page', 0))
 
     array = []
@@ -206,9 +207,9 @@ def get_all_countdowns():
             result = DB.get_all_countdowns()
 
         xcpt = DB.get_users_countdowns(author.id)
-        result = [x for x in result if x[0] not in [y[0] for y in xcpt]]
+        result = [x for x in result if x[0] is not None and x[0] not in [y[0] for y in xcpt]]
 
-    result = [x for x in result if int(x[1]) > int(datetime.datetime.utcnow().timestamp())]
+    result = [x for x in result if int(x[1]) > int(datetime.datetime.now().timestamp())]
 
     if filter == 'popular':
         result = sorted(result, key=lambda tup: tup[8], reverse=True)
@@ -252,8 +253,7 @@ def post_all_user_contacts():
         return flask.Response(status=401)
 
     result = []
-    arr = request.json.get('contacts')[0]
-    for con_js in arr:
+    for con_js in request.json:
 
         usr_r = DB.get_user_by_phone(con_js.get('phone'))
         if len(usr_r) == 0:
