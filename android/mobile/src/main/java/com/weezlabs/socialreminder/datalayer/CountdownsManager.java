@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
-import com.weezlabs.socialreminder.On3Application;
+import com.weezlabs.socialreminder.AlarmReceiver;
 import com.weezlabs.socialreminder.adapters.CountdownsAdapter;
 import com.weezlabs.socialreminder.models.Contact;
 import com.weezlabs.socialreminder.models.Countdown;
@@ -16,6 +16,7 @@ import com.weezlabs.socialreminder.networklayer.CountdownsServiceBuilder;
 import com.weezlabs.socialreminder.networklayer.CountdownsService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +29,12 @@ import rx.schedulers.Schedulers;
  * Created by WeezLabs on 11/20/15.
  */
 public class CountdownsManager {
+    public enum Filter {
+        Popular,
+        Friends
+    }
+
+    public static final String COUNTDOWN_ID_KEY = "countdown_id_key";
     private static final String NULL_GUID = "00000000-0000-0000-0000-000000000000";
     private static final String SHARED_PREFS_KEY = "On3";
     private static final String UID_PREFS_KEY = "uid";
@@ -36,8 +43,8 @@ public class CountdownsManager {
 
     private Context context_;
     private CountdownsService countdownsService_;
-    private AlarmManager alarmMgr;
-    private HashMap<String, PendingIntent> alarmIntentsMap = new HashMap<>();
+    private AlarmManager alarmManager;
+    private HashMap<String, PendingIntent> alarmIntentsIdsMap = new HashMap<>();
 
     private String uid_ = "";
     private List<Countdown> countdowns_ = null;
@@ -89,7 +96,7 @@ public class CountdownsManager {
     }
 
     @Nullable
-    public Countdown getCountdowById(String id) {
+    public Countdown getCountdownById(String id) {
         for (Countdown countdown: countdowns_) {
             if (countdown.id.equals(id)) {
                 return countdown;
@@ -100,7 +107,7 @@ public class CountdownsManager {
     }
 
     public boolean isSubscribedTo(String id) {
-        return (getCountdowById(id) != null);
+        return (getCountdownById(id) != null);
     }
 
     public Observable<User> register(User user) {
@@ -136,8 +143,18 @@ public class CountdownsManager {
                 .subscribeOn(Schedulers.newThread());
     }
 
-    public Observable<List<Countdown>> getCountdowns() {
-        Observable<List<Countdown>> countdownsCall = countdownsService_.getCountdowns(getUserId());
+    public Observable<List<Countdown>> getCountdowns(Filter filter) {
+        String filterString = null;
+        switch (filter) {
+            case Friends:
+                filterString = "friends";
+                break;
+            case Popular:
+            default:
+                filterString = "popular";
+                break;
+        }
+        Observable<List<Countdown>> countdownsCall = countdownsService_.getCountdowns(getUserId(), filterString);
         return countdownsCall
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread());
@@ -184,24 +201,41 @@ public class CountdownsManager {
 
 
     private void clearCountdowns() {
+        if (alarmManager == null) {
+            alarmManager = (AlarmManager)context_.getSystemService(Context.ALARM_SERVICE);
+        }
+
         //Remove alarms
         for (Countdown countdown: countdowns_) {
-//            countdown.key;
+            PendingIntent pendingIntent = alarmIntentsIdsMap.get(countdown.id);
+            if (pendingIntent != null) {
+                alarmManager.cancel(pendingIntent);
+            }
         }
         countdowns_.clear();
     }
 
     private void addCountdowns(List<Countdown> countdowns) {
-        if (alarmMgr == null) {
-            alarmMgr = (AlarmManager)context_.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager == null) {
+            alarmManager = (AlarmManager)context_.getSystemService(Context.ALARM_SERVICE);
         }
 
         countdowns_.addAll(countdowns);
         //Set alarms
         for (Countdown countdown: countdowns_) {
+            long l = Calendar.getInstance().getTimeInMillis() - countdown.getDatetime();
+            if (Calendar.getInstance().getTimeInMillis() >= countdown.getDatetime()) {
+                continue;
+            }
 
-//            Intent intent = new Intent(context_, AlarmReceiver.class);
-//            alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+            Intent intent = new Intent(context_, AlarmReceiver.class);
+            intent.putExtra(COUNTDOWN_ID_KEY, countdown.id);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(context_,
+                    Integer.parseInt(countdown.id),
+                    intent,
+                    0);
+            alarmIntentsIdsMap.put(countdown.id, alarmIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, countdown.getDatetime(), alarmIntent);
         }
     }
 
