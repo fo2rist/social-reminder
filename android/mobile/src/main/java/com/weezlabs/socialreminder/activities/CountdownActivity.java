@@ -35,10 +35,16 @@ public class CountdownActivity extends AppCompatActivity {
 
     private static final String MODE_KEY = "mode_key";
     private static final String ID_KEY = "id_key";
+    private static final String NAME_KEY = "name_key";
+    private static final String LATLON_KEY = "latlon_key";
+    private static final String LCATION_NAME_KEY = "location_name_key";
 
-    private Mode mode_;
-    private String id_;
-    private Calendar dateTime_;
+    private Mode mode_ = Mode.Edit;
+    private String id_ = null;
+    private Calendar dateTime_ = null;
+    private String name_ = null;
+    private String latlon_ = null;
+    private String locationName_ = null;
 
     //controls
     TextView date;
@@ -46,7 +52,7 @@ public class CountdownActivity extends AppCompatActivity {
     EditText location;
 
     /**
-     * Launch Condound View ACtivity
+     * Launch Condound View Activity
      * @param id countdown id, optional
      */
     public static void launchForEvent(Context context, Mode mode, String id) {
@@ -75,7 +81,7 @@ public class CountdownActivity extends AppCompatActivity {
         dateTime_ = Calendar.getInstance();
 
         //populate views
-        updateDateView(dateTime_);
+        updateViews();
     }
 
     @Override
@@ -97,7 +103,7 @@ public class CountdownActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_remove) {
-            CountdownsManager.getInstance().unsubscribe();
+            CountdownsManager.getInstance().unsubscribe(id_);
         } else if (id == R.id.action_save) {
             Countdown countdown = new Countdown();
             countdown.setDatetime(dateTime_.getTimeInMillis());
@@ -133,17 +139,28 @@ public class CountdownActivity extends AppCompatActivity {
         showDatePicker();
     }
 
-    private void updateDateView(Calendar dateTime) {
-        date.setText(TimeUtils.convertToDateTimeString(this, dateTime, "\n"));
+    private void updateViews() {
+
+        updateDateTimeView(dateTime_);
         switch (mode_) {
             case Edit:
                 break;
             case View:
                 date.setEnabled(false);
+
                 name.setEnabled(false);
+                findViewById(R.id.name_layout).setVisibility( name_ == null ? View.INVISIBLE : View.VISIBLE);
+
                 location.setEnabled(false);
+                findViewById(R.id.location_layout).setVisibility(locationName_ == null ? View.INVISIBLE : View.VISIBLE);
+
                 break;
         }
+    }
+
+
+    private void updateDateTimeView(Calendar dateTime) {
+        date.setText(TimeUtils.convertToDateTimeString(this, dateTime, "\n"));
     }
 
     private void showDatePicker() {
@@ -171,7 +188,7 @@ public class CountdownActivity extends AppCompatActivity {
                         dateTime_.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         dateTime_.set(Calendar.MINUTE, minute);
 
-                        updateDateView(dateTime_);
+                        updateDateTimeView(dateTime_);
                     }
                 },
                 dateTime_.get(Calendar.HOUR_OF_DAY),
