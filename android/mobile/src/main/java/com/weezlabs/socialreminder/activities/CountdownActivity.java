@@ -95,7 +95,7 @@ public class CountdownActivity extends AppCompatActivity {
         //get parameters from bundle
         mode_ = (Mode) getIntent().getSerializableExtra(MODE_KEY);
         id_ = getIntent().getStringExtra(ID_KEY);//will be null in edit mode
-        Countdown countdown = CountdownsManager.getInstance().getCountdowById(id_);
+        Countdown countdown = CountdownsManager.getInstance().getCountdownById(id_);
         if (countdown != null) {
             name_ = countdown.name;
             locationName_ = countdown.locationName;

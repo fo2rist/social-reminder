@@ -36,6 +36,8 @@
             android:name=".activities.ExploreActivity"
             android:label="@string/title_activity_explore"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <receiver android:name=".AlarmReceiver" />
     </application>
 
 </manifest>
