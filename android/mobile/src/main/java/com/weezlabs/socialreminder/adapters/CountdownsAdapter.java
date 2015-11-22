@@ -2,6 +2,7 @@ package com.weezlabs.socialreminder.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -88,7 +89,9 @@ public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.Co
         View result = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.coundown_card, parent, false);
-        return new CountdownViewHolder(result);
+        CountdownViewHolder holder = new CountdownViewHolder(result);
+        holder.name.setShadowLayer(20, 0, 0, context_.getResources().getColor(android.R.color.primary_text_light));
+        return holder;
     }
 
     @Override
@@ -106,7 +109,13 @@ public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.Co
             detailsText += " at " + countdownData.locationName;
         }
         holder.details.setText(detailsText);
-        holder.cardHeader.setBackgroundColor(CountdownsAdapter.getCardColor(context_, countdownData.key));
+
+        Drawable easterBackground = getEasterBackground(countdownData.name);
+        if (easterBackground != null) {
+            holder.cardHeader.setBackground(easterBackground);
+        } else {
+            holder.cardHeader.setBackgroundColor(CountdownsAdapter.getCardColor(context_, countdownData.key));
+        }
 
         holder.startTimer(countdownData);
     }
@@ -114,5 +123,20 @@ public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.Co
     @Override
     public int getItemCount() {
         return countdowns_.size();
+    }
+
+    private Drawable getEasterBackground(String name) {
+        String lowerName = name.toLowerCase();
+        if (lowerName.contains("вмф")) {
+            return context_.getResources().getDrawable(R.drawable.flag_vmf, null);
+        } else if (lowerName.contains("вдв")) {
+            return context_.getResources().getDrawable(R.drawable.flag_troops, null);
+        } else if (lowerName.contains("росси")) {
+            return context_.getResources().getDrawable(R.drawable.flag_rf, null);
+        } else if (lowerName.contains("картош") || lowerName.contains("картоф") || lowerName.contains("картох")) {
+            return context_.getResources().getDrawable(R.drawable.flag_belarus, null);
+        }
+
+        return null;
     }
 }

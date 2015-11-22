@@ -8,6 +8,11 @@
     tools:context=".activities.ExploreActivity"
     tools:showIn="@layout/activity_explore">
 
+    <TabWidget
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </TabWidget>
     <ProgressBar
         android:id="@+id/progress"
         style="?android:attr/progressBarStyleLarge"

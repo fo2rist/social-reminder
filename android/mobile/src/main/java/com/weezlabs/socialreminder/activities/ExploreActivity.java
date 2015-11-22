@@ -33,6 +33,7 @@ public class ExploreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_explore);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //setup controls
         progressView = findViewById(R.id.progress);
