@@ -22,8 +22,8 @@
     if (self) {
         
         _subscribeButton = [[UIButton alloc] init];
+        [_subscribeButton setBackgroundImage:[UIImage imageNamed:@"ButtonBackground"] forState:UIControlStateNormal];
         [_subscribeButton setTitle:@"Subscribe" forState:UIControlStateNormal];
-        [_subscribeButton setImage:[UIImage imageNamed:@"ButtonBackground"] forState:UIControlStateNormal];
         [_subscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self addSubview:_subscribeButton];
         

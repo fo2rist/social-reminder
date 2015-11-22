@@ -145,7 +145,7 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
 }
 
 - (void)saveContacts:(NSArray *)contacts completion:(ServiceCompletionHandler)completion {
-    NSDictionary *parameters = @{@"contacts" : NullCheck(@[[contacts valueForKey:@"dictionary"]])};
+    NSDictionary *parameters = @{@"contacts" : NullCheck([contacts valueForKey:@"dictionary"])};
     [self postObjectsAtPath:ContactsEndpoint
                  parameters:parameters
                  completion:completion];

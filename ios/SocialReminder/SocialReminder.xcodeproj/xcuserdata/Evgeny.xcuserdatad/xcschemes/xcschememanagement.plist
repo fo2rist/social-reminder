@@ -4,15 +4,35 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Glance - SocialReminderWatchApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>13</integer>
+		</dict>
+		<key>Notification - SocialReminderWatchApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>12</integer>
+		</dict>
 		<key>SocialReminder.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>SocialReminderWatchApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>5C0DE28C1BFF78CC0003C5E8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5C816A8B1C019EDA005B74C4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

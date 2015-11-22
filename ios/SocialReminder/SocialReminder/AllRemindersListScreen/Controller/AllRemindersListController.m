@@ -76,6 +76,7 @@
  [[AppService sharedService] subscribeToReminderWithId:[reminder reminderId]
                                             completion:^(BOOL success, NSArray *reminderEnclosed, NSString *responseString, NSError *error) {
                                                 [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                                                [self reloadData];
                                             }];
 }
 

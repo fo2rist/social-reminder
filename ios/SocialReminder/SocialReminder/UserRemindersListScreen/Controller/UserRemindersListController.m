@@ -82,6 +82,8 @@ static NSDateFormatter *dateFormatter;
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     }];
     
+    [self updateFetchedResults];
+    
 }
 
 #pragma mark - Accessors
@@ -129,8 +131,7 @@ static NSDateFormatter *dateFormatter;
 }
 
 - (void)onApplicationDidBecomeActive {
-    [self updatePredicate];
-    [self updateFetchedResults];
+    [self setupFetchedResultsController];
 }
 
 #pragma mark - NSFetchedResultsController Methods
@@ -140,14 +141,8 @@ static NSDateFormatter *dateFormatter;
                                                                     managedObjectContext:[AppService sharedService].objectManager.managedObjectStore.mainQueueManagedObjectContext
                                                                       sectionNameKeyPath:nil
                                                                                cacheName:nil];
-    [self updatePredicate];
     _fetchedResultsController.delegate = self;
     [self updateFetchedResults];
-}
-
-- (void)updatePredicate {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ < fireDateSecondsSince1970", @([[NSDate date] timeIntervalSince1970])];
-    [_fetchedResultsController.fetchRequest setPredicate:predicate];
 }
 
 - (void)updateFetchedResults {
@@ -156,7 +151,6 @@ static NSDateFormatter *dateFormatter;
 #ifdef DEBUG
     NSAssert(!error, @"NSFetchedResultsController init failed %@", error.description);
 #endif
-    [self.tableView reloadData];
 }
 
 - (NSFetchRequest *)createFetchRequest {
@@ -164,6 +158,9 @@ static NSDateFormatter *dateFormatter;
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"fireDateSecondsSince1970" ascending:YES];
     [fetchRequest setSortDescriptors:@[descriptor]];
     [fetchRequest setFetchBatchSize:10];
+    NSUInteger currentSeconds = [[NSDate date] timeIntervalSince1970];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ < fireDateSecondsSince1970", @(currentSeconds)];
+    [fetchRequest setPredicate:predicate];
     return fetchRequest;
 }
 
@@ -230,8 +227,9 @@ static NSDateFormatter *dateFormatter;
     if (!cell) {
         cell = [[UserReminderCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:userReminderTableCellId];
+        __weak typeof(self) weakSelf = self;
         [cell setFiredEventHandler:^{
-            [self onApplicationDidBecomeActive];
+            [weakSelf setupFetchedResultsController];
         }];
     }
     id <Reminder> reminder = [_fetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];

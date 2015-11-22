@@ -103,7 +103,7 @@ static NSDateFormatter *dateFormatter;
 
 - (void)onTick {
     self.countdown--;
-    if (self.countdown != 0) {
+    if (self.countdown >= 0) {
         NSUInteger days = self.countdown / 86400;
         NSUInteger hours = (self.countdown % 86400) / 3600;
         NSUInteger minutes = (self.countdown % 3600) / 60;
