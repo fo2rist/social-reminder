@@ -64,6 +64,11 @@ static NSArray *colors = nil;
         [_titleLabel setTextColor:[UIColor whiteColor]];
         [_locationImageView addSubview:_titleLabel];
         
+        _titleLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+        _titleLabel.layer.shadowOffset = CGSizeMake(2, 2);
+        _titleLabel.layer.shadowOpacity = 1;
+        _titleLabel.layer.shadowRadius = 1.0;
+        
         _countdownHolder = [[UIView alloc] init];
         [_holderView addSubview:_countdownHolder];
         
@@ -95,7 +100,7 @@ static NSArray *colors = nil;
     
     [_countdownLabel setFrame:UIEdgeInsetsInsetRect(_countdownHolder.bounds, UIEdgeInsetsMake(5.0f, 5.0f, 20.0f, 5.0f))];
     
-    [_fireDateLabel setFrame:CGRectMake(0.0f, CGRectGetMaxY(_countdownLabel.frame), _countdownHolder.frame.size.width - 5.0f, 20.0f)];
+    [_fireDateLabel setFrame:CGRectMake(0.0f, CGRectGetMaxY(_countdownLabel.frame) + 5.0f, _countdownHolder.frame.size.width - 5.0f, 20.0f)];
     
 }
 

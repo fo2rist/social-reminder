@@ -22,15 +22,14 @@
     if (self) {
         
         _subscribeButton = [[UIButton alloc] init];
-        [_subscribeButton setBackgroundImage:[UIImage imageNamed:@"ButtonBackground"] forState:UIControlStateNormal];
+        [_subscribeButton setBackgroundImage:[UIImage imageNamed:@"SubscribeButtonBG"] forState:UIControlStateNormal];
+        [_subscribeButton setImageEdgeInsets:UIEdgeInsetsMake(1.0f, 1.0f, 1.0f, 1.0f)];
         [_subscribeButton setTitle:@"Subscribe" forState:UIControlStateNormal];
-        [_subscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_subscribeButton setTitleColor:ACCENT_COLOR forState:UIControlStateNormal];
         [self addSubview:_subscribeButton];
         
-        _subscribeButton.layer.shadowColor = [UIColor blackColor].CGColor;
-        _subscribeButton.layer.shadowOffset = CGSizeMake(2, 2);
-        _subscribeButton.layer.shadowOpacity = 1;
-        _subscribeButton.layer.shadowRadius = 1.0;
+        [_subscribeButton.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+        [_subscribeButton.layer setBorderWidth:1.0f];
         
         [_subscribeButton addTarget:self
                              action:@selector(onSubscribeButtonClick:)
@@ -44,7 +43,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    [_subscribeButton  setFrame:CGRectMake(70.0f, CGRectGetMaxY(self.countdownHolder.frame) + 10.0f, self.frame.size.width - 140.0f, 40.0f)];
+    [_subscribeButton  setFrame:CGRectMake(70.0f, CGRectGetMaxY(self.countdownHolder.frame) + 15.0f, self.frame.size.width - 140.0f, 40.0f)];
 
 }
 
