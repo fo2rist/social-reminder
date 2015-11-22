@@ -22,7 +22,7 @@ typedef void(^FiredEventHandler)(void);
 @property (nonatomic, strong) UILabel *fireDateLabel;
 @property (nonatomic, strong) UILabel *titleLabel;
 
-@property (nonatomic, assign) NSUInteger countdown;
+@property (nonatomic, assign) NSInteger countdown;
 @property (nonatomic, strong) NSTimer *timer;
 
 @property (nonatomic, strong) FiredEventHandler firedEventHandler;

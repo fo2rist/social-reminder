@@ -9,6 +9,8 @@
 #import "UserReminderCell.h"
 
 static NSDateFormatter *dateFormatter;
+static NSNumberFormatter *numberFormatter;
+static NSArray *colors = nil;
 
 @interface UserReminderCell ()
 
@@ -24,6 +26,22 @@ static NSDateFormatter *dateFormatter;
         if (!dateFormatter) {
             dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy:MM:dd hh:mm"];
+        }
+        
+        if (!numberFormatter) {
+            numberFormatter = [[NSNumberFormatter alloc] init];
+            [numberFormatter setMinimumIntegerDigits:2];
+        }
+        
+        if (!colors) {
+            colors = @[[UIColor colorWithHexInt:0x4caf50],
+                       [UIColor colorWithHexInt:0x9e9d24],
+                       [UIColor colorWithHexInt:0x607d8b],
+                       [UIColor colorWithHexInt:0xf44336],
+                       [UIColor colorWithHexInt:0xe91e63],
+                       [UIColor colorWithHexInt:0x0c27b0],
+                       [UIColor colorWithHexInt:0x3f51b5],
+                       [UIColor colorWithHexInt:0x00bcd4]];
         }
         
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -83,6 +101,7 @@ static NSDateFormatter *dateFormatter;
 
 - (void)prepareForReuse {
     [self.timer invalidate];
+    [self.fireDateLabel setText:nil];
 }
 
 - (void)setupWithReminder:(id <Reminder>)reminder {
@@ -91,11 +110,21 @@ static NSDateFormatter *dateFormatter;
     if (timeInterval > 0) {
         self.countdown = timeInterval;
         [self onTick];
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-                                                      target:self
-                                                    selector:@selector(onTick)
-                                                    userInfo:nil
-                                                     repeats:YES];
+        self.timer = [NSTimer timerWithTimeInterval:1.0
+                                             target:self
+                                           selector:@selector(onTick)
+                                           userInfo:nil
+                                            repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+//        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                                      target:self
+//                                                    selector:@selector(onTick)
+//                                                    userInfo:nil
+//                                                     repeats:YES];
+    }
+    NSUInteger itemColorIndex = [[reminder title] hash] % colors.count;
+    if (itemColorIndex < colors.count) {
+        [_locationImageView setBackgroundColor:[colors objectAtIndex:itemColorIndex]];
     }
     [_titleLabel setText:[reminder title]];
     [_fireDateLabel setText:[dateFormatter stringFromDate:fireDate]];
@@ -103,18 +132,19 @@ static NSDateFormatter *dateFormatter;
 
 - (void)onTick {
     self.countdown--;
-    if (self.countdown != 0) {
+    if (self.countdown >= 0) {
         NSUInteger days = self.countdown / 86400;
-        NSUInteger hours = (self.countdown % 86400) / 3600;
-        NSUInteger minutes = (self.countdown % 3600) / 60;
-        NSUInteger seconds = (self.countdown % 3600) % 60;
+        NSNumber *hours = @((self.countdown % 86400) / 3600);
+        NSNumber *minutes = @((self.countdown % 3600) / 60);
+        NSNumber *seconds = @((self.countdown % 3600) % 60);
         NSString *daysString = @"";
         if (days > 0) {
             daysString = [NSString stringWithFormat:@"%ld day%@", days, days == 1 ? @"" : @"s"];
         }
-        _countdownLabel.text = [NSString  stringWithFormat:@"%@ %ld : %ld : %ld", daysString, hours, minutes, seconds];
+        _countdownLabel.text = [NSString  stringWithFormat:@"%@ %@ : %@ : %@", daysString, [numberFormatter stringFromNumber:hours], [numberFormatter stringFromNumber:minutes], [numberFormatter stringFromNumber:seconds]];
     }
     else {
+        [self.timer invalidate];
         if (self.firedEventHandler) {
             self.firedEventHandler();
         }
