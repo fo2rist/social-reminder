@@ -15,7 +15,8 @@
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_settings"
-            android:title="Settings" />
+            android:title="Settings"
+            android:visible="false"/>
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_directions_run_black_24dp"
