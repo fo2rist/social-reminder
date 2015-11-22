@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         loginFormView = findViewById(R.id.login_form);
-        progressView = findViewById(R.id.login_progress);
+        progressView = findViewById(R.id.progress);
     }
 
     private void populateAutoComplete() {
@@ -187,6 +187,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             new Action1<User>() {
                                 @Override
                                 public void call(User user) {
+                                    CountdownsManager.getInstance().save(LoginActivity.this);
                                     finish();
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }

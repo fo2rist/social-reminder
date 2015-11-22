@@ -6,4 +6,14 @@
         android:orderInCategory="100"
         android:title="@string/action_remove"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_subscribe"
+        android:orderInCategory="100"
+        android:title="@string/action_subscribe"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_save"
+        android:orderInCategory="100"
+        android:title="@string/action_save"
+        app:showAsAction="always" />
 </menu>

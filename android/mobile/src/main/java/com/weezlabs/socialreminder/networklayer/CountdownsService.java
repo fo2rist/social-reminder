@@ -30,7 +30,7 @@ public interface CountdownsService {
     Observable<Countdown> postConuntdown(@Header("UID") String userid, @Body Countdown countdown);
 
     @DELETE("countdowns/{id}")
-    Observable<Boolean> unsubscribe(@Header("UID") String userid, @Path("id") String countdownId);
+    Observable<Void> unsubscribe(@Header("UID") String userid, @Path("id") String countdownId);
 
     @GET("user/countdowns")
     Observable<List<Countdown>> getMyCountdowns(@Header("UID") String userid);

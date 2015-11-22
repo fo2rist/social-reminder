@@ -1,9 +1,14 @@
 package com.weezlabs.socialreminder.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,29 +41,41 @@ public class CountdownActivity extends AppCompatActivity {
     private static final String MODE_KEY = "mode_key";
     private static final String ID_KEY = "id_key";
     private static final String NAME_KEY = "name_key";
-    private static final String LATLON_KEY = "latlon_key";
-    private static final String LCATION_NAME_KEY = "location_name_key";
+    private static final String LOCATION_NAME_KEY = "location_name_key";
+//    private static final String LATLON_KEY = "latlon_key";
 
     private Mode mode_ = Mode.Edit;
     private String id_ = null;
     private Calendar dateTime_ = null;
+
     private String name_ = null;
-    private String latlon_ = null;
     private String locationName_ = null;
+
 
     //controls
     TextView date;
     EditText name;
     EditText location;
+    View progressView;
+
+    /**
+     * Launch Condound View Activity for Result
+     */
+    public static void launchForEditing(Activity context, int requestCode) {
+        Intent intent = new Intent(context, CountdownActivity.class);
+        intent.putExtra(MODE_KEY, Mode.Edit);
+        context.startActivityForResult(intent, requestCode);
+    }
 
     /**
      * Launch Condound View Activity
-     * @param id countdown id, optional
      */
-    public static void launchForEvent(Context context, Mode mode, String id) {
+    public static void launchForViewing(Context context, Mode mode, Countdown countdown) {
         Intent intent = new Intent(context, CountdownActivity.class);
         intent.putExtra(MODE_KEY, mode);
-        intent.putExtra(ID_KEY, id);
+        intent.putExtra(ID_KEY, countdown.id);
+        intent.putExtra(NAME_KEY, countdown.name);
+        intent.putExtra(LOCATION_NAME_KEY, countdown.locationName);
         context.startActivity(intent);
     }
 
@@ -73,10 +90,20 @@ public class CountdownActivity extends AppCompatActivity {
         date = (TextView) findViewById(R.id.date);
         name = (EditText) findViewById(R.id.name);
         location = (EditText) findViewById(R.id.location);
+        progressView = findViewById(R.id.progress);
 
         //get parameters from bundle
         mode_ = (Mode) getIntent().getSerializableExtra(MODE_KEY);
-        id_ = getIntent().getStringExtra(ID_KEY);
+        id_ = getIntent().getStringExtra(ID_KEY);//will be null in edit mode
+        Countdown countdown = CountdownsManager.getInstance().getCountdowById(id_);
+        if (countdown != null) {
+            name_ = countdown.name;
+            locationName_ = countdown.locationName;
+        } else {
+            name_ = getIntent().getStringExtra(NAME_KEY);
+            locationName_ = getIntent().getStringExtra(LOCATION_NAME_KEY);
+        }
+
         //set other parameters
         dateTime_ = Calendar.getInstance();
 
@@ -86,13 +113,23 @@ public class CountdownActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.countdown_view, menu);
         // Inflate the menu; this adds items to the action bar if it is present.
         switch (mode_) {
             case Edit:
-                getMenuInflater().inflate(R.menu.countdown_edit, menu);
+                menu.findItem(R.id.action_save).setVisible(true);
+                menu.findItem(R.id.action_remove).setVisible(false);
+                menu.findItem(R.id.action_subscribe).setVisible(false);
                 break;
             case View:
-                getMenuInflater().inflate(R.menu.countdown_view, menu);
+                menu.findItem(R.id.action_save).setVisible(false);
+                if (CountdownsManager.getInstance().isSubscribedTo(id_)) {
+                    menu.findItem(R.id.action_remove).setVisible(true);
+                    menu.findItem(R.id.action_subscribe).setVisible(false);
+                } else {
+                    menu.findItem(R.id.action_remove).setVisible(false);
+                    menu.findItem(R.id.action_subscribe).setVisible(true);
+                }
                 break;
         }
         return true;
@@ -103,8 +140,45 @@ public class CountdownActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_remove) {
-            CountdownsManager.getInstance().unsubscribe(id_);
+            showProgress(true);
+            CountdownsManager.getInstance().unsubscribe(id_).subscribe(
+                    new Action1<Void>() {
+                        @Override
+                        public void call(Void nothing) {
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    },
+                    new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            showProgress(false);
+                            Snackbar.make(CountdownActivity.this.name, "Shit happened", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+            );
+        } else if (id == R.id.action_subscribe) {
+            showProgress(true);
+            Countdown countdown = new Countdown();
+            countdown.id = id_;
+            CountdownsManager.getInstance().postCountdown(countdown).subscribe(
+                    new Action1<Countdown>() {
+                        @Override
+                        public void call(Countdown countdown) {
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    },
+                    new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            showProgress(false);
+                            Snackbar.make(CountdownActivity.this.name, "Shit happened", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+            );
         } else if (id == R.id.action_save) {
+            showProgress(true);
             Countdown countdown = new Countdown();
             countdown.setDatetime(dateTime_.getTimeInMillis());
             countdown.name = this.name.getText().toString();
@@ -119,12 +193,14 @@ public class CountdownActivity extends AppCompatActivity {
                                 new Action1<Countdown>() {
                                     @Override
                                     public void call(Countdown countdown) {
+                                        setResult(RESULT_OK);
                                         finish();
                                     }
                                 },
                                 new Action1<Throwable>() {
                                     @Override
                                     public void call(Throwable throwable) {
+                                        showProgress(false);
                                         Snackbar.make(CountdownActivity.this.name, "Shit happened", Snackbar.LENGTH_LONG).show();
                                     }
                                 }
@@ -136,6 +212,9 @@ public class CountdownActivity extends AppCompatActivity {
     }
 
     public void onDateTimeClicked(View view) {
+        if (mode_ != Mode.Edit) {
+            return;
+        }
         showDatePicker();
     }
 
@@ -146,13 +225,13 @@ public class CountdownActivity extends AppCompatActivity {
             case Edit:
                 break;
             case View:
-                date.setEnabled(false);
-
                 name.setEnabled(false);
-                findViewById(R.id.name_layout).setVisibility( name_ == null ? View.INVISIBLE : View.VISIBLE);
+                findViewById(R.id.name_layout).setVisibility(name_ == null ? View.INVISIBLE : View.VISIBLE);
+                name.setText(name_);
 
                 location.setEnabled(false);
                 findViewById(R.id.location_layout).setVisibility(locationName_ == null ? View.INVISIBLE : View.VISIBLE);
+                location.setText(locationName_);
 
                 break;
         }
@@ -195,5 +274,27 @@ public class CountdownActivity extends AppCompatActivity {
                 dateTime_.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(this))
         .show();
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 }

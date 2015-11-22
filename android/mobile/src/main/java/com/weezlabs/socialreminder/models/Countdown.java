@@ -4,6 +4,7 @@ package com.weezlabs.socialreminder.models;
  * Created by WeezLabs on 11/20/15.
  */
 public class Countdown {
+    public String id;
     public String key;
     public String name;
     private Long datetime;
