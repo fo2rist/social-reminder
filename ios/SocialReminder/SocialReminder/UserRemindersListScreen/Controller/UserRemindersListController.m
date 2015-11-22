@@ -58,8 +58,15 @@ static NSDateFormatter *dateFormatter;
     
     UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.addButton];
     UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchButton];
-    [self.navigationItem setRightBarButtonItems:@[addButtonItem, searchButtonItem]];
+    [self.navigationItem setRightBarButtonItem:searchButtonItem];
+    [self.navigationItem setLeftBarButtonItem:addButtonItem];
     
+    self.navigationItem.title = @"My Countdowns";
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    self.navigationItem.title = @"Back";
 }
 
 - (void)viewDidLayoutSubviews {
@@ -83,7 +90,6 @@ static NSDateFormatter *dateFormatter;
     if (!_addButton) {
         _addButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
         [_addButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [_addButton setImageEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
         [_addButton setImage:[UIImage imageNamed:@"AddIcon"] forState:UIControlStateNormal];
         [_addButton addTarget:self
                        action:@selector(onAddButtonClick:)
@@ -96,7 +102,6 @@ static NSDateFormatter *dateFormatter;
     if (!_searchButton) {
         _searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
         [_searchButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [_searchButton setImageEdgeInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
         [_searchButton setImage:[UIImage imageNamed:@"SearchIcon"] forState:UIControlStateNormal];
         [_searchButton addTarget:self
                           action:@selector(onSearchButtonClick:)

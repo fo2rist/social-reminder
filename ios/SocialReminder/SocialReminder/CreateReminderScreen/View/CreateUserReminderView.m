@@ -46,9 +46,13 @@
         [_fireDateLabelHolder addSubview:_fireDateLabel];
         
         _pickDateButton = [[UIButton alloc] init];
-        [_pickDateButton setBackgroundColor:[UIColor colorWithHexInt:0xe5e5e5]];
-        [_pickDateButton setTitle:@"Pick Date" forState:UIControlStateNormal];
+        [_pickDateButton setImage:[UIImage imageNamed:@"DateIcon"] forState:UIControlStateNormal];
         [_scrollView addSubview:_pickDateButton];
+        
+        _pickDateButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        _pickDateButton.layer.shadowOffset = CGSizeMake(2, 2);
+        _pickDateButton.layer.shadowOpacity = 1;
+        _pickDateButton.layer.shadowRadius = 1.0;
         
     }
     

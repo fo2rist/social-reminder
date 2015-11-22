@@ -23,9 +23,14 @@
         
         _subscribeButton = [[UIButton alloc] init];
         [_subscribeButton setTitle:@"Subscribe" forState:UIControlStateNormal];
-        [_subscribeButton setBackgroundColor:DEFAULT_COLOR];
+        [_subscribeButton setImage:[UIImage imageNamed:@"ButtonBackground"] forState:UIControlStateNormal];
         [_subscribeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self addSubview:_subscribeButton];
+        
+        _subscribeButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        _subscribeButton.layer.shadowOffset = CGSizeMake(2, 2);
+        _subscribeButton.layer.shadowOpacity = 1;
+        _subscribeButton.layer.shadowRadius = 1.0;
         
         [_subscribeButton addTarget:self
                              action:@selector(onSubscribeButtonClick:)
