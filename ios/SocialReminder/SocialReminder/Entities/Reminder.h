@@ -14,6 +14,8 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSNumber *fireDateSecondsSince1970;
 @property (nonatomic, strong) NSNumber *subscribed;
+@property (nonatomic, strong) NSNumber *latitude;
+@property (nonatomic, strong) NSNumber *longitude;
 
 - (BOOL)isSubscribed;
 - (NSDate *)fireDate;
@@ -26,6 +28,8 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSNumber *fireDateSecondsSince1970;
 @property (nonatomic, strong) NSNumber *subscribed;
+@property (nonatomic, strong) NSNumber *latitude;
+@property (nonatomic, strong) NSNumber *longitude;
 
 + (RKObjectMapping *)objectMapping;
 
@@ -37,6 +41,8 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSNumber *fireDateSecondsSince1970;
 @property (nonatomic, strong) NSNumber *subscribed;
+@property (nonatomic, strong) NSNumber *latitude;
+@property (nonatomic, strong) NSNumber *longitude;
 
 + (RKEntityMapping *)entityMappingWithManagedObjectStore:(RKManagedObjectStore *)store;
 

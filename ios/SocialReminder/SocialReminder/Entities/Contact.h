@@ -17,4 +17,6 @@
 
 + (Contact *)contactWithFullName:(NSString *)fullName phoneNumber:(NSString *)phoneNumber;
 
++ (RKObjectMapping *)objectMapping;
+
 @end

@@ -11,6 +11,7 @@
 
 #import "User.h"
 #import "Reminder.h"
+#import "Contact.h"
 
 #import <CoreData/CoreData.h>
 #import <RestKit/RestKit.h>
@@ -93,6 +94,12 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     
     NSIndexSet *successfulCodesIndexSet = RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful);
     
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[Contact objectMapping]
+                                                                                   objectClass:[Contact class]
+                                                                                   rootKeyPath:nil
+                                                                                        method:RKRequestMethodPOST];
+    [_objectManager addRequestDescriptor:requestDescriptor];
+    
     RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:[User objectMapping]
                                                                                     method:RKRequestMethodPOST
                                                                                pathPattern:UserEndpoint
@@ -124,11 +131,11 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
 }
 
 - (void)getObjectsAtPath:(NSString *)path parameters:(NSDictionary *)parameters completion:(ServiceCompletionHandler)completion {
-    [self requestAtPath:path parameters:parameters method:RKRequestMethodGET completion:completion];
+    [self requestAtPath:path parameters:parameters method:RKRequestMethodGET object:nil completion:completion];
 }
 
-- (void)postObjectsAtPath:(NSString *)path parameters:(NSDictionary *)parameters completion:(ServiceCompletionHandler)completion {
-    [self requestAtPath:path parameters:parameters method:RKRequestMethodPOST completion:completion];
+- (void)postObjectsAtPath:(NSString *)path parameters:(NSDictionary *)parameters object:(id)object completion:(ServiceCompletionHandler)completion {
+    [self requestAtPath:path parameters:parameters method:RKRequestMethodPOST object:object completion:completion];
 }
 
 - (void)onManagedContextSave {
@@ -141,20 +148,27 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     NSDictionary *parameters = @{@"phone" : NullCheck(phoneNumber)};
     [self postObjectsAtPath:UserEndpoint
                  parameters:parameters
+                     object:nil
                  completion:completion];
 }
 
 - (void)saveContacts:(NSArray *)contacts completion:(ServiceCompletionHandler)completion {
-    NSDictionary *parameters = nil;
-    if (contacts.count > 0) {
-        if (contacts.count > 10) {
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 10)];
-            contacts = [contacts objectsAtIndexes:indexSet];
-        }
-        parameters = @{@"contacts" : NullCheck([contacts valueForKey:@"dictionary"])};
+    //    NSDictionary *parameters = nil;
+    //    if (contacts.count > 0) {
+//            if (contacts.count > 10) {
+//                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 10)];
+//                contacts = [contacts objectsAtIndexes:indexSet];
+//            }
+    //        parameters = @{@"contacts" : NullCheck([contacts valueForKey:@"dictionary"])};
+    //    }
+    if (contacts.count > 10) {
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 10)];
+        contacts = [contacts objectsAtIndexes:indexSet];
     }
+
     [self postObjectsAtPath:ContactsEndpoint
-                 parameters:parameters
+                 parameters:nil
+                     object:contacts
                  completion:completion];
 }
 
@@ -166,6 +180,7 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
                                  @"datetime" : NullCheck(@([fireDate timeIntervalSince1970]))};
     [self postObjectsAtPath:CountdownsEndpoint
                  parameters:parameters
+                     object:nil
                  completion:completion];
 }
 
@@ -174,6 +189,7 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
     NSDictionary *parameters = @{@"id" : NullCheck(reminderId)};
     [self postObjectsAtPath:CountdownsEndpoint
                  parameters:parameters
+                     object:nil
                  completion:completion];
 }
 
@@ -209,6 +225,7 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
 - (void)requestAtPath:(NSString *)path
            parameters:(NSDictionary *)parameters
                method:(RKRequestMethod)method
+               object:(id)object
            completion:(ServiceCompletionHandler)completion {
     
     [_objectManager.HTTPClient setDefaultHeader:@"UID" value:[self.defaults objectForKey:UIDDefaultsKey]];
@@ -224,7 +241,7 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
         }
     };
     
-    RKObjectRequestOperation *requestOperation = [_objectManager appropriateObjectRequestOperationWithObject:nil
+    RKObjectRequestOperation *requestOperation = [_objectManager appropriateObjectRequestOperationWithObject:object
                                                                                                       method:method
                                                                                                         path:path
                                                                                                   parameters:parameters];

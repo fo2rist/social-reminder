@@ -35,7 +35,7 @@ static NSDateFormatter *dateFormatter;
     [self setTitle:@"My Countdowns"];
     
     dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm"];
+    [dateFormatter setDateFormat:@"yyyy.MM.dd hh:mm a"];
     
     _tableView = [[UITableView alloc] init];
     [_tableView setDataSource:self];
