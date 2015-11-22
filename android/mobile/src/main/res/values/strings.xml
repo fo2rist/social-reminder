@@ -5,7 +5,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_lookup">Explore</string>
-    <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
     <string name="prompt_phone">Phone</string>
@@ -16,10 +15,13 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="title_activity_login">Sign in</string>
     <string name="title_activity_countdown">Countdown</string>
     <string name="title_activity_lookup">Countdowns</string>
+    <string name="title_activity_explore">Explore</string>
     <!-- Actions related to single countdown-->
     <string name="action_save">Save</string>
     <string name="action_remove">Remove</string>
-    <string name="title_activity_explore">ExploreActivity</string>
+    <string name="action_subscribe">Subscribe</string>
 </resources>

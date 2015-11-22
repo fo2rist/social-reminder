@@ -60,7 +60,7 @@ public class CountdownsAdapter extends RecyclerView.Adapter<CountdownsAdapter.Co
 
         @Override
         public void onClick(View v) {
-            CountdownActivity.launchForEvent(v.getContext(), CountdownActivity.Mode.View, countdown.key);
+            CountdownActivity.launchForViewing(v.getContext(), CountdownActivity.Mode.View, countdown);
         }
     }
 

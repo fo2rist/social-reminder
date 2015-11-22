@@ -35,7 +35,7 @@ public class ExploreActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //setup controls
-        progressView = findViewById(R.id.login_progress);
+        progressView = findViewById(R.id.progress);
         countdownsList = (RecyclerView) findViewById(R.id.countdowns_list);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);

@@ -32,10 +32,6 @@
             android:label="@string/title_activity_countdown"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.LookupActivity"
-            android:label="@string/title_activity_lookup"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".activities.ExploreActivity"
             android:label="@string/title_activity_explore"
             android:theme="@style/AppTheme.NoActionBar"></activity>
