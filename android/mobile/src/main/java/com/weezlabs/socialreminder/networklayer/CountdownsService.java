@@ -13,6 +13,7 @@ import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import rx.Observable;
 
 /**
@@ -28,8 +29,8 @@ public interface CountdownsService {
     @POST("countdowns")
     Observable<Countdown> postConuntdown(@Header("UID") String userid, @Body Countdown countdown);
 
-    @DELETE("countdowns/%id")
-    Observable<Boolean> unsubscribe(@Header("UID") String userid);
+    @DELETE("countdowns/{id}")
+    Observable<Void> unsubscribe(@Header("UID") String userid, @Path("id") String countdownId);
 
     @GET("user/countdowns")
     Observable<List<Countdown>> getMyCountdowns(@Header("UID") String userid);
@@ -37,6 +38,6 @@ public interface CountdownsService {
     @POST("contacts")
     Observable<Boolean> follow(@Header("UID") String userid, @Body ArrayList<Contact> contacts);
 
-    @DELETE("contacts/%phonenumber")
-    Observable<Boolean> unfollow(@Header("UID") String userid);
+    @DELETE("contacts/{phonenumber}")
+    Observable<Boolean> unfollow(@Header("UID") String userid, @Path("phonenumber") String phoneNumber);
 }

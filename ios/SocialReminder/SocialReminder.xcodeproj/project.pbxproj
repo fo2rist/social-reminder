@@ -17,6 +17,16 @@
 		5C0DE2C01BFF96FA0003C5E8 /* CreateUserReminderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2BF1BFF96FA0003C5E8 /* CreateUserReminderController.m */; };
 		5C0DE2C41BFF97240003C5E8 /* CreateUserReminderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2C31BFF97240003C5E8 /* CreateUserReminderView.m */; };
 		5C0DE2C81BFFA4DB0003C5E8 /* NSDate+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0DE2C71BFFA4DB0003C5E8 /* NSDate+Helpers.m */; };
+		5C816A901C019EDA005B74C4 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C816A8E1C019EDA005B74C4 /* Interface.storyboard */; };
+		5C816A921C019EDA005B74C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C816A911C019EDA005B74C4 /* Assets.xcassets */; };
+		5C816A991C019EDA005B74C4 /* SocialReminderWatchApp Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5C816A981C019EDA005B74C4 /* SocialReminderWatchApp Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5C816AA11C019EDA005B74C4 /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C816AA01C019EDA005B74C4 /* InterfaceController.m */; };
+		5C816AA41C019EDA005B74C4 /* ExtensionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C816AA31C019EDA005B74C4 /* ExtensionDelegate.m */; };
+		5C816AA71C019EDA005B74C4 /* NotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C816AA61C019EDA005B74C4 /* NotificationController.m */; };
+		5C816AAA1C019EDA005B74C4 /* GlanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C816AA91C019EDA005B74C4 /* GlanceController.m */; };
+		5C816AAC1C019EDA005B74C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C816AAB1C019EDA005B74C4 /* Assets.xcassets */; };
+		5C816AB01C019EDA005B74C4 /* SocialReminderWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5C816A8C1C019EDA005B74C4 /* SocialReminderWatchApp.app */; };
+		5C816ABE1C01C4F4005B74C4 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C816ABD1C01C4F4005B74C4 /* LocationManager.m */; };
 		5C81A3D51C004BC400AD67F9 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3D41C004BC400AD67F9 /* LoginController.m */; };
 		5C81A3D91C004BF600AD67F9 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3D81C004BF600AD67F9 /* LoginView.m */; };
 		5C81A3E21C0051CC00AD67F9 /* Reminder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3DD1C0051CC00AD67F9 /* Reminder.m */; };
@@ -33,6 +43,48 @@
 		5C81A4081C00E0E900AD67F9 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A4071C00E0E900AD67F9 /* Contact.m */; };
 		A139C02D2B9E5993C465C363 /* libPods-SocialReminder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A481F2A58D2C3DDE9EC77FD /* libPods-SocialReminder.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5C816A9A1C019EDA005B74C4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5C0DE2851BFF78CC0003C5E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5C816A971C019EDA005B74C4;
+			remoteInfo = "SocialReminderWatchApp Extension";
+		};
+		5C816AAE1C019EDA005B74C4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5C0DE2851BFF78CC0003C5E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5C816A8B1C019EDA005B74C4;
+			remoteInfo = SocialReminderWatchApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5C816AB61C019EDA005B74C4 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5C816A991C019EDA005B74C4 /* SocialReminderWatchApp Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5C816AB81C019EDA005B74C4 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				5C816AB01C019EDA005B74C4 /* SocialReminderWatchApp.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		397D580515496C0455B846B1 /* Pods-SocialReminder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialReminder.release.xcconfig"; path = "Pods/Target Support Files/Pods-SocialReminder/Pods-SocialReminder.release.xcconfig"; sourceTree = "<group>"; };
@@ -56,6 +108,24 @@
 		5C0DE2C31BFF97240003C5E8 /* CreateUserReminderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateUserReminderView.m; sourceTree = "<group>"; };
 		5C0DE2C61BFFA4DB0003C5E8 /* NSDate+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Helpers.h"; sourceTree = "<group>"; };
 		5C0DE2C71BFFA4DB0003C5E8 /* NSDate+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Helpers.m"; sourceTree = "<group>"; };
+		5C816A8C1C019EDA005B74C4 /* SocialReminderWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocialReminderWatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C816A8F1C019EDA005B74C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		5C816A911C019EDA005B74C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5C816A931C019EDA005B74C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C816A981C019EDA005B74C4 /* SocialReminderWatchApp Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SocialReminderWatchApp Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C816A9E1C019EDA005B74C4 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		5C816A9F1C019EDA005B74C4 /* InterfaceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceController.h; sourceTree = "<group>"; };
+		5C816AA01C019EDA005B74C4 /* InterfaceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InterfaceController.m; sourceTree = "<group>"; };
+		5C816AA21C019EDA005B74C4 /* ExtensionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtensionDelegate.h; sourceTree = "<group>"; };
+		5C816AA31C019EDA005B74C4 /* ExtensionDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtensionDelegate.m; sourceTree = "<group>"; };
+		5C816AA51C019EDA005B74C4 /* NotificationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationController.h; sourceTree = "<group>"; };
+		5C816AA61C019EDA005B74C4 /* NotificationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationController.m; sourceTree = "<group>"; };
+		5C816AA81C019EDA005B74C4 /* GlanceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlanceController.h; sourceTree = "<group>"; };
+		5C816AA91C019EDA005B74C4 /* GlanceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GlanceController.m; sourceTree = "<group>"; };
+		5C816AAB1C019EDA005B74C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5C816AAD1C019EDA005B74C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C816ABC1C01C4F4005B74C4 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		5C816ABD1C01C4F4005B74C4 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		5C81A3D31C004BC400AD67F9 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
 		5C81A3D41C004BC400AD67F9 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
 		5C81A3D71C004BF600AD67F9 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
@@ -96,6 +166,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5C816A951C019EDA005B74C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -113,6 +190,8 @@
 			isa = PBXGroup;
 			children = (
 				5C0DE28F1BFF78CC0003C5E8 /* SocialReminder */,
+				5C816A8D1C019EDA005B74C4 /* SocialReminderWatchApp */,
+				5C816A9C1C019EDA005B74C4 /* SocialReminderWatchApp Extension */,
 				5C0DE28E1BFF78CC0003C5E8 /* Products */,
 				93160AA4FC469F2120BC5B46 /* Pods */,
 				45F02E5E6DA6821D0D0685B9 /* Frameworks */,
@@ -123,6 +202,8 @@
 			isa = PBXGroup;
 			children = (
 				5C0DE28D1BFF78CC0003C5E8 /* SocialReminder.app */,
+				5C816A8C1C019EDA005B74C4 /* SocialReminderWatchApp.app */,
+				5C816A981C019EDA005B74C4 /* SocialReminderWatchApp Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,6 +213,7 @@
 			children = (
 				5C0DE2931BFF78CC0003C5E8 /* AppDelegate.h */,
 				5C0DE2941BFF78CC0003C5E8 /* AppDelegate.m */,
+				5C816ABB1C01C4EA005B74C4 /* LocationManager */,
 				5C81A4001C0081EC00AD67F9 /* NotificationsManager */,
 				5C81A3D11C004B9A00AD67F9 /* LoginScreen */,
 				5C0DE2AA1BFF7B210003C5E8 /* UserRemindersListScreen */,
@@ -222,6 +304,51 @@
 				5C81A3FB1C0065F100AD67F9 /* UIColor+Extension.m */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		5C816A8D1C019EDA005B74C4 /* SocialReminderWatchApp */ = {
+			isa = PBXGroup;
+			children = (
+				5C816A8E1C019EDA005B74C4 /* Interface.storyboard */,
+				5C816A911C019EDA005B74C4 /* Assets.xcassets */,
+				5C816A931C019EDA005B74C4 /* Info.plist */,
+			);
+			path = SocialReminderWatchApp;
+			sourceTree = "<group>";
+		};
+		5C816A9C1C019EDA005B74C4 /* SocialReminderWatchApp Extension */ = {
+			isa = PBXGroup;
+			children = (
+				5C816A9F1C019EDA005B74C4 /* InterfaceController.h */,
+				5C816AA01C019EDA005B74C4 /* InterfaceController.m */,
+				5C816AA21C019EDA005B74C4 /* ExtensionDelegate.h */,
+				5C816AA31C019EDA005B74C4 /* ExtensionDelegate.m */,
+				5C816AA51C019EDA005B74C4 /* NotificationController.h */,
+				5C816AA61C019EDA005B74C4 /* NotificationController.m */,
+				5C816AA81C019EDA005B74C4 /* GlanceController.h */,
+				5C816AA91C019EDA005B74C4 /* GlanceController.m */,
+				5C816AAB1C019EDA005B74C4 /* Assets.xcassets */,
+				5C816AAD1C019EDA005B74C4 /* Info.plist */,
+				5C816A9D1C019EDA005B74C4 /* Supporting Files */,
+			);
+			path = "SocialReminderWatchApp Extension";
+			sourceTree = "<group>";
+		};
+		5C816A9D1C019EDA005B74C4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5C816A9E1C019EDA005B74C4 /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5C816ABB1C01C4EA005B74C4 /* LocationManager */ = {
+			isa = PBXGroup;
+			children = (
+				5C816ABC1C01C4F4005B74C4 /* LocationManager.h */,
+				5C816ABD1C01C4F4005B74C4 /* LocationManager.m */,
+			);
+			path = LocationManager;
 			sourceTree = "<group>";
 		};
 		5C81A3D11C004B9A00AD67F9 /* LoginScreen */ = {
@@ -342,15 +469,51 @@
 				5C0DE28B1BFF78CC0003C5E8 /* Resources */,
 				7C7368F7258A659B0BEEA096 /* Embed Pods Frameworks */,
 				1B9B3CE4C330561F543BFA83 /* Copy Pods Resources */,
+				5C816AB81C019EDA005B74C4 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5C816AAF1C019EDA005B74C4 /* PBXTargetDependency */,
 			);
 			name = SocialReminder;
 			productName = SocialReminder;
 			productReference = 5C0DE28D1BFF78CC0003C5E8 /* SocialReminder.app */;
 			productType = "com.apple.product-type.application";
+		};
+		5C816A8B1C019EDA005B74C4 /* SocialReminderWatchApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5C816AB71C019EDA005B74C4 /* Build configuration list for PBXNativeTarget "SocialReminderWatchApp" */;
+			buildPhases = (
+				5C816A8A1C019EDA005B74C4 /* Resources */,
+				5C816AB61C019EDA005B74C4 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5C816A9B1C019EDA005B74C4 /* PBXTargetDependency */,
+			);
+			name = SocialReminderWatchApp;
+			productName = SocialReminderWatchApp;
+			productReference = 5C816A8C1C019EDA005B74C4 /* SocialReminderWatchApp.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		5C816A971C019EDA005B74C4 /* SocialReminderWatchApp Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5C816AB51C019EDA005B74C4 /* Build configuration list for PBXNativeTarget "SocialReminderWatchApp Extension" */;
+			buildPhases = (
+				5C816A941C019EDA005B74C4 /* Sources */,
+				5C816A951C019EDA005B74C4 /* Frameworks */,
+				5C816A961C019EDA005B74C4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SocialReminderWatchApp Extension";
+			productName = "SocialReminderWatchApp Extension";
+			productReference = 5C816A981C019EDA005B74C4 /* SocialReminderWatchApp Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -362,6 +525,14 @@
 				ORGANIZATIONNAME = Streetmage;
 				TargetAttributes = {
 					5C0DE28C1BFF78CC0003C5E8 = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = CUX64C2278;
+					};
+					5C816A8B1C019EDA005B74C4 = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = CUX64C2278;
+					};
+					5C816A971C019EDA005B74C4 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = CUX64C2278;
 					};
@@ -381,6 +552,8 @@
 			projectRoot = "";
 			targets = (
 				5C0DE28C1BFF78CC0003C5E8 /* SocialReminder */,
+				5C816A8B1C019EDA005B74C4 /* SocialReminderWatchApp */,
+				5C816A971C019EDA005B74C4 /* SocialReminderWatchApp Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -392,6 +565,23 @@
 			files = (
 				5C0DE2A01BFF78CC0003C5E8 /* Assets.xcassets in Resources */,
 				5C0DE2B11BFF7C200003C5E8 /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5C816A8A1C019EDA005B74C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C816A921C019EDA005B74C4 /* Assets.xcassets in Resources */,
+				5C816A901C019EDA005B74C4 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5C816A961C019EDA005B74C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C816AAC1C019EDA005B74C4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +655,7 @@
 				5C81A4081C00E0E900AD67F9 /* Contact.m in Sources */,
 				5C81A4031C0081F600AD67F9 /* NotificationsManager.m in Sources */,
 				5C81A3E31C0051CC00AD67F9 /* User.m in Sources */,
+				5C816ABE1C01C4F4005B74C4 /* LocationManager.m in Sources */,
 				5C0DE2C81BFFA4DB0003C5E8 /* NSDate+Helpers.m in Sources */,
 				5C81A3D91C004BF600AD67F9 /* LoginView.m in Sources */,
 				5C0DE2C41BFF97240003C5E8 /* CreateUserReminderView.m in Sources */,
@@ -473,7 +664,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5C816A941C019EDA005B74C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C816AA41C019EDA005B74C4 /* ExtensionDelegate.m in Sources */,
+				5C816AA11C019EDA005B74C4 /* InterfaceController.m in Sources */,
+				5C816AA71C019EDA005B74C4 /* NotificationController.m in Sources */,
+				5C816AAA1C019EDA005B74C4 /* GlanceController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5C816A9B1C019EDA005B74C4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5C816A971C019EDA005B74C4 /* SocialReminderWatchApp Extension */;
+			targetProxy = 5C816A9A1C019EDA005B74C4 /* PBXContainerItemProxy */;
+		};
+		5C816AAF1C019EDA005B74C4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5C816A8B1C019EDA005B74C4 /* SocialReminderWatchApp */;
+			targetProxy = 5C816AAE1C019EDA005B74C4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		5C816A8E1C019EDA005B74C4 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5C816A8F1C019EDA005B74C4 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		5C0DE2A51BFF78CC0003C5E8 /* Debug */ = {
@@ -588,6 +814,68 @@
 			};
 			name = Release;
 		};
+		5C816AB11C019EDA005B74C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IBSC_MODULE = SocialReminderWatchApp_Extension;
+				INFOPLIST_FILE = SocialReminderWatchApp/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weezlabs.SocialReminder.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		5C816AB21C019EDA005B74C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IBSC_MODULE = SocialReminderWatchApp_Extension;
+				INFOPLIST_FILE = SocialReminderWatchApp/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weezlabs.SocialReminder.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		5C816AB31C019EDA005B74C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "SocialReminderWatchApp Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.weezlabs.SocialReminder.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		5C816AB41C019EDA005B74C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "SocialReminderWatchApp Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.weezlabs.SocialReminder.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -608,6 +896,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		5C816AB51C019EDA005B74C4 /* Build configuration list for PBXNativeTarget "SocialReminderWatchApp Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C816AB31C019EDA005B74C4 /* Debug */,
+				5C816AB41C019EDA005B74C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		5C816AB71C019EDA005B74C4 /* Build configuration list for PBXNativeTarget "SocialReminderWatchApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C816AB11C019EDA005B74C4 /* Debug */,
+				5C816AB21C019EDA005B74C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 

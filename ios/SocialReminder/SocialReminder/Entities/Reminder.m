@@ -36,6 +36,8 @@
 @dynamic title;
 @dynamic fireDateSecondsSince1970;
 @dynamic subscribed;
+@dynamic latitude;
+@dynamic longitude;
 
 + (RKEntityMapping *)entityMappingWithManagedObjectStore:(RKManagedObjectStore *)store {
     RKEntityMapping *mapping = [RKEntityMapping mappingForEntityForName:NSStringFromClass([self class])
@@ -44,7 +46,9 @@
     [mapping addAttributeMappingsFromDictionary:@{@"id" : @"reminderId",
                                                   @"name" : @"title",
                                                   @"datetime" : @"fireDateSecondsSince1970",
-                                                  @"subscribed" : @"subscribed"}];
+                                                  @"subscribed" : @"subscribed",
+                                                  @"lat" : @"latitude",
+                                                  @"lon" : @"logitude"}];
     return mapping;
 }
 

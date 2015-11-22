@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -51,10 +52,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask authTask = null;
 
     // UI references.
     private AutoCompleteTextView phoneView;
@@ -79,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         loginFormView = findViewById(R.id.login_form);
-        progressView = findViewById(R.id.login_progress);
+        progressView = findViewById(R.id.progress);
     }
 
     private void populateAutoComplete() {
@@ -132,9 +129,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (authTask != null) {
-            return;
-        }
 
         // Reset errors.
         phoneView.setError(null);
@@ -165,9 +159,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
 
-            authTask = new UserLoginTask(phone);
-            authTask.execute((Void) null);
-
             User user = new User();
             user.phone = phone;
             CountdownsManager.getInstance().register(user)
@@ -175,7 +166,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         @Override
                         public User call(User user) {
                             ArrayList<Contact> contacts = ContactUtils.getContacts(LoginActivity.this);
-                            CountdownsManager.getInstance().follow(contacts);
+                            CountdownsManager.getInstance().follow(contacts).subscribe(
+                                    new Action1<Boolean>() {
+                                        @Override
+                                        public void call(Boolean aBoolean) {
+
+                                        }
+                                    },
+                                    new Action1<Throwable>() {
+                                        @Override
+                                        public void call(Throwable throwable) {
+                                            Log.d("On3", "Unable to follow contacts");
+                                        }
+                                    }
+                            );
                             return user;
                         }
                     })
@@ -183,6 +187,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             new Action1<User>() {
                                 @Override
                                 public void call(User user) {
+                                    CountdownsManager.getInstance().save();
                                     finish();
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }
@@ -190,6 +195,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             new Action1<Throwable>() {
                                 @Override
                                 public void call(Throwable throwable) {
+                                    showProgress(false);
                                     Snackbar.make(phoneView, "Unable to login", Snackbar.LENGTH_LONG).show();
                                 }
                             }
@@ -291,50 +297,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String phone_;
-
-        UserLoginTask(String phone) {
-            phone_ = phone;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            authTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            authTask = null;
-            showProgress(false);
-        }
-    }
 }
 

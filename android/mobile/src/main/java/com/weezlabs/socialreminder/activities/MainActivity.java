@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -36,6 +35,9 @@ import rx.functions.Action1;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int CREATE_COUNTDOWN_REQUEST = 100;
+    private static final int EXPLORE_REUQEST = 101;
+
     private RecyclerView countdownsList;
     private View progressView;
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        CountdownsManager.getInstance().restore();
         if (CountdownsManager.getInstance().getUserId().isEmpty()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //setup controls
-        progressView = findViewById(R.id.login_progress);
+        progressView = findViewById(R.id.progress);
         countdownsList = (RecyclerView) findViewById(R.id.countdowns_list);
 
         //setup left menu
@@ -72,10 +75,28 @@ public class MainActivity extends AppCompatActivity
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         countdownsList.setLayoutManager(llm);
-        countdownsList.setAdapter(CountdownsManager.getInstance().getMyCountdownsAdapter(this));
+        countdownsList.setAdapter(CountdownsManager.getInstance().getMyCountdownsAdapter());
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         //initialize data loading
         updateMyCountdowns();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == CREATE_COUNTDOWN_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                updateMyCountdowns();
+            }
+        } else if (requestCode == EXPLORE_REUQEST) {
+            updateMyCountdowns();
+        }
     }
 
     private void updateMyCountdowns() {
@@ -132,7 +153,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_explore) {
-            startActivity(new Intent(this, ExploreActivity.class));
+            startActivityForResult(new Intent(this, ExploreActivity.class), EXPLORE_REUQEST);
             return true;
         }
 
@@ -151,6 +172,10 @@ public class MainActivity extends AppCompatActivity
             Snackbar.make(countdownsList, "Hi friends! Here is the best countdown app.", Snackbar.LENGTH_LONG).show();
         } else if (id == R.id.nav_settings) {
 
+        } else if (id == R.id.nav_logout) {
+            CountdownsManager.getInstance().logout();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -159,7 +184,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onAddCountdownClick(View view) {
-        CountdownActivity.launchForEvent(this, CountdownActivity.Mode.Edit, null);
+        CountdownActivity.launchForEditing(this, CREATE_COUNTDOWN_REQUEST);
     }
 
     @NonNull
@@ -186,7 +211,6 @@ public class MainActivity extends AppCompatActivity
             // TODO: Check possibleEmail against an email regex or treat
             // account.name as an email address only for certain account.type values.
             possibleEmails.add(account.name);
-            Log.d("On3", account.name);
         }
         return possibleEmails;
     }

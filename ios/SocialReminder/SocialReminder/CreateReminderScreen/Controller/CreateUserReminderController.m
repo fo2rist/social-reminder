@@ -10,6 +10,7 @@
 #import "CreateUserReminderController.h"
 #import "CreateUserReminderView.h"
 #import "NSDate+Helpers.h"
+#import "LocationManager.h"
 
 #import <RMDateSelectionViewController/RMDateSelectionViewController.h>
 
@@ -24,6 +25,7 @@ static NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) UIButton *backButton;
 
 @property (nonatomic, strong) NSDate *selectedDate;
+@property (nonatomic, strong) LocationManager *locationManager;
 
 @end
 
@@ -40,7 +42,7 @@ static NSDateFormatter *dateFormatter;
     [self setTitle:@"Create"];
     
     dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy/MM/dd hh:mm"];
+    [dateFormatter setDateFormat:@"yyyy/MM/dd hh:mm a"];
     
     NSDate *currentDate = [NSDate date];
     self.selectedDate = [NSDate dateWithDate:currentDate time:currentDate];
@@ -50,6 +52,11 @@ static NSDateFormatter *dateFormatter;
                          forControlEvents:UIControlEventTouchUpInside];
     
     [self updateSelectedDateLabel];
+    
+    _locationManager = [[LocationManager alloc] init];
+    [_locationManager setHandler:^(CLLocationCoordinate2D coordinate) {
+        
+    }];
     
 }
 
@@ -86,6 +93,8 @@ static NSDateFormatter *dateFormatter;
 - (void)onPickDateButtonClick:(UIButton *)sender {
     RMAction *selectAction = [RMAction actionWithTitle:@"Select" style:RMActionStyleDone andHandler:^(RMActionController *controller) {
         self.selectedDate = ((UIDatePicker *)controller.contentView).date;
+        NSTimeInterval time = floor([self.selectedDate timeIntervalSinceReferenceDate] / 60.0) * 60.0;
+        self.selectedDate = [NSDate dateWithTimeIntervalSinceReferenceDate:time];
         [self updateSelectedDateLabel];
     }];
     
