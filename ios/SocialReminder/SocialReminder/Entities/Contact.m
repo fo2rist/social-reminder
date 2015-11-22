@@ -8,6 +8,8 @@
 
 #import "Contact.h"
 
+#define NullCheck(obj) obj == nil ? [NSNull null] : obj
+
 @implementation Contact
 
 + (Contact *)contactWithFullName:(NSString *)fullName phoneNumber:(NSString *)phoneNumber {
@@ -19,8 +21,8 @@
 }
 
 - (NSDictionary *)dictionary {
-    NSDictionary *dictionary = @{@"phone" : self.phoneNumber,
-                                 @"name" : self.fullName};
+    NSDictionary *dictionary = @{@"phone" : NullCheck(self.phoneNumber),
+                                 @"name" : NullCheck(self.fullName)};
     return dictionary;
 }
 

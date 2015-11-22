@@ -145,7 +145,14 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
 }
 
 - (void)saveContacts:(NSArray *)contacts completion:(ServiceCompletionHandler)completion {
-    NSDictionary *parameters = @{@"contacts" : NullCheck([contacts valueForKey:@"dictionary"])};
+    NSDictionary *parameters = nil;
+    if (contacts.count > 0) {
+        if (contacts.count > 10) {
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 10)];
+            contacts = [contacts objectsAtIndexes:indexSet];
+        }
+        parameters = @{@"contacts" : NullCheck([contacts valueForKey:@"dictionary"])};
+    }
     [self postObjectsAtPath:ContactsEndpoint
                  parameters:parameters
                  completion:completion];
@@ -185,7 +192,7 @@ static NSString *const CountdownsEndpoint = @"/countdowns";
         case ReminderFilterFriends:
             filterName = @"friends";
             break;
-    
+            
         default:
             break;
     }

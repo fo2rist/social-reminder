@@ -521,6 +521,7 @@
 					};
 					5C816A971C019EDA005B74C4 = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = CUX64C2278;
 					};
 				};
 			};
@@ -834,6 +835,7 @@
 		5C816AB31C019EDA005B74C4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "SocialReminderWatchApp Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.weezlabs.SocialReminder.watchkitapp.watchkitextension;
@@ -848,6 +850,7 @@
 		5C816AB41C019EDA005B74C4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "SocialReminderWatchApp Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.weezlabs.SocialReminder.watchkitapp.watchkitextension;
