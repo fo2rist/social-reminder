@@ -2,9 +2,14 @@ package com.weezlabs.socialreminder.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,26 +26,36 @@ import android.widget.TextView;
 
 import com.weezlabs.socialreminder.R;
 import com.weezlabs.socialreminder.datalayer.CountdownsManager;
+import com.weezlabs.socialreminder.models.Countdown;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView countdownsList;
-
-//    private static void ch
+    private View progressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (CountdownsManager.getInstance().getUserId().isEmpty()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //setup controls
+        progressView = findViewById(R.id.login_progress);
         countdownsList = (RecyclerView) findViewById(R.id.countdowns_list);
 
         //setup left menu
@@ -60,7 +75,27 @@ public class MainActivity extends AppCompatActivity
         countdownsList.setAdapter(CountdownsManager.getInstance().getMyCountdownsAdapter(this));
 
         //initialize data loading
-        CountdownsManager.getInstance().updateMyCountdowns();
+        updateMyCountdowns();
+    }
+
+    private void updateMyCountdowns() {
+        showProgress(true);
+        CountdownsManager.getInstance().updateMyCountdowns()
+                .subscribe(
+                        new Action1<List<Countdown>>() {
+                            @Override
+                            public void call(List<Countdown> countdowns) {
+                                showProgress(false);
+                            }
+                        },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                showProgress(false);
+                                Snackbar.make(countdownsList, "Unable to load countdowns", Snackbar.LENGTH_LONG).show();
+                            }
+                        }
+                );
     }
 
     @Override
@@ -111,9 +146,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_refresh) {
-
+            updateMyCountdowns();
         } else if (id == R.id.nav_tell_friends) {
-
+            Snackbar.make(countdownsList, "Hi friends! Here is the best countdown app.", Snackbar.LENGTH_LONG).show();
         } else if (id == R.id.nav_settings) {
 
         }
@@ -154,5 +189,39 @@ public class MainActivity extends AppCompatActivity
             Log.d("On3", account.name);
         }
         return possibleEmails;
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            countdownsList.setVisibility(show ? View.GONE : View.VISIBLE);
+            countdownsList.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    countdownsList.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            countdownsList.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 }

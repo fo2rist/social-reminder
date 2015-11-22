@@ -50,15 +50,15 @@ public class TimeUtils {
         return stringInterval.trim();
     }
 
-    public static String convertToDateTimeString(Context context, Calendar dateTime) {
+    public static String convertToDateTimeString(Context context, Calendar dateTime, String separator) {
         return DateFormat.getDateFormat(context).format( dateTime.getTimeInMillis() )
-                + " "
+                + separator
                 + DateFormat.getTimeFormat(context).format( dateTime.getTimeInMillis() );
     }
 
-    public static String convertToDateTimeString(Context context, long milliseconds) {
+    public static String convertToDateTimeString(Context context, long milliseconds, String separator) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milliseconds);
-        return convertToDateTimeString(context, calendar);
+        return convertToDateTimeString(context, calendar, separator);
     }
 }

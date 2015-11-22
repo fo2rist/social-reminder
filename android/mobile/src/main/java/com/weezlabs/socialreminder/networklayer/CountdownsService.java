@@ -1,8 +1,10 @@
 package com.weezlabs.socialreminder.networklayer;
 
+import com.weezlabs.socialreminder.models.Contact;
 import com.weezlabs.socialreminder.models.Countdown;
 import com.weezlabs.socialreminder.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Call;
@@ -33,7 +35,7 @@ public interface CountdownsService {
     Observable<List<Countdown>> getMyCountdowns(@Header("UID") String userid);
 
     @POST("contacts")
-    Observable<Boolean> follow(@Header("UID") String userid);
+    Observable<Boolean> follow(@Header("UID") String userid, @Body ArrayList<Contact> contacts);
 
     @DELETE("contacts/%phonenumber")
     Observable<Boolean> unfollow(@Header("UID") String userid);
