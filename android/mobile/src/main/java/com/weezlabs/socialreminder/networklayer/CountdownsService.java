@@ -14,6 +14,7 @@ import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import retrofit.http.Query;
 import rx.Observable;
 
 /**
@@ -24,7 +25,7 @@ public interface CountdownsService {
     Observable<User> register(@Body User me);
 
     @GET("countdowns")
-    Observable<List<Countdown>> getCountdowns(@Header("UID") String userid);
+    Observable<List<Countdown>> getCountdowns(@Header("UID") String userid, @Query("filter") String filter);
 
     @POST("countdowns")
     Observable<Countdown> postConuntdown(@Header("UID") String userid, @Body Countdown countdown);

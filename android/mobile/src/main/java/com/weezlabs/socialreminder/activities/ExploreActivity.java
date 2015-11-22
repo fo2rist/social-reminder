@@ -5,8 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,10 +23,11 @@ import java.util.List;
 
 import rx.functions.Action1;
 
-public class ExploreActivity extends AppCompatActivity {
+public class ExploreActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
     private RecyclerView countdownsList;
     private View progressView;
+    private TabLayout tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +40,22 @@ public class ExploreActivity extends AppCompatActivity {
         //setup controls
         progressView = findViewById(R.id.progress);
         countdownsList = (RecyclerView) findViewById(R.id.countdowns_list);
+        tabs = (TabLayout) findViewById(R.id.tabs);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         countdownsList.setLayoutManager(llm);
 
+        tabs.addTab(tabs.newTab().setText("Top countdowns"));
+        tabs.addTab(tabs.newTab().setText("Friends"));
+        tabs.setOnTabSelectedListener(this);
+
         //start data loading
+        startDataLoading(CountdownsManager.Filter.Popular);
+    }
+
+    private void startDataLoading(CountdownsManager.Filter mode) {
         showProgress(true);
-        CountdownsManager.getInstance().getCountdowns().subscribe(
+        CountdownsManager.getInstance().getCountdowns(mode).subscribe(
                 new Action1<List<Countdown>>() {
                     @Override
                     public void call(List<Countdown> countdowns) {
@@ -98,5 +109,25 @@ public class ExploreActivity extends AppCompatActivity {
             progressView.setVisibility(show ? View.VISIBLE : View.GONE);
             countdownsList.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        switch(tabs.getSelectedTabPosition()) {
+            case 0:
+                startDataLoading(CountdownsManager.Filter.Popular);
+                break;
+            case 1:
+                startDataLoading(CountdownsManager.Filter.Friends);
+                break;
+        }
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
     }
 }

@@ -29,6 +29,11 @@ import rx.schedulers.Schedulers;
  * Created by WeezLabs on 11/20/15.
  */
 public class CountdownsManager {
+    public enum Filter {
+        Popular,
+        Friends
+    }
+
     public static final String COUNTDOWN_ID_KEY = "countdown_id_key";
     private static final String NULL_GUID = "00000000-0000-0000-0000-000000000000";
     private static final String SHARED_PREFS_KEY = "On3";
@@ -138,8 +143,18 @@ public class CountdownsManager {
                 .subscribeOn(Schedulers.newThread());
     }
 
-    public Observable<List<Countdown>> getCountdowns() {
-        Observable<List<Countdown>> countdownsCall = countdownsService_.getCountdowns(getUserId());
+    public Observable<List<Countdown>> getCountdowns(Filter filter) {
+        String filterString = null;
+        switch (filter) {
+            case Friends:
+                filterString = "friends";
+                break;
+            case Popular:
+            default:
+                filterString = "popular";
+                break;
+        }
+        Observable<List<Countdown>> countdownsCall = countdownsService_.getCountdowns(getUserId(), filterString);
         return countdownsCall
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread());
