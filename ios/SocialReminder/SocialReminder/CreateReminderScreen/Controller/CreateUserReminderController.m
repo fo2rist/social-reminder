@@ -86,6 +86,8 @@ static NSDateFormatter *dateFormatter;
 - (void)onPickDateButtonClick:(UIButton *)sender {
     RMAction *selectAction = [RMAction actionWithTitle:@"Select" style:RMActionStyleDone andHandler:^(RMActionController *controller) {
         self.selectedDate = ((UIDatePicker *)controller.contentView).date;
+        NSTimeInterval time = floor([self.selectedDate timeIntervalSinceReferenceDate] / 60.0) * 60.0;
+        self.selectedDate = [NSDate dateWithTimeIntervalSinceReferenceDate:time];
         [self updateSelectedDateLabel];
     }];
     
