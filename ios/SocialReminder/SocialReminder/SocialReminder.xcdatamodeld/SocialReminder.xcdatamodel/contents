@@ -2,11 +2,13 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Automatic">
     <entity name="DBReminder" representedClassName="DBReminder" syncable="YES">
         <attribute name="fireDateSecondsSince1970" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="reminderId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subscribed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="DBReminder" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="DBReminder" positionX="-63" positionY="-18" width="128" height="135"/>
     </elements>
 </model>

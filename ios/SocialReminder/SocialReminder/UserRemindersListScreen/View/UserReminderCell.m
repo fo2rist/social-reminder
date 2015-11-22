@@ -102,6 +102,8 @@ static NSArray *colors = nil;
 - (void)prepareForReuse {
     [self.timer invalidate];
     [self.fireDateLabel setText:nil];
+    [self.locationImageView setImage:nil];
+    [self.titleLabel setTextColor:[UIColor whiteColor]];
 }
 
 - (void)setupWithReminder:(id <Reminder>)reminder {
@@ -122,6 +124,16 @@ static NSArray *colors = nil;
     if (itemColorIndex < colors.count) {
         [_locationImageView setBackgroundColor:[colors objectAtIndex:itemColorIndex]];
     }
+    if ([[[reminder title] lowercaseString] containsString:@"вдв"]) {
+        [_locationImageView setImage:[UIImage imageNamed:@"VDVFlag"]];
+    }
+    if ([[[reminder title] lowercaseString] containsString:@"вмф"]) {
+        [_locationImageView setImage:[UIImage imageNamed:@"AdreevskyFlag"]];
+        [self.titleLabel setTextColor:[UIColor grayColor]];
+    }
+    if ([[[reminder title] lowercaseString] containsString:@"росси"]) {
+        [_locationImageView setImage:[UIImage imageNamed:@"RussianFlag"]];
+    }
     [_titleLabel setText:[reminder title]];
 }
 
@@ -134,7 +146,7 @@ static NSArray *colors = nil;
         NSNumber *seconds = @((self.countdown % 3600) % 60);
         NSString *daysString = @"";
         if (days > 0) {
-            daysString = [NSString stringWithFormat:@"%ld day%@", days, days == 1 ? @"" : @"s"];
+            daysString = [NSString stringWithFormat:@"%ld day%@", (unsigned long)days, days == 1 ? @"" : @"s"];
         }
         _countdownLabel.text = [NSString  stringWithFormat:@"%@ %@ : %@ : %@", daysString, [numberFormatter stringFromNumber:hours], [numberFormatter stringFromNumber:minutes], [numberFormatter stringFromNumber:seconds]];
     }

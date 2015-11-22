@@ -26,6 +26,7 @@
 		5C816AAA1C019EDA005B74C4 /* GlanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C816AA91C019EDA005B74C4 /* GlanceController.m */; };
 		5C816AAC1C019EDA005B74C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C816AAB1C019EDA005B74C4 /* Assets.xcassets */; };
 		5C816AB01C019EDA005B74C4 /* SocialReminderWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5C816A8C1C019EDA005B74C4 /* SocialReminderWatchApp.app */; };
+		5C816ABE1C01C4F4005B74C4 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C816ABD1C01C4F4005B74C4 /* LocationManager.m */; };
 		5C81A3D51C004BC400AD67F9 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3D41C004BC400AD67F9 /* LoginController.m */; };
 		5C81A3D91C004BF600AD67F9 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3D81C004BF600AD67F9 /* LoginView.m */; };
 		5C81A3E21C0051CC00AD67F9 /* Reminder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C81A3DD1C0051CC00AD67F9 /* Reminder.m */; };
@@ -123,6 +124,8 @@
 		5C816AA91C019EDA005B74C4 /* GlanceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GlanceController.m; sourceTree = "<group>"; };
 		5C816AAB1C019EDA005B74C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C816AAD1C019EDA005B74C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C816ABC1C01C4F4005B74C4 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		5C816ABD1C01C4F4005B74C4 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		5C81A3D31C004BC400AD67F9 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
 		5C81A3D41C004BC400AD67F9 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
 		5C81A3D71C004BF600AD67F9 /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
@@ -210,6 +213,7 @@
 			children = (
 				5C0DE2931BFF78CC0003C5E8 /* AppDelegate.h */,
 				5C0DE2941BFF78CC0003C5E8 /* AppDelegate.m */,
+				5C816ABB1C01C4EA005B74C4 /* LocationManager */,
 				5C81A4001C0081EC00AD67F9 /* NotificationsManager */,
 				5C81A3D11C004B9A00AD67F9 /* LoginScreen */,
 				5C0DE2AA1BFF7B210003C5E8 /* UserRemindersListScreen */,
@@ -336,6 +340,15 @@
 				5C816A9E1C019EDA005B74C4 /* PushNotificationPayload.apns */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5C816ABB1C01C4EA005B74C4 /* LocationManager */ = {
+			isa = PBXGroup;
+			children = (
+				5C816ABC1C01C4F4005B74C4 /* LocationManager.h */,
+				5C816ABD1C01C4F4005B74C4 /* LocationManager.m */,
+			);
+			path = LocationManager;
 			sourceTree = "<group>";
 		};
 		5C81A3D11C004B9A00AD67F9 /* LoginScreen */ = {
@@ -642,6 +655,7 @@
 				5C81A4081C00E0E900AD67F9 /* Contact.m in Sources */,
 				5C81A4031C0081F600AD67F9 /* NotificationsManager.m in Sources */,
 				5C81A3E31C0051CC00AD67F9 /* User.m in Sources */,
+				5C816ABE1C01C4F4005B74C4 /* LocationManager.m in Sources */,
 				5C0DE2C81BFFA4DB0003C5E8 /* NSDate+Helpers.m in Sources */,
 				5C81A3D91C004BF600AD67F9 /* LoginView.m in Sources */,
 				5C0DE2C41BFF97240003C5E8 /* CreateUserReminderView.m in Sources */,
